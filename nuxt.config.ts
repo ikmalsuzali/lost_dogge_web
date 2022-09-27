@@ -1,4 +1,5 @@
 export default defineNuxtConfig({
+  ssr: false,
   buildModules: ['@vueuse/nuxt', '@nuxtjs/strapi'],
   modules: [
     '@nuxtjs/tailwindcss',
@@ -45,5 +46,9 @@ export default defineNuxtConfig({
     public: {
       gaId: '',
     },
+  },
+  publicRuntimeConfig: {
+    SUPABASE_PROJECT_URL: process.env.SUPABASE_URL,
+    SUPABASE_PUBLIC_KEY: process.env.SUPABASE_KEY,
   },
 });
