@@ -1,4 +1,4 @@
-const { $supabase } = useNuxtApp()
+import { definitions } from "~~/types/supabase"
 
 interface Pet {
   name: string
@@ -20,6 +20,10 @@ interface Pet {
   isDeleted: boolean
 }
 
+const usePetRepository = async () => {
+  const { $supabase } = useNuxtApp()
+
+
 const getMyPets = async (
   userId: string,
   offset: number = 0,
@@ -30,6 +34,14 @@ const getMyPets = async (
     .select('*')
     .eq('user_id', userId)
     .range(offset, limit)
+}
+
+const getPets = async () => {
+  const data = await useFetch(`http://0.0.0.0:8080/api/v1/pets`)
+  const petsData = data?.data?.value?.pets
+  if (!petsData) return []
+  const pets: definitions['pets'] = petsData.map(pet =>  pet.json_build_object)
+  return pets
 }
 
 const getPetDetails = async (petId: string) => {
@@ -91,4 +103,8 @@ const deletePet = async (petId: string) => {
     .eq('id', petId)
 }
 
-export default { getMyPets, createPet, updatePet, deletePet, getPetDetails }
+
+return  { getPets,getMyPets, createPet, updatePet, deletePet, getPetDetails }
+}
+
+export default usePetRepository

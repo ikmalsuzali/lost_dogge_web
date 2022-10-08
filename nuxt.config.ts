@@ -1,5 +1,19 @@
 export default defineNuxtConfig({
+  head: {
+    titleTemplate: '%s - Nuxt',
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      // hid is used as unique identifier. Do not use `vmid` for it as it will not work
+    ],
+    link: [
+      {rel: 'stylesheet', href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css'},
+    ]
+  },
   ssr: false,
+  build: {
+    transpile: ['@headlessui/vue']
+  },
   buildModules: ['@vueuse/nuxt', '@nuxtjs/strapi'],
   modules: [
     '@nuxtjs/tailwindcss',
@@ -50,5 +64,7 @@ export default defineNuxtConfig({
   publicRuntimeConfig: {
     SUPABASE_PROJECT_URL: process.env.SUPABASE_URL,
     SUPABASE_PUBLIC_KEY: process.env.SUPABASE_KEY,
+    MAPBOX_KEY: process.env.MAPBOX_KEY,
+
   },
 });
