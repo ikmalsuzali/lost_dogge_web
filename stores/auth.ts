@@ -1,31 +1,39 @@
 import { defineStore } from 'pinia';
+import { RemovableRef, useStorage } from '@vueuse/core'
+import { definitions } from "~~/types/supabase"
 
+
+export enum LocalStorage {
+  LOCATION = 'location',
+  TOKEN = 'authToken',
+  USER = 'user'
+}
 export interface AuthUser extends Record<string, any> {}
 
 export type AuthState = {
-  loggedIn: boolean;
-  user: AuthUser | null;
-  loading: boolean;
+  user: RemovableRef<AuthUser> | null;
+  token: RemovableRef<string> | null;
 };
 
 export const useAuthStore = defineStore({
   id: 'auth',
   state: (): AuthState => {
-    const { token, user } = useAuthStorage();
-
     return {
-      loggedIn: !!token.value,
-      user: user.value,
-      loading: false,
+      user: useStorage(LocalStorage.USER, {}),
+      token: useStorage(LocalStorage.TOKEN, '')
     };
   },
   actions: {
     logout() {
-      const { clear } = useAuthStorage();
-      clear();
-
-      this.loggedIn = false;
-      this.user = null;
+      localStorage.clear()
+      this.user = {}
+      this.token = ''
     },
+    setToken(token: string) { 
+      this.token = token
+    },
+    setUser(payload: definitions['users'] | {}) {
+      this.user = payload
+    }
   },
 });

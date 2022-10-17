@@ -429,6 +429,7 @@ export interface paths {
           call_phone_number?: parameters["rowFilter.users.call_phone_number"];
           default_measurement?: parameters["rowFilter.users.default_measurement"];
           about_me?: parameters["rowFilter.users.about_me"];
+          email?: parameters["rowFilter.users.email"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -487,6 +488,7 @@ export interface paths {
           call_phone_number?: parameters["rowFilter.users.call_phone_number"];
           default_measurement?: parameters["rowFilter.users.default_measurement"];
           about_me?: parameters["rowFilter.users.about_me"];
+          email?: parameters["rowFilter.users.email"];
         };
         header: {
           /** Preference */
@@ -509,6 +511,7 @@ export interface paths {
           call_phone_number?: parameters["rowFilter.users.call_phone_number"];
           default_measurement?: parameters["rowFilter.users.default_measurement"];
           about_me?: parameters["rowFilter.users.about_me"];
+          email?: parameters["rowFilter.users.email"];
         };
         body: {
           /** users */
@@ -1196,6 +1199,8 @@ export interface definitions {
     default_measurement?: boolean;
     /** Format: character varying */
     about_me?: string;
+    /** Format: character varying */
+    email?: string;
   };
   pet_images: {
     /**
@@ -1458,6 +1463,8 @@ export interface parameters {
   "rowFilter.users.default_measurement": string;
   /** Format: character varying */
   "rowFilter.users.about_me": string;
+  /** Format: character varying */
+  "rowFilter.users.email": string;
   /** @description pet_images */
   "body.pet_images": definitions["pet_images"];
   /** Format: bigint */

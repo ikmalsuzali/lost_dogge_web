@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
 
 export enum AuthType {
-    SIGN_IN = 'signIn',
-    SIGN_UP = 'signUp'
+    LOGIN = 'Login',
+    SIGN_UP = 'Sign up',
+    FORGOT_PASSWORD = 'Forgot Password'
   }
 
 export type DrawerState = {
@@ -11,13 +12,12 @@ export type DrawerState = {
 };
 
 
-
 export const useDrawerStore = defineStore({
-  id: 'auth',
+  id: 'drawer',
   state: (): DrawerState => {
     return {
      isSignupLoginDrawerOpen: false,
-     type: AuthType.SIGN_IN
+     type: AuthType.LOGIN
     };
   },
   actions: {

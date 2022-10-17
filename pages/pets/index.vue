@@ -116,64 +116,75 @@
                                         </div>
                                     </div>
                                     <div>
-                            
                                         <div class="pb-1 sm:pb-6">
-                                          <carousel :items-to-show="1">
-    <slide v-for="image in selectedPet.pet_images" :key="slide">
-      <img
-                        class="aspect-video w-full object-cover object-center"
-                        :src="
-                            image.url || 'https://images.pexels.com/photos/3311574/pexels-photo-3311574.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-                        "
-                    />
-    </slide>
+                                            <carousel :items-to-show="1">
+                                                <slide
+                                                    v-for="image in selectedPet.pet_images"
+                                                    :key="slide"
+                                                >
+                                                    <img
+                                                        class="aspect-video w-full object-cover object-center"
+                                                        :src="
+                                                            image.url ||
+                                                            'https://images.pexels.com/photos/3311574/pexels-photo-3311574.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+                                                        "
+                                                    />
+                                                </slide>
 
-    <template #addons>
-      <pagination />
-    </template>
-  </carousel>
+                                                <template #addons>
+                                                    <pagination />
+                                                </template>
+                                            </carousel>
                                             <div>
                                                 <div
                                                     class="mt-6 px-4 sm:mt-8 sm:flex sm:items-end sm:px-6"
                                                 >
                                                     <div class="sm:flex-1">
-                                                      <div class="grid grid-cols-2">
-                                                        <div>
-                                                            <div
-                                                                class="flex items-center"
-                                                            >
-                                                                <h3
-                                                                    class="text-xl font-bold text-gray-900 sm:text-2xl"
+                                                        <div
+                                                            class="grid grid-cols-2"
+                                                        >
+                                                            <div>
+                                                                <div
+                                                                    class="flex items-center"
+                                                                >
+                                                                    <h3
+                                                                        class="text-xl font-bold text-gray-900 sm:text-2xl"
+                                                                    >
+                                                                        {{
+                                                                            selectedPet?.name
+                                                                        }}
+                                                                    </h3>
+                                                                </div>
+                                                                <p
+                                                                    class="text-sm text-gray-500"
                                                                 >
                                                                     {{
-                                                                        selectedPet?.name
+                                                                        breedAndTypeName(
+                                                                            selectedPet
+                                                                        )
                                                                     }}
-                                                                </h3>
-                                                               
+                                                                </p>
                                                             </div>
-                                                            <p
-                                                                class="text-sm text-gray-500"
-                                                            >
-                                                                {{
-                                                                    breedAndTypeName(
-                                                                        selectedPet
-                                                                    )
-                                                                }}
-                                                            </p>
+                                                            <div class="pt-2">
+                                                                <dt
+                                                                    class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0"
+                                                                >
+                                                                    Last seen
+                                                                    date
+                                                                </dt>
+                                                                <dd
+                                                                    class="mt-1 text-sm text-gray-900 sm:col-span-2"
+                                                                >
+                                                                    {{
+                                                                        dayjs(
+                                                                            selectedPet.created_at
+                                                                        ).format(
+                                                                            'MMM DD, YYYY hh:mm A'
+                                                                        )
+                                                                    }}
+                                                                </dd>
+                                                            </div>
                                                         </div>
-                                                        <div class="pt-2">
-                                                        <dt
-                                                            class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0"
-                                                        >
-                                                            Last seen date
-                                                        </dt>
-                                                        <dd
-                                                            class="mt-1 text-sm text-gray-900 sm:col-span-2"
-                                                        >
-                                                            {{ dayjs(selectedPet.created_at).format('MMM DD, YYYY hh:mm A')}}
-                                                        </dd>
-                                                    </div>
-                                                      </div>
                                                         <div
                                                             class="mt-5 flex flex-wrap space-y-3 sm:space-y-0 sm:space-x-3"
                                                         >
@@ -492,8 +503,8 @@
 <script setup>
 import { MapboxMap, MapboxMarker, MapboxGeogeometryCircle } from 'vue-mapbox-ts'
 import { watchEffect, ref } from 'vue'
-import 'vue3-carousel/dist/carousel.css';
-import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
+import 'vue3-carousel/dist/carousel.css'
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import {
     Combobox,
     ComboboxInput,
@@ -570,19 +581,13 @@ const breedAndTypeName = pet => {
 }
 
 const onSearchedLocation = async () => {
-  console.log('searched location', throttledQuery.value)
-  if (throttledQuery.value.length >= 3){
-    await retrieveSuggestions(throttledQuery.value)
-  }
+    console.log('searched location', throttledQuery.value)
+    if (throttledQuery.value.length >= 3) {
+        await retrieveSuggestions(throttledQuery.value)
+    }
 }
 
-watchEffect(() =>
-     onSearchedLocation(throttledQuery.value)
-);
-
-
-
-
+watchEffect(() => onSearchedLocation(throttledQuery.value))
 
 const people = [
     { id: 1, name: 'Leslie Alexander' },

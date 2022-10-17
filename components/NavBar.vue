@@ -11,10 +11,16 @@
               <a v-for="link in navigation" :key="link.name" :href="link.href" class="text-base font-medium text-white hover:text-indigo-50">{{ link.name }}</a>
             </div>
           </div>
-          <div class="ml-10 space-x-4">
+          <div v-if="auth.user?.id" class="ml-10 space-x-4">
+            <a class="inline-block rounded-md border border-transparent bg-white py-2 px-4 text-base font-medium text-indigo-600 hover:bg-indigo-50 cursor-pointer" @click="routePush('/dashboard')">Dashboard</a>
+            <a class="inline-block rounded-md border border-transparent bg-indigo-500 py-2 px-4 text-base font-medium text-white hover:bg-opacity-75 cursor-pointer" @click="auth.logout">Logout</a>
+
+          </div>
+          <div v-else class="ml-10 space-x-4">
             <a class="inline-block rounded-md border border-transparent bg-indigo-500 py-2 px-4 text-base font-medium text-white hover:bg-opacity-75 cursor-pointer" @click="toggleSignupLoginDrawer(AuthType.SIGN_IN)">Sign in</a>
             <a class="inline-block rounded-md border border-transparent bg-white py-2 px-4 text-base font-medium text-indigo-600 hover:bg-indigo-50 cursor-pointer" @click="toggleSignupLoginDrawer(AuthType.SIGN_UP)">Sign up</a>
           </div>
+         
         </div>
         <div class="flex flex-wrap justify-center space-x-6 py-4 lg:hidden">
           <a v-for="link in navigation" :key="link.name" @click="routePush(link.href)" class="text-base font-medium text-white hover:text-indigo-50">{{ link.name }}</a>
@@ -27,8 +33,10 @@
 import { useRouter } from 'vue-router';
 import { useDrawerStore } from '~~/stores/drawer';
 import { AuthType } from '~~/stores/drawer';
+import { useAuthStore } from '~~/stores/auth'
 
 const drawer = useDrawerStore()
+const auth = useAuthStore()
 
 const router = useRouter()
 

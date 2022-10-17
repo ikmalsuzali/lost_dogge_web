@@ -1,15 +1,12 @@
 import { useAuthStore } from '~~/stores/auth';
 
 export default defineNuxtRouteMiddleware((to) => {
-  const auth = useAuthStore();
+  const auth = useAuthStore()
   const router = useRouter();
 
-  if (auth.loggedIn) {
+  if (!auth?.user?.id) {
     return router.push({
-      path: '/dashboard',
-      query: {
-        from: to.path,
-      },
+      path: '/'
     });
   }
 });

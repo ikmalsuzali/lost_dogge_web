@@ -71,7 +71,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div v-if="drawer.type === AuthType.SIGN_IN">
+                                        <div
+                                            v-if="
+                                                drawer.type === AuthType.SIGN_IN
+                                            "
+                                        >
                                             <div class="flex">
                                                 <div
                                                     class="flex flex-1 flex-col justify-center py-12"
@@ -168,7 +172,7 @@
                                                                                     >Sign
                                                                                     in
                                                                                     with
-                                                                                    GitHub</span
+                                                                                    Google</span
                                                                                 >
                                                                                 <svg
                                                                                     class="h-5 w-5"
@@ -218,48 +222,34 @@
                                                                     class="space-y-6"
                                                                 >
                                                                     <div>
-                                                                        <label
-                                                                            for="email"
-                                                                            class="block text-sm font-medium text-gray-700"
-                                                                            >Email
-                                                                            address</label
-                                                                        >
-                                                                        <div
-                                                                            class="mt-1"
-                                                                        >
-                                                                            <input
-                                                                                v-model="authLogin.email"
-                                                                                id="email"
-                                                                                name="email"
-                                                                                type="email"
-                                                                                autocomplete="email"
-                                                                                required=""
-                                                                                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                                            />
-                                                                        </div>
+                                                                        <Input
+                                                                            v-model="
+                                                                                authLogin.email
+                                                                            "
+                                                                            label="Email"
+                                                                            required
+                                                                            :error-message="
+                                                                                errorMessages.email
+                                                                            "
+                                                                        />
                                                                     </div>
 
                                                                     <div
                                                                         class="space-y-1"
                                                                     >
-                                                                        <label
-                                                                            for="password"
-                                                                            class="block text-sm font-medium text-gray-700"
-                                                                            >Password</label
-                                                                        >
-                                                                        <div
-                                                                            class="mt-1"
-                                                                        >
-                                                                            <input
-                                                                                v-model="authLogin.password"
-                                                                                id="password"
-                                                                                name="password"
-                                                                                type="password"
-                                                                                autocomplete="current-password"
-                                                                                required=""
-                                                                                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                                            />
-                                                                        </div>
+                                                                        <Input
+                                                                            v-model="
+                                                                                authLogin.password
+                                                                            "
+                                                                            label="Password"
+                                                                            required
+                                                                            :type="
+                                                                                InputType.PASSWORD
+                                                                            "
+                                                                            :error-message="
+                                                                                errorMessages.password || errorMessages.generic
+                                                                            "
+                                                                        />
                                                                     </div>
 
                                                                     <div
@@ -299,7 +289,8 @@
                                                                         <button
                                                                             type="button"
                                                                             class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                                                        >
+                                                                       @click="onLoginClick"
+                                                                            >
                                                                             Sign
                                                                             in
                                                                         </button>
@@ -457,79 +448,101 @@
                                                                     method="POST"
                                                                     class="space-y-6"
                                                                 >
+                                                                    <div
+                                                                        class="grid grid-cols-2 space-x-6"
+                                                                    >
+                                                                        <div>
+                                                                            <Input
+                                                                                v-model="
+                                                                                    authSignup.firstName
+                                                                                "
+                                                                                label="First Name"
+                                                                                required
+                                                                                :error-message="
+                                                                                    errorMessages.firstName
+                                                                                "
+                                                                            />
+                                                                        </div>
+
+                                                                        <div>
+                                                                            <Input
+                                                                                v-model="
+                                                                                    authSignup.lastName
+                                                                                "
+                                                                                label="Last Name"
+                                                                                required
+                                                                                :error-message="
+                                                                                    errorMessages.lastName
+                                                                                "
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+
                                                                     <div>
-                                                                        <label
-                                                                            for="email"
-                                                                            class="block text-sm font-medium text-gray-700"
-                                                                            >Email
-                                                                            address</label
-                                                                        >
-                                                                        <div
-                                                                            class="mt-1"
-                                                                        >
-                                                                            <input
-                                                                                v-model="authSignup.email"
-                                                                                id="email"
-                                                                                name="email"
-                                                                                type="email"
-                                                                                autocomplete="email"
-                                                                                required=""
-                                                                                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                                            />
-                                                                        </div>
+                                                                        <Input
+                                                                            v-model="
+                                                                                authSignup.email
+                                                                            "
+                                                                            label="Email address"
+                                                                            required
+                                                                            :type="
+                                                                                InputType.EMAIL
+                                                                            "
+                                                                            :error-message="
+                                                                                errorMessages.email
+                                                                            "
+                                                                        />
                                                                     </div>
 
                                                                     <div
                                                                         class="space-y-1"
                                                                     >
-                                                                        <label
-                                                                            for="password"
-                                                                            class="block text-sm font-medium text-gray-700"
-                                                                            >Password</label
-                                                                        >
                                                                         <div
                                                                             class="mt-1"
                                                                         >
-                                                                            <input
-                                                                                v-model="authSignup.password"
-                                                                                id="password"
-                                                                                name="password"
-                                                                                type="password"
-                                                                                required=""
-                                                                                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                                            <Input
+                                                                                v-model="
+                                                                                    authSignup.password
+                                                                                "
+                                                                                label="Password"
+                                                                                required
+                                                                                :type="
+                                                                                    InputType.PASSWORD
+                                                                                "
+                                                                                :error-message="
+                                                                                    errorMessages.password
+                                                                                "
                                                                             />
                                                                         </div>
                                                                     </div>
                                                                     <div
                                                                         class="space-y-1"
                                                                     >
-                                                                        <label
-                                                                            for="password"
-                                                                            class="block text-sm font-medium text-gray-700"
-                                                                            >Confirm Password</label
-                                                                        >
-                                                                        <div
-                                                                            class="mt-1"
-                                                                        >
-                                                                            <input
-                                                                            v-model="authSignup.confirmPassword"
-                                                                                id="password"
-                                                                                name="password"
-                                                                                type="password"
-                                                                                required=""
-                                                                                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                                            />
-                                                                        </div>
+                                                                        <Input
+                                                                            v-model="
+                                                                                authSignup.confirmPassword
+                                                                            "
+                                                                            label="Confirm Password"
+                                                                            required
+                                                                            :type="
+                                                                                InputType.PASSWORD
+                                                                            "
+                                                                            :error-message="
+                                                                                errorMessages.confirmPassword
+                                                                            "
+                                                                        />
                                                                     </div>
 
-                                                                  
                                                                     <div>
                                                                         <button
-                                                                        type="button"
+                                                                            type="button"
                                                                             class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                                                            @click="onSignupClick"
+                                                                            @click="
+                                                                                onSignupClick
+                                                                            "
                                                                         >
-                                                                            Sign up
+                                                                            Sign
+                                                                            up
                                                                         </button>
                                                                     </div>
                                                                 </form>
@@ -539,9 +552,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
                                     </div>
-                                 
                                 </DialogPanel>
                             </TransitionChild>
                         </div>
@@ -568,9 +579,12 @@
 </template>
 
 <script lang="ts" setup>
+import { InputType } from '~/types/InputType'
+import Input from '~/components/atom/Input.vue'
 import Footer from '~~/components/Footer.vue'
 import NavBar from '~~/components/NavBar.vue'
 import { AuthType, useDrawerStore } from '~~/stores/drawer'
+import { useAuthStore } from '~~/stores/auth'
 import {
     Dialog,
     DialogPanel,
@@ -578,34 +592,138 @@ import {
     TransitionRoot
 } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
-import useAuthRepository  from '~/repositories/auth'
+import useAuthRepository from '~/repositories/auth'
 
-
-const { signUp } = useAuthRepository()
+const { signUp, getUserByEmail, signIn } = useAuthRepository()
 const drawer = useDrawerStore()
+const auth = useAuthStore()
 
-const toggleSignupLoginDrawer = () => {
+const toggleSignupLoginDrawer = (authType: AuthType) => {
+    resetState()
+    drawer.setDrawerType(authType)
     drawer.toggleSignupLoginDrawer()
 }
 
-const authLogin = ref({
-  email: '',
-  password: ''
-})
+const isLoading = ref(false)
 
-const authSignup = ref({
-  email: '',
-  password: '',
-  confirmPassword: ''
-})
+const authLoginInit = () => {
+    return {
+        email: '',
+        password: ''
+    }
+}
 
-const onSignupClick = async() => {
-  if (unref(authSignup).password !== unref(authSignup).confirmPassword || !unref(authSignup).password || !unref(authSignup).email){
-    console.log('Password is not matching the confirmed password')
-    return 
-  }
-  let data = await signUp(unref(authSignup))
-  console.log(data)
+const authSignupErrorMessageInit = () => {
+    return {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        generic: ''
+    }
+}
+
+const authLogin = ref(authLoginInit())
+const authSignup = ref(authSignupErrorMessageInit())
+const errorMessages = ref(authSignupErrorMessageInit())
+
+const resetState = () => {
+    authSignup.value = authSignupErrorMessageInit()
+    authLogin.value = authLoginInit()
+    errorMessages.value = authSignupErrorMessageInit()
+}
+
+const validateRequired = (inputValue: string, label: string = '') => {
+    return !inputValue ? `${label || 'Input'} is required` : ''
+}
+
+const validateEmail = (inputValue: string) => {
+    if (!inputValue) return validateRequired(inputValue, 'Email')
+    const re = /\S+@\S+\.\S+/
+    return !re.test(inputValue) ? 'Email is invalid' : ''
+}
+
+const validatePassword = (inputValue: string) => {
+    if (!inputValue) return validateRequired(inputValue, 'Password')
+    return inputValue.length < 6 ? 'Minimum characters is 6' : ''
+}
+
+const validateConfirmPassword = (password: string, confirmPassword: string) => {
+    if (!confirmPassword)
+        return validateRequired(confirmPassword, 'Confirm password')
+    return password !== confirmPassword
+        ? 'Password is not matching the confirmed password'
+        : ''
+}
+
+const isErrorMessageEmpty = () =>
+    Object.values(unref(errorMessages)).every(
+        message => message === null || message === ''
+    )
+
+const allSignupErrorMessageValidation = async () => {
+    errorMessages.value.email = validateEmail(unref(authSignup).email)
+    errorMessages.value.password = validatePassword(unref(authSignup).password)
+    errorMessages.value.firstName = validateRequired(
+        unref(authSignup).firstName,
+        'First name'
+    )
+    errorMessages.value.lastName = validateRequired(
+        unref(authSignup).lastName,
+        'Last name'
+    )
+
+    errorMessages.value.confirmPassword = validateConfirmPassword(
+        unref(authSignup).password,
+        unref(authSignup).confirmPassword
+    )
+    if (unref(authSignup).email !== '') {
+        const data = await getUserByEmail(unref(authSignup).email)
+        console.log(data!.data!.length)
+        errorMessages.value.email = data!.data!.length
+            ? 'Email has been taken'
+            : ''
+    }
+}
+
+const allLoginErrorMessageValidation = async () => {
+    errorMessages.value.email = validateEmail(unref(authLogin).email)
+    errorMessages.value.password = validateRequired(unref(authLogin).password, 'Password')
+}
+
+const onSignupClick = async () => {
+    try {
+        isLoading.value = true
+        errorMessages.value = authSignupErrorMessageInit()
+        await allSignupErrorMessageValidation()
+        if (!isErrorMessageEmpty()) return
+    
+        let data = await signUp(unref(authSignup))
+        auth.setUser(data!.data![0])
+        drawer.toggleSignupLoginDrawer()
+    } catch (error) {
+        console.log(error)
+    } finally {
+        isLoading.value = false
+    }
+}
+
+const onLoginClick = async () => {
+    try {
+        isLoading.value = true
+        errorMessages.value = authSignupErrorMessageInit()
+        await allLoginErrorMessageValidation()
+        if (!isErrorMessageEmpty()) return
+        let data = await signIn(unref(authLogin))
+        auth.setUser(data)
+        drawer.toggleSignupLoginDrawer()
+        
+    } catch (error) {
+        errorMessages.value.generic = error.message
+    } finally {
+        isLoading.value = false
+    }
 }
 
 </script>
