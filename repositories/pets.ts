@@ -1,25 +1,5 @@
 import { definitions } from '~~/types/supabase'
 
-interface Pet {
-    name: string
-    description: string
-    userId: string
-    weight: string
-    height: string
-    gender: string
-    breedId: string
-    isVaccinated: string
-    status: string
-    lostDate: string
-    foundDate: string
-    contactNumber: string
-    email: string
-    instagram: string
-    facebook: string
-    twitter: string
-    isDeleted: boolean
-}
-
 const usePetRepository = () => {
     const { $supabase } = useNuxtApp()
 
@@ -28,20 +8,21 @@ const usePetRepository = () => {
         offset: number = 0,
         limit: number = 20
     ) => {
-        await $supabase
+        const { data, error } = await $supabase
             .from('pets')
-            .select('*')
+            .select('*, pet_images(*), breed:breed_id(*)')
             .eq('user_id', userId)
             .range(offset, limit)
+
+        if (error) throw error
+        return data
     }
 
     const getPets = async () => {
         const data = await useFetch(`http://0.0.0.0:8080/api/v1/pets`)
         const petsData = data?.data?.value?.pets
         if (!petsData) return []
-        const pets: definitions['pets'] = petsData.map(
-            pet => pet.json_build_object
-        )
+        const pets: definitions['pets'] = petsData
         return pets
     }
 
@@ -68,17 +49,17 @@ const usePetRepository = () => {
         return data
     }
 
-    const createPet = async (userId: string, payload: Pet) => {
-        await $supabase.from('pets').insert([
+    const createPet = async payload => {
+        const { data, error } = await $supabase.from('pets').insert([
             {
                 name: payload.name,
                 description: payload.description,
-                user_id: userId,
+                user_id: payload.user_id,
                 weight: payload.weight,
                 height: payload.height,
                 gender: payload.gender,
-                breed_id: payload.breedId,
-                is_vaccinated: payload.isVaccinated || false,
+                breed_id: payload.breed_id,
+                is_vaccinated: payload.is_vaccinated || false,
                 status: payload.status,
                 lost_date: payload.lostDate,
                 found_date: payload.foundDate,
@@ -89,6 +70,8 @@ const usePetRepository = () => {
                 twitter: payload.twitter
             }
         ])
+        if (error) throw error
+        return data
     }
 
     const uploadPetImage = async (userId: string, file: File) => {
@@ -141,6 +124,17 @@ const usePetRepository = () => {
                 is_deleted: true
             })
             .eq('id', petId)
+    }
+
+    const petChats = async (id: string) => {
+        if (id) {
+            await $supabase
+                .from(`messages:id=eq.${id}`)
+                .on('*', payload => {
+                    console.log(payload)
+                })
+                .subscribe()
+        }
     }
 
     return {

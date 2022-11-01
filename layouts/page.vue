@@ -247,7 +247,8 @@
                                                                                 InputType.PASSWORD
                                                                             "
                                                                             :error-message="
-                                                                                errorMessages.password || errorMessages.generic
+                                                                                errorMessages.password ||
+                                                                                errorMessages.generic
                                                                             "
                                                                         />
                                                                     </div>
@@ -289,8 +290,10 @@
                                                                         <button
                                                                             type="button"
                                                                             class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                                                       @click="onLoginClick"
-                                                                            >
+                                                                            @click="
+                                                                                onLoginClick
+                                                                            "
+                                                                        >
                                                                             Sign
                                                                             in
                                                                         </button>
@@ -657,8 +660,8 @@ const validateConfirmPassword = (password: string, confirmPassword: string) => {
         : ''
 }
 
-const isErrorMessageEmpty = () =>
-    Object.values(unref(errorMessages)).every(
+const isErrorMessageEmpty = errorMessages =>
+    Object.values(errorMessages).every(
         message => message === null || message === ''
     )
 
@@ -689,7 +692,10 @@ const allSignupErrorMessageValidation = async () => {
 
 const allLoginErrorMessageValidation = async () => {
     errorMessages.value.email = validateEmail(unref(authLogin).email)
-    errorMessages.value.password = validateRequired(unref(authLogin).password, 'Password')
+    errorMessages.value.password = validateRequired(
+        unref(authLogin).password,
+        'Password'
+    )
 }
 
 const onSignupClick = async () => {
@@ -697,9 +703,9 @@ const onSignupClick = async () => {
         isLoading.value = true
         errorMessages.value = authSignupErrorMessageInit()
         await allSignupErrorMessageValidation()
-        if (!isErrorMessageEmpty()) return
-    
-        let data = await signUp(unref(authSignup))
+        if (!isErrorMessageEmpty(unref(errorMessages))) return
+
+        const data = await signUp(unref(authSignup))
         auth.setUser(data!.data![0])
         drawer.toggleSignupLoginDrawer()
     } catch (error) {
@@ -714,16 +720,14 @@ const onLoginClick = async () => {
         isLoading.value = true
         errorMessages.value = authSignupErrorMessageInit()
         await allLoginErrorMessageValidation()
-        if (!isErrorMessageEmpty()) return
+        if (!isErrorMessageEmpty(unref(errorMessages))) return
         let data = await signIn(unref(authLogin))
         auth.setUser(data)
         drawer.toggleSignupLoginDrawer()
-        
     } catch (error) {
         errorMessages.value.generic = error.message
     } finally {
         isLoading.value = false
     }
 }
-
 </script>

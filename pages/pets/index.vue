@@ -5,7 +5,7 @@
         >
             <img
                 class="h-full w-full object-cover rounded-l-xl"
-                src="https://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1920&q=60&blend=6366F1&sat=-100&blend-mode=multiply"
+                src="https://fhasuqzjmruhvugclutt.supabase.co/storage/v1/object/public/pets/website/andrew-s-ouo1hbizWwo-unsplash%20(2).jpg"
                 alt=""
             />
         </div>
@@ -13,21 +13,18 @@
             class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16"
         >
             <div class="md:ml-auto md:w-1/2 md:pl-10">
-                <h2 class="text-lg font-semibold text-gray-300">
-                    Award winning support
-                </h2>
                 <p
                     class="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl"
                 >
-                    We’re here to help
+                    Start searching for lost pets around your area
                 </p>
                 <p class="mt-3 text-lg text-gray-300">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et,
-                    egestas tempus tellus etiam sed. Quam a scelerisque amet
-                    ullamcorper eu enim et fermentum, augue. Aliquet amet
-                    volutpat quisque ut interdum tincidunt duis.
+                    We strive to help you find your lost pet. Our mission to
+                    help reunite you with your beloved pet. With the help of our
+                    AI (artificial intelligence algorithm) and the help of the
+                    community we scan through matching possibilities of your pet
                 </p>
-                <div class="mt-8">
+                <!-- <div class="mt-8">
                     <div class="inline-flex rounded-md shadow">
                         <a
                             href="#"
@@ -40,7 +37,7 @@
                             />
                         </a>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -393,7 +390,7 @@
                         style="width: 50vw"
                         class="rounded-md border border-gray-300 bg-white pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-md"
                         placeholder="Search last seen location of a pet"
-                        @change="query = $event.target.value"
+                        @change="searchedLocation = $event.target.value"
                         :display-value="person => person?.name"
                     />
                     <ComboboxButton
@@ -406,11 +403,11 @@
                     </ComboboxButton>
 
                     <ComboboxOptions
-                        v-if="filteredPeople.length > 0"
+                        v-if="mappedGeoLocations.length > 0"
                         class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
                     >
                         <ComboboxOption
-                            v-for="person in filteredPeople"
+                            v-for="person in mappedGeoLocations"
                             :key="person.id"
                             :value="person"
                             as="template"
@@ -539,14 +536,15 @@ const config = useRuntimeConfig()
 const mapboxApi = config.MAPBOX_KEY
 const { getAnimalTypes, getBreedsByType } = await useAnimalRepository()
 const { getPets } = await usePetRepository()
-const { retrieveSuggestions } = await useMapboxRepository()
+const { getGeocodingLocations } = useMapboxRepository()
 const pets = ref([])
 const searchedLocation = ref('')
 const query = ref('')
-const throttledQuery = refThrottled(query, 200)
+const throttledQuery = refThrottled(searchedLocation, 1000)
 const isPetDetailsDrawerOpen = ref(false)
 const selectedPet = ref()
 const animalTypes = ref([])
+const geoCodingLocations = ref([])
 const filter = ref({
     animalBreedIds: [],
     animalTypeId: ''
@@ -581,10 +579,10 @@ const breedAndTypeName = pet => {
 }
 
 const onSearchedLocation = async () => {
-    console.log('searched location', throttledQuery.value)
-    if (throttledQuery.value.length >= 3) {
-        await retrieveSuggestions(throttledQuery.value)
-    }
+    console.log(throttledQuery.value)
+    geoCodingLocations.value = []
+    geoCodingLocations.value = await getGeocodingLocations(throttledQuery.value)
+    console.log(geoCodingLocations.value)
 }
 
 watchEffect(() => onSearchedLocation(throttledQuery.value))
@@ -597,22 +595,17 @@ const people = [
     // More users...
 ]
 
-const filteredPeople = computed(() =>
-    query.value === ''
-        ? people
-        : people.filter(person => {
-              return person.name
-                  .toLowerCase()
-                  .includes(query.value.toLowerCase())
+const mappedGeoLocations = computed(() =>
+    !geoCodingLocations.value.length
+        ? []
+        : geoCodingLocations.value.map(_location => {
+              return {
+                  id: _location.id,
+                  name: _location.place_name
+              }
           })
 )
 
 fetchTypes()
 fetchPets()
-
-// const getPets = () => {
-//     for (let i = 0; i < 1000; i++) {
-//         unref(pets).push({})
-//     }
-// }
 </script>

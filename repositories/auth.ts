@@ -1,6 +1,6 @@
 import { useAuthStore } from '~~/stores/auth'
 const auth = useAuthStore()
- 
+
 export interface signInPayload {
     email: string
     password: string
@@ -22,23 +22,20 @@ const useAuthRepository = () => {
     const { $supabase } = useNuxtApp()
 
     const signIn = async (payload: signInPayload) => {
-
-      try {
-      let user
-        const {data, error} = await $supabase.auth.signIn({
-            email: payload.email,
-            password: payload.password
-        })
-        if (error) throw(error)
-        if (data){
-        user = await getUser(data!.user!.id)
+        try {
+            let user
+            const { data, error } = await $supabase.auth.signIn({
+                email: payload.email,
+                password: payload.password
+            })
+            if (error) throw error
+            if (data) {
+                user = await getUser(data!.user!.id)
+            }
+            return user
+        } catch (error) {
+            throw error
         }
-        return user
-
-      } catch (error) {
-        throw(error)        
-      }
-
     }
 
     const signOut = async () => {
@@ -107,13 +104,13 @@ const useAuthRepository = () => {
     }
 
     const getUser = async (userId: string) => {
-      let _userId = userId
-      let publicUser
+        let _userId = userId
+        let publicUser
 
-      if (!_userId){
-        const data = await $supabase.auth.user()
-        _userId = data!.user!.id
-      }
+        if (!_userId) {
+            const data = await $supabase.auth.user()
+            _userId = data!.user!.id
+        }
 
         if (_userId) {
             const data = await $supabase
@@ -121,11 +118,8 @@ const useAuthRepository = () => {
                 .select('*')
                 .eq('id', _userId)
 
-        publicUser = data.data![0]
+            publicUser = data.data![0]
         }
-
-        console.log(_userId)
-        console.log(publicUser)
 
         return publicUser
     }

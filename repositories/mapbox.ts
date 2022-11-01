@@ -1,23 +1,20 @@
+import axios from 'axios'
 
+const useMapboxRepository = () => {
+    const config = useRuntimeConfig()
+    const mapboxApiKey = config.MAPBOX_KEY
 
-const useMapboxRepository = async () => {
-  const config = useRuntimeConfig()
-  const sessionToken = localStorage.getItem('sessionId')
-  const mapboxApi = config.MAPBOX_KEY
+    const getGeocodingLocations = async (searchText: string) => {
+        const data = await axios(
+            `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+                searchText
+            )}.json?country=us&proximity=ip&types=place%2Cpostcode%2Caddress&access_token=${mapboxApiKey}&language=EN`
+        )
 
+        return data?.data?.features || []
+    }
 
-const getAddressByLongLat = async (longitude: number, latitude: number) => {
-    const data = await useFetch(`https://api.mapbox.com/geocoding/v5/{endpoint}/${longitude},${latitude}.json?access_token=${accessToken}&session_token=${sessionToken}`)
-    return data
-}
-
-const retrieveSuggestions = async (searchText: string) => {
-  const data = await useFetch(`https://api.mapbox.com/search/v1/suggest/${searchText}?access_token=${mapboxApi}&session_token=${sessionToken}&language=EN`)
-  return data
-}
-
-return  { getAddressByLongLat, retrieveSuggestions  }
-
+    return { getGeocodingLocations }
 }
 
 export default useMapboxRepository

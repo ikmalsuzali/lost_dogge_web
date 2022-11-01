@@ -3,7 +3,7 @@
         <Dialog
             as="div"
             class="relative z-10"
-            @close="isRegisterPetDrawerOpen = true"
+            @close="isRegisterPetDrawerOpen = false"
         >
             <div class="fixed inset-0" />
 
@@ -38,16 +38,20 @@
                                                 <div class="space-y-1">
                                                     <DialogTitle
                                                         class="text-lg font-medium text-gray-900"
-                                                        >Register new
-                                                        pet</DialogTitle
+                                                        >{{
+                                                            myPet.id
+                                                                ? 'Edit my pet details'
+                                                                : 'Register new pet'
+                                                        }}</DialogTitle
                                                     >
                                                     <p
                                                         class="text-sm text-gray-500"
                                                     >
-                                                        Get started by filling
-                                                        in the information below
-                                                        to register your pet in
-                                                        case of when it get lost
+                                                        {{
+                                                            !myPet.id
+                                                                ? 'Get started by filling in the information below to register your pet in case of when it get lost'
+                                                                : ''
+                                                        }}
                                                     </p>
                                                 </div>
                                                 <div
@@ -57,7 +61,7 @@
                                                         type="button"
                                                         class="text-gray-400 hover:text-gray-500"
                                                         @click="
-                                                            isRegisterPetDrawerOpen = true
+                                                            isRegisterPetDrawerOpen = false
                                                         "
                                                     >
                                                         <span class="sr-only"
@@ -211,6 +215,9 @@
                                                     <Input
                                                         v-model="myPet.name"
                                                         required
+                                                        :error-message="
+                                                            errorMessages.name
+                                                        "
                                                     />
                                                 </div>
                                             </div>
@@ -230,17 +237,52 @@
                                                 >
                                                     <Select
                                                         v-model="
-                                                            myPet.animalType
+                                                            myPet.animal_type_id
                                                         "
                                                         placeholder="Select a type"
                                                         :items="
                                                             selectAnimalTypes
                                                         "
+                                                        :error-message="
+                                                            errorMessages.animal_type
+                                                        "
                                                     />
                                                     <Select
-                                                        v-model="myPet.breed"
+                                                        v-model="
+                                                            myPetAnimalBreed
+                                                        "
                                                         placeholder="Select a breed"
                                                         :items="filteredBreeds"
+                                                        :error-message="
+                                                            errorMessages.breed
+                                                        "
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
+                                            >
+                                                <div>
+                                                    <label
+                                                        for="project-name"
+                                                        class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                                                        >Gender</label
+                                                    >
+                                                </div>
+                                                <div class="sm:col-span-2">
+                                                    <Switch
+                                                        v-model="myPet.gender"
+                                                        :label="
+                                                            myPet.gender
+                                                                ? Gender[
+                                                                      Gender
+                                                                          .Female
+                                                                  ]
+                                                                : Gender[
+                                                                      Gender
+                                                                          .Male
+                                                                  ]
+                                                        "
                                                     />
                                                 </div>
                                             </div>
@@ -258,6 +300,9 @@
                                                 </div>
                                                 <div class="sm:col-span-2">
                                                     <textarea
+                                                        v-model="
+                                                            myPet.description
+                                                        "
                                                         id="project-description"
                                                         name="project-description"
                                                         rows="3"
@@ -310,6 +355,9 @@
                                                         v-model="
                                                             myPet.instagram
                                                         "
+                                                        :error-message="
+                                                            errorMessages.instagram
+                                                        "
                                                     />
                                                 </div>
                                             </div>
@@ -326,6 +374,9 @@
                                                 <div class="sm:col-span-2">
                                                     <Input
                                                         v-model="myPet.twitter"
+                                                        :error-message="
+                                                            errorMessages.twitter
+                                                        "
                                                     />
                                                 </div>
                                             </div>
@@ -342,6 +393,9 @@
                                                 <div class="sm:col-span-2">
                                                     <Input
                                                         v-model="myPet.facebook"
+                                                        :error-message="
+                                                            errorMessages.facebook
+                                                        "
                                                     />
                                                 </div>
                                             </div>
@@ -381,10 +435,13 @@
                                                 Cancel
                                             </button>
                                             <button
-                                                type="submit"
+                                                type="button"
                                                 class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                                @click="onSaveMyPet"
                                             >
-                                                Create
+                                                {{
+                                                    myPet.id ? 'Save' : 'Create'
+                                                }}
                                             </button>
                                         </div>
                                     </div>
@@ -414,6 +471,7 @@
                         <a
                             href="#"
                             class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-5 py-3 text-base font-medium text-white hover:bg-indigo-700"
+                            @click="onRegisterClick()"
                             >Register</a
                         >
                     </div>
@@ -431,57 +489,145 @@
                 :key="index"
                 class="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow"
             >
-                <div
-                    class="flex w-full items-center justify-between space-x-6 p-6"
-                >
-                    <img
-                        class="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300"
-                        :src="'test'"
-                        alt=""
-                    />
-                    <div class="flex-1 truncate">
-                        <div class="flex items-center space-x-3">
-                            <h3
-                                class="truncate text-sm font-medium text-gray-900"
-                            >
-                                test
-                            </h3>
-                            <span
-                                class="inline-block flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800"
-                                >{{ 'helo' }}</span
-                            >
-                        </div>
-                        <p class="mt-1 truncate text-sm text-gray-500">
-                            {{ 'title' }}
-                        </p>
-                    </div>
-                </div>
-                <div>
-                    <div class="-mt-px flex divide-x divide-gray-200">
-                        <div class="flex w-0 flex-1">
-                            <a
-                                :href="`mailto:${'hest'}`"
-                                class="relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
-                            >
-                                <EnvelopeIcon
-                                    class="h-5 w-5 text-gray-400"
-                                    aria-hidden="true"
-                                />
-                                <span class="ml-3">Email</span>
-                            </a>
-                        </div>
-                        <div class="-ml-px flex w-0 flex-1">
-                            <a
-                                :href="`tel:${'helo'}`"
-                                class="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
-                            >
-                                <PhoneIcon
-                                    class="h-5 w-5 text-gray-400"
-                                    aria-hidden="true"
-                                />
-                                <span class="ml-3">Call</span>
-                            </a>
-                        </div>
+                <div class="w-full lg:max-w-full lg:flex">
+                    <div class="relative mx-auto w-full">
+                        <a
+                            href="#"
+                            class="relative inline-block w-full transform transition-transform duration-300 ease-in-out hover:-translate-y-2"
+                        >
+                            <div class="rounded-lg bg-white p-4 shadow">
+                                <div
+                                    class="relative flex justify-center overflow-hidden rounded-lg"
+                                >
+                                    <div
+                                        class="w-full transform transition-transform duration-500 ease-in-out hover:scale-110"
+                                    >
+                                        <div v-if="pet?.pet_images?.length">
+                                            <carousel :items-to-show="1">
+                                                <slide
+                                                    v-for="(
+                                                        image, imageIndex
+                                                    ) in pet?.pet_images"
+                                                    :key="slideTo"
+                                                >
+                                                    <img
+                                                        class="aspect-video w-full object-cover object-center"
+                                                        :src="image.url"
+                                                    />
+                                                </slide>
+                                            </carousel>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="absolute bottom-0 left-5 mb-3 flex"
+                                    >
+                                        <p
+                                            class="flex items-center font-medium text-white shadow-sm"
+                                        >
+                                            <i
+                                                class="fa fa-camera mr-2 text-xl text-white"
+                                            ></i>
+                                            {{ pet?.pet_images?.length || 0 }}
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="absolute bottom-0 right-5 mb-3 flex"
+                                    >
+                                        <p
+                                            class="flex items-center font-medium text-gray-800"
+                                        >
+                                            <i
+                                                class="fa fa-heart mr-2 text-2xl text-white"
+                                            ></i>
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="absolute top-0 inline-flex right-2"
+                                    >
+                                        <div>
+                                            <span
+                                                class="right-2 z-10 mt-3 ml-3 inline-flex select-none rounded-sm bg-[#1f93ff] px-2 py-1 text-xs font-semibold text-white"
+                                            >
+                                                {{ 'Cat breed' }}
+                                            </span>
+                                            <span
+                                                class="right-2 z-10 mt-3 ml-3 inline-flex select-none rounded-sm bg-[#1f93ff] px-2 py-1 text-xs font-semibold text-white"
+                                            >
+                                                {{ PetStatus[pet.status] }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <span
+                                        class="absolute top-0 left-0 z-10 mt-3 ml-3 inline-flex select-none rounded-lg bg-transparent px-3 py-2 text-lg font-medium text-white"
+                                    >
+                                        <i class="fa fa-star"></i>
+                                    </span>
+                                </div>
+
+                                <div class="mt-4">
+                                    <h2
+                                        class="line-clamp-1 text-2xl font-medium text-gray-800 md:text-lg"
+                                        title="New York"
+                                    >
+                                        1000 yards (Brand New) Bungalow
+                                        Available in...
+                                    </h2>
+
+                                    <p
+                                        class="text-primary inline-block whitespace-nowrap rounded-xl font-semibold leading-tight"
+                                    >
+                                        <span class="text-2xl">{{
+                                            pet.name
+                                        }}</span>
+                                    </p>
+                                </div>
+                                <div class="mt-4">
+                                    <p
+                                        class="line-clamp-2 mt-2 text-lg text-gray-800"
+                                    >
+                                        {{ pet.description }}
+                                    </p>
+                                </div>
+                                <div class="justify-center">
+                                    <div
+                                        class="mt-4 flex space-x-3 overflow-hidden rounded-lg px-1 py-1"
+                                    >
+                                        <p
+                                            class="flex items-center font-medium text-gray-800"
+                                        >
+                                            <BarsArrowUpIcon
+                                                class="h-6 w-6"
+                                                aria-hidden="true"
+                                            />
+                                            {{ pet.height }} inches
+                                        </p>
+                                        <p
+                                            class="flex items-center font-medium text-gray-800"
+                                        >
+                                            <BarsArrowDownIcon
+                                                class="h-6 w-6"
+                                                aria-hidden="true"
+                                            />
+                                            {{ pet.weight }} lbs
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="mt-8 grid grid-cols-2">
+                                    <div class="flex items-center">hi</div>
+
+                                    <div class="flex justify-end space-x-2">
+                                        <button
+                                            type="button"
+                                            class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                            @click="onEditPetClick(pet)"
+                                        >
+                                            Edit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </li>
@@ -498,7 +644,11 @@ import {
     TransitionChild,
     TransitionRoot
 } from '@headlessui/vue'
-import { XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+    XMarkIcon,
+    BarsArrowUpIcon,
+    BarsArrowDownIcon
+} from '@heroicons/vue/24/outline'
 import Input from '~/components/atom/Input.vue'
 import usePetRepository from '~/repositories/pets'
 import { useAuthStore } from '~~/stores/auth'
@@ -508,11 +658,17 @@ import Select from '~/components/UI/Select/Select.vue'
 import Switch from '~/components/atom/Switch.vue'
 import type { SelectItem } from '~/components/UI/Select/types'
 import { definitions } from '~~/types/supabase'
+import useValidations from '~/composables/validations'
 
 enum PetStatus {
     Registered = 0,
     Lost = 1,
     Found = 2
+}
+
+enum Gender {
+    Male = 0,
+    Female = 1
 }
 
 const selectPetStatus = [
@@ -536,8 +692,15 @@ definePageMeta({
 })
 
 const auth = useAuthStore()
+const {
+    validateRequired,
+    validateInstagramUsername,
+    validateTwitterHandle,
+    isErrorMessageEmpty
+} = useValidations()
 
-const { uploadPetImage, getAnimalTypes, getBreeds } = usePetRepository()
+const { uploadPetImage, getAnimalTypes, getBreeds, createPet, getMyPets } =
+    usePetRepository()
 
 const myPets = ref([{}])
 const animalTypes = ref<definitions['animal_types'][]>([])
@@ -545,23 +708,64 @@ const selectAnimalTypes = ref<SelectItem[]>([])
 const breeds = ref<definitions['animal_breeds'][]>()
 const selectBreeds = ref<SelectItem[]>([])
 
-const isRegisterPetDrawerOpen = ref(true)
-const myPet = ref({
-    images: [],
-    status: selectPetStatus[0],
-    animalType: undefined,
-    breed: undefined,
-    name: '',
-    weight: '',
-    height: '',
-    instagram: '',
-    twitter: '',
-    facebook: '',
-    is_vaccinated: false
+const isRegisterPetDrawerOpen = ref(false)
+const isLoading = ref(false)
+
+const myPetInit = () => {
+    return {
+        id: undefined,
+        user_id: auth?.user?.id,
+        images: [],
+        status: PetStatus.Registered,
+        description: '',
+        animal_type_id: '',
+        breed_id: -1,
+        breed: {},
+        name: '',
+        weight: '',
+        height: '',
+        instagram: '',
+        twitter: '',
+        facebook: '',
+        gender: Gender.Male,
+        is_vaccinated: false
+    }
+}
+
+const myPet = ref(myPetInit())
+
+const myPetAnimalBreed = computed({
+    get: () => unref(myPet).breed_id,
+    set: value => {
+        if (value) {
+            myPet.value.breed_id = value
+            myPet.value.breed = unref(breeds)?.find(
+                _breed => _breed.id === value
+            )
+            myPet.value.animal_type_id = unref(animalTypes)?.find(
+                _animalType =>
+                    unref(myPet).breed?.animal_type_id === _animalType.id
+            )?.id
+        }
+    }
 })
 
-const uploadImage = async e => {
-    const images = e.target.files
+const onRegisterClick = () => {
+    myPet.value = myPetInit()
+    isRegisterPetDrawerOpen.value = true
+}
+
+// const onChangeBreed = () => {
+//     myPet.value.breed = unref(breeds)?.find(
+//         _breed => _breed.id === myPet.value.breed_id
+//     )
+//     myPet.value.animal_type = unref(animalTypes)?.find(
+//         _animalType => _animalType.id === unref(myPet)?.breed?.animal_type_id
+//     )
+// }
+
+const uploadImage = async (e: InputEvent) => {
+    const images = e.target?.files
 
     for (const image of images) {
         try {
@@ -573,8 +777,27 @@ const uploadImage = async e => {
     }
 }
 
+const breedAndTypeName = pet => {
+    if (!pet?.breed) return ''
+    return `${pet?.breed?.type ? pet?.breed.type + ' - ' : ''}${
+        pet?.breed.name || ''
+    }`
+}
+
+const myPetImages = petImages => {
+    return petImages.map(image => image.url)
+}
+
 const onDeleteImageClick = (index: number) => {
     unref(myPet).images.splice(index, 1)
+}
+
+const onEditPetClick = pet => {
+    myPet.value = pet
+    myPet.value.animal_type_id = unref(animalTypes)?.find(
+        _animalType => unref(myPet).breed?.animal_type_id === _animalType.id
+    )?.id
+    isRegisterPetDrawerOpen.value = true
 }
 
 const fetchAnimalTypes = async () => {
@@ -603,10 +826,64 @@ const fetchBreeds = async () => {
     } catch (error) {}
 }
 
+const myPetErrorMessageInit = () => {
+    return {
+        status: '',
+        animal_type: '',
+        breed: '',
+        name: '',
+        twitter: '',
+        instagram: '',
+        facebook: ''
+    }
+}
+
+const errorMessages = ref(myPetErrorMessageInit())
+
+const allMyPetErrorMessage = () => {
+    errorMessages.value.status = validateRequired(
+        unref(myPet)?.status,
+        'Status'
+    )
+    errorMessages.value.animal_type = validateRequired(
+        unref(myPet)?.animal_type,
+        'Animal type'
+    )
+    errorMessages.value.breed = validateRequired(unref(myPet).breed, 'Breed')
+    errorMessages.value.name = validateRequired(unref(myPet).name, 'Name')
+    errorMessages.value.twitter = validateTwitterHandle(unref(myPet).twitter)
+    errorMessages.value.instagram = validateInstagramUsername(
+        unref(myPet).instagram
+    )
+}
+
+const fetchMyPets = async (userId: string) => {
+    try {
+        myPets.value = await getMyPets(userId)
+    } catch (error) {
+        console.log(error)
+    }
+}
+fetchMyPets(auth?.user?.id)
+
+const onSaveMyPet = async () => {
+    try {
+        isLoading.value = true
+        allMyPetErrorMessage()
+        if (isErrorMessageEmpty(unref(errorMessages))) return
+        const data = await createPet(unref(myPet))
+        console.log(data)
+    } catch (error) {
+        console.log(error)
+    } finally {
+        isLoading.value = false
+    }
+}
+
 const filteredBreeds = computed(() => {
-    if (!unref(myPet).animalType?.value) return unref(selectBreeds)
+    if (!unref(myPet).animal_type?.value) return unref(selectBreeds)
     return unref(selectBreeds).filter(
-        breed => breed.animal_type_id === unref(myPet).animalType.value
+        breed => breed.animal_type_id === unref(myPet).value.animal_type
     )
 })
 
