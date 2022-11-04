@@ -33,6 +33,7 @@
     "vue-mapbox": "^0.4.1",
     "vue-mapbox-ts": "^0.9.3",
     "vue3-carousel": "^0.1.48",
+    "vue3-lottie": "^2.4.0",
     "windplus": "^0.0.2",
     "yup": "^0.32.11"
   },
