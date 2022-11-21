@@ -6,7 +6,7 @@
                 class="rounded-md border border-gray-300 bg-white pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-md"
                 :placeholder="placeholder"
                 :display-value="item => item?.name"
-                @change="searchedItem = $event.target.value"
+                @input="searchedItem = $event.target.value"
             />
             <!-- <ComboboxButton
                 class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"
@@ -88,9 +88,12 @@ const props = withDefaults(
     }
 )
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'returned-object'])
 
-const searchedItem = ref('')
+const searchedItem = ref()
+searchedItem.value = {
+    name: props.modelValue
+}
 const throttledSearchItem = refThrottled(searchedItem, props.throttleTime)
 
 const mappedItems = computed(() =>
@@ -106,6 +109,12 @@ const mappedItems = computed(() =>
 )
 
 watch(throttledSearchItem, val => {
-    emit('update:modelValue', val)
+    if (typeof val === 'string') {
+        emit('update:modelValue', val)
+        return
+    } else {
+        emit('update:modelValue', val.name)
+        emit('returned-object', val)
+    }
 })
 </script>

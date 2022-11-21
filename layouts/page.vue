@@ -588,6 +588,7 @@ import Footer from '~~/components/Footer.vue'
 import NavBar from '~~/components/NavBar.vue'
 import { AuthType, useDrawerStore } from '~~/stores/drawer'
 import { useAuthStore } from '~~/stores/auth'
+import { usePetStore } from '~~/stores/pet'
 import {
     Dialog,
     DialogPanel,
@@ -599,7 +600,8 @@ import useAuthRepository from '~/repositories/auth'
 
 const { signUp, getUserByEmail, signIn } = useAuthRepository()
 const drawer = useDrawerStore()
-const auth = useAuthStore()
+const authStore = useAuthStore()
+const petStore = usePetStore()
 
 const toggleSignupLoginDrawer = (authType: AuthType) => {
     resetState()
@@ -706,7 +708,7 @@ const onSignupClick = async () => {
         if (!isErrorMessageEmpty(unref(errorMessages))) return
 
         const data = await signUp(unref(authSignup))
-        auth.setUser(data!.data![0])
+        authStore.setUser(data!.data![0])
         drawer.toggleSignupLoginDrawer()
     } catch (error) {
         console.log(error)
@@ -722,7 +724,8 @@ const onLoginClick = async () => {
         await allLoginErrorMessageValidation()
         if (!isErrorMessageEmpty(unref(errorMessages))) return
         let data = await signIn(unref(authLogin))
-        auth.setUser(data)
+        authStore.setUser(data)
+        await petStore.fetchMyPets()
         drawer.toggleSignupLoginDrawer()
     } catch (error) {
         errorMessages.value.generic = error.message

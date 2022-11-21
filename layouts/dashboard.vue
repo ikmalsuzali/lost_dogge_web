@@ -198,13 +198,20 @@ import {
     RectangleStackIcon,
     UserGroupIcon,
     XMarkIcon,
-    GlobeAltIcon
+    GlobeAltIcon,
+    MagnifyingGlassIcon
 } from '@heroicons/vue/24/outline'
 
 const route = useRoute()
 
 const sidebarNavigation = ref([
     { name: 'My Pets', href: '/owner/pets', icon: HomeIcon, current: false },
+    {
+        name: 'Search',
+        href: '/owner/search',
+        icon: MagnifyingGlassIcon,
+        current: false
+    },
     {
         name: 'Matches',
         href: '/owner/matches',

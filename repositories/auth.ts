@@ -18,6 +18,11 @@ export enum AuthProviderType {
     FACEBOOK = 'facebook'
 }
 
+export enum UserType {
+    OWNER = 0,
+    FOUNDER = 1
+}
+
 const useAuthRepository = () => {
     const { $supabase } = useNuxtApp()
 
@@ -124,6 +129,25 @@ const useAuthRepository = () => {
         return publicUser
     }
 
+    const updateUserType = async (userType: UserType) => {
+        let userId
+        let response
+
+        const data = await $supabase.auth.user()
+        userId = data!.user!.id
+
+        if (!data?.user) throw 'No user found'
+
+        if (userId) {
+            response = await $supabase
+                .from('users')
+                .update({ user_type: userType })
+                .eq('id', userId)
+        }
+
+        return response
+    }
+
     return {
         signIn,
         signOut,
@@ -133,7 +157,8 @@ const useAuthRepository = () => {
         createUserDetails,
         getUser,
         forgetPassword,
-        getUserByEmail
+        getUserByEmail,
+        updateUserType
     }
 }
 

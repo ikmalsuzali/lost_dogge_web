@@ -68,7 +68,7 @@
                             <div
                                 class="px-4 sm:px-6 sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:flex lg:items-center lg:text-left"
                             >
-                                <div>
+                                <div> 
                                     <a
                                         href="#"
                                         class="inline-flex items-center rounded-full bg-gray-900 p-1 pr-2 text-white hover:text-gray-200 sm:text-base lg:text-sm xl:text-base"
@@ -615,7 +615,7 @@ const onPetSearchClick = (petType: PetTypeRoute) => {
     try {
         if (searchedLocation.value.itemMeta) {
             const longitude = searchedLocation.value?.itemMeta?.center[0]
-            const latitude = searchedLocation.value?.itemMeta?.center[0]
+            const latitude = searchedLocation.value?.itemMeta?.center[1]
 
             auth.setLocation({
                 name: searchedLocation.value.name,

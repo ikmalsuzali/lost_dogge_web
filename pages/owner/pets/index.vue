@@ -659,6 +659,7 @@ import Switch from '~/components/atom/Switch.vue'
 import type { SelectItem } from '~/components/UI/Select/types'
 import { definitions } from '~~/types/supabase'
 import useValidations from '~/composables/validations'
+import { PetMatchPossibleType } from '~~/types'
 
 enum PetStatus {
     Registered = 0,
@@ -755,15 +756,6 @@ const onRegisterClick = () => {
     isRegisterPetDrawerOpen.value = true
 }
 
-// const onChangeBreed = () => {
-//     myPet.value.breed = unref(breeds)?.find(
-//         _breed => _breed.id === myPet.value.breed_id
-//     )
-//     myPet.value.animal_type = unref(animalTypes)?.find(
-//         _animalType => _animalType.id === unref(myPet)?.breed?.animal_type_id
-//     )
-// }
-
 const uploadImage = async (e: InputEvent) => {
     const images = e.target?.files
 
@@ -853,7 +845,7 @@ const allMyPetErrorMessage = () => {
     errorMessages.value.name = validateRequired(unref(myPet).name, 'Name')
     errorMessages.value.twitter = validateTwitterHandle(unref(myPet).twitter)
     errorMessages.value.instagram = validateInstagramUsername(
-        unref(myPet).instagram
+        unref(myPet).instaxgram
     )
 }
 

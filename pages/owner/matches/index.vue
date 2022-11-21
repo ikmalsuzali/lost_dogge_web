@@ -1,153 +1,116 @@
 <template>
-    <ul
-        role="list"
-        class="w-full grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-    >
-        <li
-            v-for="(pet, index) in petMatches"
-            :key="index"
-            class="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow"
+    <div>
+        <ul
+            role="list"
+            class="w-full grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
-            <div class="w-full lg:max-w-full lg:flex">
-                <div class="relative mx-auto w-full">
-                    <a
-                        href="#"
-                        class="relative inline-block w-full transform transition-transform duration-300 ease-in-out hover:-translate-y-2"
-                    >
-                        <div class="rounded-lg bg-white p-4 shadow">
-                            <div
-                                class="relative flex justify-center overflow-hidden rounded-lg"
+            <li
+                v-for="(petMatch, index) in petMatches"
+                :key="index"
+                class="col-span-1"
+            >
+                <div
+                    class="w-full max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
+                >
+                    <div v-if="petMatch?.found_pet_id.pet_images?.length">
+                        <carousel :items-to-show="1">
+                            <slide
+                                v-for="(image, imageIndex) in petMatch
+                                    ?.found_pet_id.pet_images"
+                                :key="imageIndex"
                             >
-                                <div
-                                    class="w-full transform transition-transform duration-500 ease-in-out hover:scale-110"
-                                >
-                                    <!-- <carousel :items-to-show="1">
-                                        <slide
-                                            v-for="(image, imageIndex) in [{}]"
-                                            :key="imageIndex"
-                                        >
-                                            <img
-                                                class="aspect-video w-full object-cover object-center"
-                                                :src="image.url"
-                                            />
-                                        </slide>
-                                    </carousel> -->
-                                </div>
-                                <!-- <div class="absolute bottom-0 left-5 mb-3 flex">
-                                    <p
-                                        class="flex items-center font-medium text-white shadow-sm"
-                                    >
-                                        <i
-                                            class="fa fa-camera mr-2 text-xl text-white"
-                                        ></i>
-                                        {{ pet?.pet_images?.length || 0 }}
-                                    </p>
-                                </div>
-                                <div
-                                    class="absolute bottom-0 right-5 mb-3 flex"
-                                >
-                                    <p
-                                        class="flex items-center font-medium text-gray-800"
-                                    >
-                                        <i
-                                            class="fa fa-heart mr-2 text-2xl text-white"
-                                        ></i>
-                                    </p>
-                                </div>
-                                <div class="absolute top-0 inline-flex right-2">
-                                    <div>
-                                        <span
-                                            class="right-2 z-10 mt-3 ml-3 inline-flex select-none rounded-sm bg-[#1f93ff] px-2 py-1 text-xs font-semibold text-white"
-                                        >
-                                            {{ 'Cat breed' }}
-                                        </span>
-                                        <span
-                                            class="right-2 z-10 mt-3 ml-3 inline-flex select-none rounded-sm bg-[#1f93ff] px-2 py-1 text-xs font-semibold text-white"
-                                        >
-                                            {{ PetStatus[pet.status] }}
-                                        </span>
-                                    </div>
-                                </div> -->
-
-                                <!-- <span
-                                    class="absolute top-0 left-0 z-10 mt-3 ml-3 inline-flex select-none rounded-lg bg-transparent px-3 py-2 text-lg font-medium text-white"
-                                >
-                                    <i class="fa fa-star"></i>
-                                </span> -->
+                                <img
+                                    class="rounded-t-lg aspect-video w-full object-fill object-center"
+                                    :src="image.url"
+                                />
+                            </slide>
+                        </carousel>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-center justify-between">
+                            <div class="text-md text-gray-900 dark:text-white">
+                                Located near
+                                {{ petMatch?.found_pet_id?.address }}
                             </div>
-                            <!-- 
-                            <div class="mt-4">
-                                <h2
-                                    class="line-clamp-1 text-2xl font-medium text-gray-800 md:text-lg"
-                                    title="New York"
-                                >
-                                    1000 yards (Brand New) Bungalow Available
-                                    in...
-                                </h2>
-
-                                <p
-                                    class="text-primary inline-block whitespace-nowrap rounded-xl font-semibold leading-tight"
-                                >
-                                    <span class="text-2xl">{{ pet.name }}</span>
-                                </p>
-                            </div>
-                            <div class="mt-4">
-                                <p
-                                    class="line-clamp-2 mt-2 text-lg text-gray-800"
-                                >
-                                    {{ pet.description }}
-                                </p>
-                            </div>
-                            <div class="justify-center">
-                                <div
-                                    class="mt-4 flex space-x-3 overflow-hidden rounded-lg px-1 py-1"
-                                >
-                                    <p
-                                        class="flex items-center font-medium text-gray-800"
-                                    >
-                                        <BarsArrowUpIcon
-                                            class="h-6 w-6"
-                                            aria-hidden="true"
-                                        />
-                                        {{ pet.height }} inches
-                                    </p>
-                                    <p
-                                        class="flex items-center font-medium text-gray-800"
-                                    >
-                                        <BarsArrowDownIcon
-                                            class="h-6 w-6"
-                                            aria-hidden="true"
-                                        />
-                                        {{ pet.weight }} lbs
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="mt-8 grid grid-cols-2">
-                                <div class="flex items-center">hi</div>
-
-                                <div class="flex justify-end space-x-2">
-                                    <button
-                                        type="button"
-                                        class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                    >
-                                        Edit
-                                    </button>
-                                </div>
-                            </div> -->
+                            <a
+                                @click="
+                                    onPetMatchViewClick(petMatch.found_pet_id)
+                                "
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-auto"
+                                >View</a
+                            >
                         </div>
-                    </a>
+                    </div>
                 </div>
-            </div>
-        </li>
-    </ul>
+            </li>
+        </ul>
+        <PetViewDrawer
+            v-model:drawer-open="isPetViewDrawerOpen"
+            :type="PetType.FOUND_BY_MATCH"
+            :selectedPet="selectedPet"
+            @pet-match-type-click="
+                val => onPetMatchClick(val.selectedPetId, val.type)
+            "
+            @message-click=""
+        />
+    </div>
 </template>
 
 <script lang="ts" setup>
 import { Carousel, Slide } from 'vue3-carousel'
+import { usePetStore } from '~~/stores/pet'
+import usePetRepository from '~/repositories/pets'
+import PetViewDrawer from '~~/components/organism/PetViewDrawer.vue'
+import { PetMatchPossibleType, PetType } from '~~/types'
+
+import 'vue3-carousel/dist/carousel.css'
+
 definePageMeta({
     layout: 'dashboard',
     middleware: 'auth'
 })
 
-const petMatches = ref([{}])
+const petStore = usePetStore()
+const { getMyPetMatches, updatePetMatchType } = usePetRepository()
+
+const petMatches = ref([])
+const selectedPet = ref({})
+const isPetViewDrawerOpen = ref(false)
+
+const fetchMyPetMatches = async () => {
+    try {
+        petMatches.value = await getMyPetMatches(petStore.myPetIds)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const onPetMatchViewClick = pet => {
+    console.log(
+        '🚀 ~ file: index.vue ~ line 78 ~ onPetMatchViewClick ~ selectedPet',
+        selectedPet
+    )
+    selectedPet.value = pet
+    isPetViewDrawerOpen.value = true
+}
+
+const onPetMatchClick = async (
+    selectedPetId: string,
+    type: PetMatchPossibleType.MATCH
+) => {
+    try {
+        const petMatch = petMatches.value?.find(
+            petMatch => petMatch.found_pet_id?.id === selectedPetId
+        )
+        console.log(petMatch)
+        if (!petMatch.id) return
+        await updatePetMatchType(petMatch.id, type)
+    } catch (error) {
+        console.log(error)
+    } finally {
+        isPetViewDrawerOpen.value = false
+    }
+}
+
+fetchMyPetMatches()
 </script>

@@ -5,7 +5,8 @@ import { definitions } from '~~/types/supabase'
 export enum LocalStorage {
     LOCATION = 'location',
     TOKEN = 'authToken',
-    USER = 'user'
+    USER = 'user',
+    PETS = 'pet'
 }
 export interface AuthUser extends Record<string, any> {}
 export interface Location {

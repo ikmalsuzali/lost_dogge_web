@@ -1,4 +1,6 @@
 import { definitions } from '~~/types/supabase'
+import axios from 'axios'
+import { PetMatchPossibleType } from '~~/types'
 
 const usePetRepository = () => {
     const { $supabase } = useNuxtApp()
@@ -18,9 +20,11 @@ const usePetRepository = () => {
         return data
     }
 
-    const getPets = async () => {
-        const data = await useFetch(`http://0.0.0.0:8080/api/v1/pets`)
-        const petsData = data?.data?.value?.pets
+    const getPets = async payload => {
+        const data = await axios(`http://0.0.0.0:8080/api/v1/pets`, {
+            params: payload
+        })
+        const petsData = data?.data?.pets
         if (!petsData) return []
         const pets: definitions['pets'] = petsData
         return pets
@@ -137,6 +141,37 @@ const usePetRepository = () => {
         }
     }
 
+    const getMyPetMatches = async (
+        petIds: string[],
+        types: number[] = [
+            PetMatchPossibleType.MATCH,
+            PetMatchPossibleType.NO_MATCH,
+            PetMatchPossibleType.PENDING,
+            PetMatchPossibleType.POSSIBLE
+        ]
+    ) => {
+        let { data, error } = await $supabase
+            .from('pet_matches')
+            .select('*, lost_pet_id(*), found_pet_id(*, pet_images(*))')
+            .in('lost_pet_id', petIds)
+            .in('type', types)
+
+        if (error) throw error
+        return data
+    }
+
+    const updatePetMatchType = async (
+        id: string,
+        type: PetMatchPossibleType
+    ) => {
+        let { data, error } = await $supabase
+            .from('pet_matches')
+            .update({ type })
+            .eq('id', id)
+        if (error) throw error
+        return data
+    }
+
     return {
         getPets,
         getMyPets,
@@ -146,7 +181,9 @@ const usePetRepository = () => {
         getPetDetails,
         uploadPetImage,
         getAnimalTypes,
-        getBreeds
+        getBreeds,
+        getMyPetMatches,
+        updatePetMatchType
     }
 }
 

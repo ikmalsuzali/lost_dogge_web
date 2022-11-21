@@ -1,57 +1,11 @@
-<script setup lang="ts">
-import { ref, toRefs, watch } from 'vue'
-import {
-    Listbox,
-    ListboxButton,
-    ListboxOptions,
-    ListboxOption
-} from '@headlessui/vue'
-import type { SelectItem } from './types'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
-
-type Props = {
-    modelValue: string
-    items: SelectItem[]
-    placeholder?: string
-    hideCheckIcon?: boolean
-    outlined?: boolean
-    large?: boolean
-    small?: boolean
-    disabled?: boolean
-    errorMessage?: string
-}
-
-const props = withDefaults(defineProps<Props>(), {
-    items: () => [],
-    placeholder: 'Choose',
-    hideCheckIcon: false,
-    outlined: false,
-    large: false,
-    small: false,
-    disabled: false,
-    errorMessage: ''
-})
-
-const emit = defineEmits(['update:modelValue'])
-
-const { modelValue } = toRefs(props)
-
-const selected = ref<SelectItem | undefined>(
-    props.items.find(item => item.value === unref(modelValue))
-)
-
-watch(modelValue, val => {
-    selected.value = props.items.find(item => item.value === val)
-})
-
-watch(selected, val => {
-    emit('update:modelValue', val.value)
-})
-</script>
-
 <template>
     <div class="relative w-full">
-        <Listbox v-model="selected" :disabled="disabled" class="w-full">
+        <Listbox
+            v-model="selected"
+            :disabled="disabled"
+            nullable
+            class="w-full"
+        >
             <div class="relative mt-1">
                 <ListboxButton
                     class="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
@@ -59,15 +13,26 @@ watch(selected, val => {
                     <span class="block truncate">{{
                         selected?.text || placeholder
                     }}</span>
-                    <span
-                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"
-                    >
-                        <ChevronUpDownIcon
-                            class="h-5 w-5 text-gray-400"
-                            aria-hidden="true"
-                        />
-                    </span>
                 </ListboxButton>
+                <span
+                    v-if="!selected?.text"
+                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"
+                >
+                    <ChevronUpDownIcon
+                        class="h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                    />
+                </span>
+                <span
+                    v-else
+                    class="absolute inset-y-0 right-0 flex items-center pr-2"
+                    @click="deleteSelection"
+                >
+                    <XMarkIcon
+                        class="h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                    />
+                </span>
                 <transition
                     leave-active-class="transition ease-in duration-100"
                     leave-from-class="opacity-100"
@@ -129,3 +94,65 @@ watch(selected, val => {
         </p>
     </div>
 </template>
+
+<script setup lang="ts">
+import { ref, toRefs, watch } from 'vue'
+import {
+    Listbox,
+    ListboxButton,
+    ListboxOptions,
+    ListboxOption
+} from '@headlessui/vue'
+import type { SelectItem } from './types'
+import {
+    CheckIcon,
+    ChevronUpDownIcon,
+    XMarkIcon
+} from '@heroicons/vue/20/solid'
+
+type Props = {
+    modelValue: string
+    items: SelectItem[]
+    placeholder?: string
+    hideCheckIcon?: boolean
+    outlined?: boolean
+    large?: boolean
+    small?: boolean
+    disabled?: boolean
+    errorMessage?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    items: () => [],
+    placeholder: 'Choose',
+    hideCheckIcon: false,
+    outlined: false,
+    large: false,
+    small: false,
+    disabled: false,
+    errorMessage: ''
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const { modelValue } = toRefs(props)
+
+const selected = ref<SelectItem | undefined>(
+    props.items.find(item => item.value === unref(modelValue))
+)
+
+const deleteSelection = () => {
+    console.log('delete selection')
+    selected.value = undefined
+    emit('update:modelValue', null)
+}
+
+watch(modelValue, val => {
+    selected.value = props.items.find(item => item.value === val)
+})
+
+watch(selected, val => {
+    if (val?.value !== undefined || val?.value !== null)
+        emit('update:modelValue', val?.value)
+})
+</script>
