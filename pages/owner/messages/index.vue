@@ -20,25 +20,37 @@
                                     />
                                 </div> -->
                                 <div class="flex-1 h-full overflow-auto px-2">
-            
                                     <div
-                                        v-for="(pet, index) in petMatches"
+                                        v-for="(petMatch, index) in petMatches"
                                         :key="index"
                                     >
                                         <div
-                                            class="entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-white mb-4 rounded p-4 flex shadow-md"
+                                            class="entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-white mb-4 rounded p-4 shadow-md flex"
+                                            :class="{
+                                                'border-l-4 border-green-500':
+                                                    petMatch.id ===
+                                                    selectedPetMatch?.id
+                                            }"
+                                            @click="onSelectedPet(petMatch)"
                                         >
-                                            <div class="flex-2">
-                                                <div class="w-12 h-12 relative">
-                                                    <img
-                                                        class="w-12 h-12 rounded-full mx-auto"
-                                                        src="../resources/profile-image.png"
-                                                        alt="chat-user"
-                                                    />
-                                                    <span
-                                                        class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"
-                                                    ></span>
-                                                </div>
+                                            <div
+                                                class="w-12 h-12 max-w-sm rounded-lg"
+                                            >
+                                                <carousel :items-to-show="1">
+                                                    <slide
+                                                        v-for="(
+                                                            image, imageIndex
+                                                        ) in petMatch
+                                                            ?.found_pet_id
+                                                            .pet_images"
+                                                        :key="imageIndex"
+                                                    >
+                                                        <img
+                                                            class="aspect-square w-full object-fit object-center rounded-lg"
+                                                            :src="image.url"
+                                                        />
+                                                    </slide>
+                                                </carousel>
                                             </div>
                                             <div class="flex-1 px-2">
                                                 <div class="truncate w-32">
@@ -68,112 +80,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div
-                                        class="entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-white mb-4 rounded p-4 flex shadow-md border-l-4 border-red-500"
-                                    >
-                                        <div class="flex-2">
-                                            <div class="w-12 h-12 relative">
-                                                <img
-                                                    class="w-12 h-12 rounded-full mx-auto"
-                                                    src="../resources/profile-image.png"
-                                                    alt="chat-user"
-                                                />
-                                                <span
-                                                    class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"
-                                                ></span>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1 px-2">
-                                            <div class="truncate w-32">
-                                                <span class="text-gray-800"
-                                                    >Mercedes Yemelyan</span
-                                                >
-                                            </div>
-                                            <div>
-                                                <small class="text-gray-600"
-                                                    >Yea, Sure!</small
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="flex-2 text-right">
-                                            <div>
-                                                <small class="text-gray-500"
-                                                    >15 April</small
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-white mb-4 rounded p-4 flex shadow-md"
-                                    >
-                                        <div class="flex-2">
-                                            <div class="w-12 h-12 relative">
-                                                <img
-                                                    class="w-12 h-12 rounded-full mx-auto"
-                                                    src="../resources/profile-image.png"
-                                                    alt="chat-user"
-                                                />
-                                                <span
-                                                    class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"
-                                                ></span>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1 px-2">
-                                            <div class="truncate w-32">
-                                                <span class="text-gray-800"
-                                                    >Cadi Kajetán</span
-                                                >
-                                            </div>
-                                            <div>
-                                                <small class="text-gray-600"
-                                                    >Yea, Sure!</small
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="flex-2 text-right">
-                                            <div>
-                                                <small class="text-gray-500"
-                                                    >15 April</small
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-white mb-4 rounded p-4 flex shadow-md"
-                                    >
-                                        <div class="flex-2">
-                                            <div class="w-12 h-12 relative">
-                                                <img
-                                                    class="w-12 h-12 rounded-full mx-auto"
-                                                    src="../resources/profile-image.png"
-                                                    alt="chat-user"
-                                                />
-                                                <span
-                                                    class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"
-                                                ></span>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1 px-2">
-                                            <div class="truncate w-32">
-                                                <span class="text-gray-800"
-                                                    >Rina Samuel</span
-                                                >
-                                            </div>
-                                            <div>
-                                                <small class="text-gray-600"
-                                                    >Yea, Sure!</small
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="flex-2 text-right">
-                                            <div>
-                                                <small class="text-gray-500"
-                                                    >15 April</small
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             <div
@@ -187,253 +93,55 @@
                                     </h2>
                                 </div>
                                 <div class="messages flex-1 overflow-auto">
-                                    <div class="message mb-4 flex">
-                                        <div class="flex-2">
-                                            <div class="w-12 h-12 relative">
-                                                <img
-                                                    class="w-12 h-12 rounded-full mx-auto"
-                                                    src="../resources/profile-image.png"
-                                                    alt="chat-user"
-                                                />
-                                                <span
-                                                    class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"
-                                                ></span>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1 px-2">
-                                            <div
-                                                class="inline-block bg-gray-300 rounded-full p-2 px-6 text-gray-700"
-                                            >
-                                                <span
-                                                    >Hey there. We would like to
-                                                    invite you over to our
-                                                    office for a visit. How
-                                                    about it?</span
-                                                >
-                                            </div>
-                                            <div class="pl-4">
-                                                <small class="text-gray-500"
-                                                    >15 April</small
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message mb-4 flex">
-                                        <div class="flex-2">
-                                            <div class="w-12 h-12 relative">
-                                                <img
-                                                    class="w-12 h-12 rounded-full mx-auto"
-                                                    src="../resources/profile-image.png"
-                                                    alt="chat-user"
-                                                />
-                                                <span
-                                                    class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"
-                                                ></span>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1 px-2">
-                                            <div
-                                                class="inline-block bg-gray-300 rounded-full p-2 px-6 text-gray-700"
-                                            >
-                                                <span
-                                                    >All travel expenses are
-                                                    covered by us of course
-                                                    :D</span
-                                                >
-                                            </div>
-                                            <div class="pl-4">
-                                                <small class="text-gray-500"
-                                                    >15 April</small
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div
-                                        class="message me mb-4 flex text-right"
+                                        v-for="(chat, index) in chatLists"
+                                        :key="index"
                                     >
-                                        <div class="flex-1 px-2">
-                                            <div
-                                                class="inline-block bg-blue-600 rounded-full p-2 px-6 text-white"
-                                            >
-                                                <span
-                                                    >It's like a dream come
-                                                    true</span
+                                        <div
+                                            v-if="!chatPerspective(chat)"
+                                            class="message mb-4 flex"
+                                        >
+                                            <div class="flex-1 px-2">
+                                                <div
+                                                    class="inline-block bg-gray-300 rounded-full p-2 px-6 text-gray-700"
                                                 >
-                                            </div>
-                                            <div class="pr-4">
-                                                <small class="text-gray-500"
-                                                    >15 April</small
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="message me mb-4 flex text-right"
-                                    >
-                                        <div class="flex-1 px-2">
-                                            <div
-                                                class="inline-block bg-blue-600 rounded-full p-2 px-6 text-white"
-                                            >
-                                                <span
-                                                    >I accept. Thank you very
-                                                    much.</span
-                                                >
-                                            </div>
-                                            <div class="pr-4">
-                                                <small class="text-gray-500"
-                                                    >15 April</small
-                                                >
+                                                    <span>{{
+                                                        chat.content
+                                                    }}</span>
+                                                </div>
+                                                <div class="pl-4">
+                                                    <small class="text-gray-500"
+                                                        >15 April</small
+                                                    >
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div
-                                        class="message me mb-4 flex text-right"
-                                    >
-                                        <div class="flex-1 px-2">
-                                            <div
-                                                class="inline-block bg-blue-600 rounded-full p-2 px-6 text-white"
-                                            >
-                                                <span
-                                                    >I accept. Thank you very
-                                                    much.</span
+                                        <div
+                                            v-else
+                                            class="message me mb-4 flex text-right"
+                                        >
+                                            <div class="flex-1 px-2">
+                                                <div
+                                                    class="inline-block bg-blue-600 rounded-full p-2 px-6 text-white"
                                                 >
-                                            </div>
-                                            <div class="pr-4">
-                                                <small class="text-gray-500"
-                                                    >15 April</small
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="message me mb-4 flex text-right"
-                                    >
-                                        <div class="flex-1 px-2">
-                                            <div
-                                                class="inline-block bg-blue-600 rounded-full p-2 px-6 text-white"
-                                            >
-                                                <span
-                                                    >I accept. Thank you very
-                                                    much.</span
-                                                >
-                                            </div>
-                                            <div class="pr-4">
-                                                <small class="text-gray-500"
-                                                    >15 April</small
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="message me mb-4 flex text-right"
-                                    >
-                                        <div class="flex-1 px-2">
-                                            <div
-                                                class="inline-block bg-blue-600 rounded-full p-2 px-6 text-white"
-                                            >
-                                                <span
-                                                    >I accept. Thank you very
-                                                    much.</span
-                                                >
-                                            </div>
-                                            <div class="pr-4">
-                                                <small class="text-gray-500"
-                                                    >15 April</small
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="message me mb-4 flex text-right"
-                                    >
-                                        <div class="flex-1 px-2">
-                                            <div
-                                                class="inline-block bg-blue-600 rounded-full p-2 px-6 text-white"
-                                            >
-                                                <span
-                                                    >I accept. Thank you very
-                                                    much.</span
-                                                >
-                                            </div>
-                                            <div class="pr-4">
-                                                <small class="text-gray-500"
-                                                    >15 April</small
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="message me mb-4 flex text-right"
-                                    >
-                                        <div class="flex-1 px-2">
-                                            <div
-                                                class="inline-block bg-blue-600 rounded-full p-2 px-6 text-white"
-                                            >
-                                                <span
-                                                    >I accept. Thank you very
-                                                    much.</span
-                                                >
-                                            </div>
-                                            <div class="pr-4">
-                                                <small class="text-gray-500"
-                                                    >15 April</small
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="message me mb-4 flex text-right"
-                                    >
-                                        <div class="flex-1 px-2">
-                                            <div
-                                                class="inline-block bg-blue-600 rounded-full p-2 px-6 text-white"
-                                            >
-                                                <span
-                                                    >I accept. Thank you very
-                                                    much.</span
-                                                >
-                                            </div>
-                                            <div class="pr-4">
-                                                <small class="text-gray-500"
-                                                    >15 April</small
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message mb-4 flex">
-                                        <div class="flex-2">
-                                            <div class="w-12 h-12 relative">
-                                                <img
-                                                    class="w-12 h-12 rounded-full mx-auto"
-                                                    src="../resources/profile-image.png"
-                                                    alt="chat-user"
-                                                />
-                                                <span
-                                                    class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"
-                                                ></span>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1 px-2">
-                                            <div
-                                                class="inline-block bg-gray-300 rounded-full p-2 px-6 text-gray-700"
-                                            >
-                                                <span
-                                                    >You are welome. We will
-                                                    stay in touch.</span
-                                                >
-                                            </div>
-                                            <div class="pl-4">
-                                                <small class="text-gray-500"
-                                                    >15 April</small
-                                                >
+                                                    <span>{{
+                                                        chat.content
+                                                    }}</span>
+                                                </div>
+                                                <div class="pr-4">
+                                                    <small class="text-gray-500"
+                                                        >15 April</small
+                                                    >
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="flex-2 pt-4 pb-10">
-                                    <div class="write bg-white flex rounded-lg">
+                                    <div class="write flex rounded-lg">
                                         <div class="flex-1">
                                             <textarea
+                                                v-model="message"
                                                 autofocus
                                                 name="message"
                                                 rows="1"
@@ -449,7 +157,7 @@
                                                     class="text-gray-400 hover:text-gray-800"
                                                 >
                                                     <span
-                                                        class="inline-block align-text-bottom"
+                                                        class="inline-block align-text-center"
                                                     >
                                                         <svg
                                                             fill="none"
@@ -469,7 +177,8 @@
                                             </div>
                                             <div class="flex-1">
                                                 <button
-                                                    class="bg-blue-400 w-10 h-10 rounded-full inline-block"
+                                                    class="bg-blue-400 w-10 h-10 rounded-full inline-block hover:blue-400"
+                                                    @click="onMessageSubmit"
                                                 >
                                                     <span
                                                         class="inline-block align-text-bottom"
@@ -506,8 +215,11 @@
 import usePetRepository from '~/repositories/pets'
 import { usePetStore } from '~~/stores/pet'
 import { PetMatchPossibleType } from '~~/types'
+import { Carousel, Slide } from 'vue3-carousel'
+import 'vue3-carousel/dist/carousel.css'
 
-const { getMyPetMatches } = usePetRepository()
+const { getMyPetMatches, getPetChatLists, createNewMessage, onNewMessage } =
+    usePetRepository()
 const petStore = usePetStore()
 
 definePageMeta({
@@ -516,13 +228,61 @@ definePageMeta({
 })
 
 const petMatches = ref([])
+const selectedPetMatch = ref({
+    id: ''
+})
+const chatLists = ref([])
+const message = ref()
+const isOwner = false
+
+const chatPerspective = chat => {
+    return chat.lost_pet_id?.includes(petStore.myPetIds)
+}
+
+const ownerPet = computed(() => {
+    return isOwner
+        ? selectedPetMatch.value?.lost_pet_id
+        : selectedPetMatch.value?.found_pet_id
+})
 
 const fetchMyPetMatches = async () => {
     try {
         petMatches.value = await getMyPetMatches(petStore.myPetIds, [
             PetMatchPossibleType.MATCH,
-            PetMatchPossibleType.POSSIBLE
+            PetMatchPossibleType.POSSIBLE,
+            PetMatchPossibleType.PENDING
         ])
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const fetchChatList = async () => {
+    try {
+        chatLists.value = await getPetChatLists(selectedPetMatch.value?.id)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const onSelectedPet = async petMatch => {
+    selectedPetMatch.value = petMatch
+    await fetchChatList()
+    onNewMessage(newMessage => {
+        chatLists.value = [newMessage, ...chatLists.value]
+    }, petMatch.id)
+}
+
+const onMessageSubmit = async () => {
+    try {
+        if (!message.value) return
+        await createNewMessage(
+            selectedPetMatch.value.id,
+            ownerPet.value.id,
+            message.value,
+            isOwner
+        )
+        message.value = ''
     } catch (error) {
         console.log(error)
     }

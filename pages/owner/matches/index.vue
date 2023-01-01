@@ -10,7 +10,7 @@
                 class="col-span-1"
             >
                 <div
-                    class="w-full max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
+                    class="w-12 h-12 max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
                 >
                     <div v-if="petMatch?.found_pet_id.pet_images?.length">
                         <carousel :items-to-show="1">
@@ -20,7 +20,7 @@
                                 :key="imageIndex"
                             >
                                 <img
-                                    class="rounded-t-lg aspect-video w-full object-fill object-center"
+                                    class="aspect-video w-full object-fill object-center"
                                     :src="image.url"
                                 />
                             </slide>

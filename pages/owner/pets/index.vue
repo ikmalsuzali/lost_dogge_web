@@ -565,57 +565,16 @@
                                     </span>
                                 </div>
 
-                                <div class="mt-4">
-                                    <h2
-                                        class="line-clamp-1 text-2xl font-medium text-gray-800 md:text-lg"
-                                        title="New York"
-                                    >
-                                        1000 yards (Brand New) Bungalow
-                                        Available in...
-                                    </h2>
-
+                                <div class="mt-2">
                                     <p
                                         class="text-primary inline-block whitespace-nowrap rounded-xl font-semibold leading-tight"
                                     >
-                                        <span class="text-2xl">{{
+                                        <span class="text-xl">{{
                                             pet.name
                                         }}</span>
                                     </p>
                                 </div>
-                                <div class="mt-4">
-                                    <p
-                                        class="line-clamp-2 mt-2 text-lg text-gray-800"
-                                    >
-                                        {{ pet.description }}
-                                    </p>
-                                </div>
-                                <div class="justify-center">
-                                    <div
-                                        class="mt-4 flex space-x-3 overflow-hidden rounded-lg px-1 py-1"
-                                    >
-                                        <p
-                                            class="flex items-center font-medium text-gray-800"
-                                        >
-                                            <BarsArrowUpIcon
-                                                class="h-6 w-6"
-                                                aria-hidden="true"
-                                            />
-                                            {{ pet.height }} inches
-                                        </p>
-                                        <p
-                                            class="flex items-center font-medium text-gray-800"
-                                        >
-                                            <BarsArrowDownIcon
-                                                class="h-6 w-6"
-                                                aria-hidden="true"
-                                            />
-                                            {{ pet.weight }} lbs
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="mt-8 grid grid-cols-2">
-                                    <div class="flex items-center">hi</div>
-
+                                <div class="flex">
                                     <div class="flex justify-end space-x-2">
                                         <button
                                             type="button"

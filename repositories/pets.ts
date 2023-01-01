@@ -20,6 +20,18 @@ const usePetRepository = () => {
         return data
     }
 
+    const getRandomPets = async (petStatus: number) => {
+        const { data, error } = await $supabase
+            .from('pets')
+            .select('id, name, pet_images(*)')
+            .eq('status', petStatus)
+            .range(0, 30)
+            .order('created_at', { ascending: false })
+
+        if (error) throw error
+        return data
+    }
+
     const getPets = async payload => {
         const data = await axios(`http://0.0.0.0:8080/api/v1/pets`, {
             params: payload
@@ -130,16 +142,64 @@ const usePetRepository = () => {
             .eq('id', petId)
     }
 
-    const petChats = async (id: string) => {
-        if (id) {
-            await $supabase
-                .from(`messages:id=eq.${id}`)
-                .on('*', payload => {
-                    console.log(payload)
-                })
-                .subscribe()
-        }
+    const getPetChatLists = async (petMatchId: string) => {
+        const { data } = await $supabase
+            .from('messages')
+            .select('*')
+            .eq('pet_match_id', petMatchId)
+            .order('created_at', { ascending: false })
+
+        return data
     }
+
+    const createNewMessage = async (
+        petMatchId: string,
+        petId: string,
+        content: string,
+        isOwner: boolean = true
+    ) => {
+        const { data } = await $supabase.from('messages').insert({
+            pet_match_id: petMatchId,
+            content,
+            ...(petId && isOwner
+                ? { lost_pet_id: petId }
+                : { found_pet_id: petId })
+        })
+
+        return data
+    }
+
+    const getPetMatch = async (lostPetId: string, foundPetId: string) => {
+        const { data, error } = await $supabase
+            .from('pet_matches')
+            .select('*')
+            .eq('lost_pet_id', lostPetId)
+            .eq('found_pet_id', foundPetId)
+            .single()
+
+        if (error) throw error
+        return data
+    }
+
+    const onNewMessage = (handler, petMatchId: string) => {
+        $supabase
+            .from(`messages:pet_match_id=eq.${petMatchId}`)
+            .on('INSERT', payload => {
+                handler(payload.new)
+            })
+            .subscribe()
+    }
+
+    // const petChats = async (id: string) => {
+    //     if (id) {
+    //         await $supabase
+    //             .from(`messages:pet_ma=eq.${id}`)
+    //             .on('*', payload => {
+    //                 console.log(payload)
+    //             })
+    //             .subscribe()
+    //     }
+    // }
 
     const getMyPetMatches = async (
         petIds: string[],
@@ -172,6 +232,15 @@ const usePetRepository = () => {
         return data
     }
 
+    // const getPetMatchMessage = async (petMatchId: string) => {
+    //     const data = await $supabase
+    //         .from(`messages:pet_match_id=eq.${petMatchId}`)
+    //         .on('*', payload => {
+
+    //         })
+    //         .subscribe()
+    // }
+
     return {
         getPets,
         getMyPets,
@@ -183,7 +252,12 @@ const usePetRepository = () => {
         getAnimalTypes,
         getBreeds,
         getMyPetMatches,
-        updatePetMatchType
+        updatePetMatchType,
+        getPetMatch,
+        getPetChatLists,
+        createNewMessage,
+        onNewMessage,
+        getRandomPets
     }
 }
 
