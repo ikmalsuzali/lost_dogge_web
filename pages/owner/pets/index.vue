@@ -28,7 +28,6 @@
                                     class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl"
                                 >
                                     <div class="flex-1">
-                                        <!-- Header -->
                                         <div
                                             class="bg-gray-50 px-4 py-6 sm:px-6"
                                         >
@@ -76,7 +75,6 @@
                                             </div>
                                         </div>
 
-                                        <!-- Divider container -->
                                         <div
                                             class="space-y-6 py-6 sm:space-y-0 sm:divide-y sm:divide-gray-200 sm:py-0"
                                         >
@@ -110,8 +108,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <carousel :items-to-show="3">
-                                                    <slide
+                                                <Carousel :items-to-show="3">
+                                                    <Slide
                                                         v-for="(
                                                             image, index
                                                         ) in myPet.images"
@@ -137,12 +135,12 @@
                                                                 />
                                                             </button>
                                                         </div>
-                                                    </slide>
+                                                    </Slide>
 
                                                     <template #addons>
                                                         <pagination />
                                                     </template>
-                                                </carousel>
+                                                </Carousel>
                                             </div>
                                             <div
                                                 class="flex justify-center items-center w-full"
@@ -200,7 +198,6 @@
                                                     />
                                                 </label>
                                             </div>
-                                            <!-- Project name -->
                                             <div
                                                 class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
                                             >
@@ -221,7 +218,7 @@
                                                     />
                                                 </div>
                                             </div>
-                                            <!-- Breed -->
+
                                             <div
                                                 class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
                                             >
@@ -247,7 +244,7 @@
                                                             errorMessages.animal_type
                                                         "
                                                     />
-                                                    <Select
+                                                    <!-- <Select
                                                         v-model="
                                                             myPetAnimalBreed
                                                         "
@@ -256,9 +253,10 @@
                                                         :error-message="
                                                             errorMessages.breed
                                                         "
-                                                    />
+                                                    /> -->
                                                 </div>
                                             </div>
+
                                             <div
                                                 class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
                                             >
@@ -287,7 +285,6 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Project description -->
                                             <div
                                                 class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
                                             >
@@ -311,7 +308,6 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Height -->
                                             <div
                                                 class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
                                             >
@@ -339,7 +335,7 @@
                                                     />
                                                 </div>
                                             </div>
-                                            <!-- Instagram -->
+                                            <!--  -->
                                             <div
                                                 class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
                                             >
@@ -420,7 +416,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Action buttons -->
                                     <div
                                         class="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6"
                                     >
@@ -479,7 +474,6 @@
             </div>
         </div>
 
-        <!-- stats -->
         <ul
             role="list"
             class="w-full grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
@@ -503,8 +497,8 @@
                                         class="w-full transform transition-transform duration-500 ease-in-out hover:scale-110"
                                     >
                                         <div v-if="pet?.pet_images?.length">
-                                            <carousel :items-to-show="1">
-                                                <slide
+                                            <Carousel :items-to-show="1">
+                                                <Slide
                                                     v-for="(
                                                         image, imageIndex
                                                     ) in pet?.pet_images"
@@ -514,8 +508,8 @@
                                                         class="aspect-video w-full object-cover object-center"
                                                         :src="image.url"
                                                     />
-                                                </slide>
-                                            </carousel>
+                                                </Slide>
+                                            </Carousel>
                                         </div>
                                     </div>
                                     <div
@@ -553,7 +547,7 @@
                                             <span
                                                 class="right-2 z-10 mt-3 ml-3 inline-flex select-none rounded-sm bg-[#1f93ff] px-2 py-1 text-xs font-semibold text-white"
                                             >
-                                                {{ PetStatus[pet.status] }}
+                                                {{ PetStatus[pet?.status] }}
                                             </span>
                                         </div>
                                     </div>
@@ -570,7 +564,7 @@
                                         class="text-primary inline-block whitespace-nowrap rounded-xl font-semibold leading-tight"
                                     >
                                         <span class="text-xl">{{
-                                            pet.name
+                                            pet?.name
                                         }}</span>
                                     </p>
                                 </div>
@@ -603,27 +597,22 @@ import {
     TransitionChild,
     TransitionRoot
 } from '@headlessui/vue'
-import {
-    XMarkIcon,
-    BarsArrowUpIcon,
-    BarsArrowDownIcon
-} from '@heroicons/vue/24/outline'
+import { XMarkIcon } from '@heroicons/vue/24/outline'
 import Input from '~/components/atom/Input.vue'
 import usePetRepository from '~/repositories/pets'
 import { useAuthStore } from '~~/stores/auth'
-import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination } from 'vue3-carousel'
 import Select from '~/components/UI/Select/Select.vue'
 import Switch from '~/components/atom/Switch.vue'
 import type { SelectItem } from '~/components/UI/Select/types'
 import { definitions } from '~~/types/supabase'
 import useValidations from '~/composables/validations'
-import { PetMatchPossibleType } from '~~/types'
+import 'vue3-carousel/dist/carousel.css'
 
 enum PetStatus {
-    Registered = 0,
-    Lost = 1,
-    Found = 2
+    Registered = '0',
+    Lost = '1',
+    Found = '2'
 }
 
 enum Gender {
@@ -679,7 +668,7 @@ const myPetInit = () => {
         status: PetStatus.Registered,
         description: '',
         animal_type_id: '',
-        breed_id: -1,
+        breed_id: '',
         breed: {},
         name: '',
         weight: '',
@@ -695,7 +684,7 @@ const myPetInit = () => {
 const myPet = ref(myPetInit())
 
 const myPetAnimalBreed = computed({
-    get: () => unref(myPet).breed_id,
+    get: () => unref(myPet)?.breed_id,
     set: value => {
         if (value) {
             myPet.value.breed_id = value

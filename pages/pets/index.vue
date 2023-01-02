@@ -29,11 +29,13 @@
                 </div>
             </div>
         </div>
-        <OrganismPetSearch />
+        <PetSearch />
     </div>
 </template>
 
 <script lang="ts" setup>
+import PetSearch from '~/components/organism/PetSearch.vue'
+
 definePageMeta({
     layout: 'page'
 })
