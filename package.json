@@ -1,6 +1,7 @@
 {
     "private": true,
     "scripts": {
+        "heroku-postbuild": "nuxt generate",
         "dev": "nuxi dev",
         "build": "nuxi build",
         "start": "node .output/server/index.mjs",
@@ -64,7 +65,6 @@
         "vue-i18n": "^9.2.2",
         "vue-loader": "^17.0.0"
     },
-    "heroku-postbuild": "yarn generate",
     "engines": {
         "node": "16.x"
     }
