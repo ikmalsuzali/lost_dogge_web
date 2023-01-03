@@ -1,5 +1,5 @@
 {
-    "root": ".output/public",
+    "root": ".nuxt/public/",
     "clean_urls": true,
     "routes": {
         "/**": "index.html"
