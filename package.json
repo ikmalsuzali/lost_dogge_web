@@ -9,7 +9,7 @@
         "preview": "nuxt preview",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
-        "db:sync": "node scripts/sync-db",
+        "db:sync": "node scripts/sync-db"
     },
     "dependencies": {
         "@headlessui/vue": "^1.7.2",
