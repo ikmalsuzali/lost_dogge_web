@@ -1,38 +1,37 @@
 export default defineNuxtConfig({
-    head: {
-        titleTemplate: '%s - Nuxt',
-        meta: [
-            { charset: 'utf-8' },
-            { name: 'viewport', content: 'width=device-width, initial-scale=1' }
-            // hid is used as unique identifier. Do not use `vmid` for it as it will not work
-        ],
-        link: [
-            {
-                rel: 'stylesheet',
-                href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css'
-            }
-        ]
+    app: {
+        head: {
+            titleTemplate: '%s - Nuxt',
+            meta: [
+                { charset: 'utf-8' },
+                {
+                    name: 'viewport',
+                    content: 'width=device-width, initial-scale=1'
+                }
+                // hid is used as unique identifier. Do not use `vmid` for it as it will not work
+            ],
+            link: [
+                {
+                    rel: 'stylesheet',
+                    href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css'
+                }
+            ]
+        }
     },
     ssr: false,
     build: {
-        transpile: ['@headlessui/vue']
+        transpile: ['@headlessui/vue', '@vueuse/nuxt']
     },
-    buildModules: ['@vueuse/nuxt', '@nuxtjs/strapi'],
     modules: [
         '@nuxtjs/tailwindcss',
         '@pinia/nuxt',
         'nuxt-icon',
         '@nuxtjs/i18n'
     ],
+    devServerHandlers: [],
     components: {
         global: true,
         dirs: ['~/components']
-    },
-    strapi: {
-        url: process.env.STRAPI_URL || 'https://bapi.warsono.id',
-        prefix: '/api',
-        version: 'v4',
-        cookie: {}
     },
     i18n: {
         locales: ['en', 'id'],
@@ -64,17 +63,13 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         public: {
-            gaId: ''
+            gaId: '',
+            SUPABASE_PROJECT_URL: process.env.SUPABASE_PROJECT_URL,
+            SUPABASE_PUBLIC_KEY: process.env.SUPABASE_PUBLIC_KEY,
+            MAPBOX_KEY: process.env.MAPBOX_KEY
         }
     },
-    resolve: {
-        alias: {
-            components: '/src/components'
-        }
-    },
-    publicRuntimeConfig: {
-        SUPABASE_PROJECT_URL: process.env.SUPABASE_PROJECT_URL,
-        SUPABASE_PUBLIC_KEY: process.env.SUPABASE_PUBLIC_KEY,
-        MAPBOX_KEY: process.env.MAPBOX_KEY
+    alias: {
+        components: '/src/components'
     }
 })

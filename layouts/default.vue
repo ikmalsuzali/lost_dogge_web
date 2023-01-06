@@ -1,25 +1,27 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
+import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n();
+const { t } = useI18n()
 
 useHead({
-  title: t("app_name"),
-});
+    title: t('app_name')
+})
 
-const route = useRoute();
-const isFullWidth = computed(() => route.name === "index" || route.meta.fullWidth);
+const route = useRoute()
+console.log(route)
+// const isFullWidth = computed(
+//     () => route.name === 'index' || route?.meta.fullWidth
+// )
 </script>
 
 <template>
-  <div>
-    <AppHeader />
+    <div>
+        <AppHeader />
 
-    <div :class="isFullWidth ? '' : 'container mx-auto px-4 sm:px-0 py-4'">
-      <NuxtPage />
+        <!-- <div :class="isFullWidth ? '' : 'container mx-auto px-4 sm:px-0 py-4'"> -->
+        <NuxtPage />
+        <!-- </div> -->
+
+        <AppFooter />
     </div>
-
-    <AppFooter />
-  </div>
 </template>
-
