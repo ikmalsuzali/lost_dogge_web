@@ -73,8 +73,8 @@ export default defineNuxtConfig({
         }
     },
     publicRuntimeConfig: {
-        SUPABASE_PROJECT_URL: process.env.SUPABASE_URL,
-        SUPABASE_PUBLIC_KEY: process.env.SUPABASE_KEY,
+        SUPABASE_PROJECT_URL: process.env.SUPABASE_PROJECT_URL,
+        SUPABASE_PUBLIC_KEY: process.env.SUPABASE_PUBLIC_KEY,
         MAPBOX_KEY: process.env.MAPBOX_KEY
     }
 })

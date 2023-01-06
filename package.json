@@ -4,7 +4,7 @@
         "heroku-postbuild": "nuxt generate",
         "dev": "nuxi dev",
         "build": "nuxi build",
-        "start": "node .output/server/index.mjs",
+        "start": "node .output/public/index.html",
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "storybook": "start-storybook -p 6006",
