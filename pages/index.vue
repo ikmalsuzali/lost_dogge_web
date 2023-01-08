@@ -147,7 +147,6 @@
             </div>
         </div>
 
-        <!-- Alternating Feature Sections -->
         <div class="relative overflow-hidden pt-16 pb-32">
             <div
                 aria-hidden="true"
@@ -263,7 +262,6 @@
                 </div>
             </div>
         </div>
-        <!-- Testimonial -->
         <div class="bg-gray-100">
             <div class="mx-auto max-w-7xl py-16 px-4 sm:px-6 lg:px-8">
                 <div class="bg-indigo-600 pb-16 lg:relative lg:z-10 lg:pb-0">
@@ -345,7 +343,6 @@
             </div>
         </div>
 
-        <!-- CTA Section -->
         <div class="bg-white">
             <div
                 class="mx-auto max-w-4xl py-16 px-4 sm:px-6 sm:py-24 lg:flex lg:max-w-7xl lg:items-center lg:justify-between lg:px-8"
@@ -379,13 +376,14 @@
 <script lang="ts" setup>
 import Autocomplete from '@/components/atom/Autocomplete.vue'
 import useMapboxRepository from '@/repositories/mapbox'
-import { useAuthStore } from '~~/stores/auth'
+import { useAuthStore } from '~/stores/auth'
 import { useRouter } from 'vue-router'
 import { Carousel, Slide } from 'vue3-carousel'
 import { MagnifyingGlassIcon, NewspaperIcon } from '@heroicons/vue/24/outline'
-import usePetRepository from '~~/repositories/pets'
-const { getRandomPets } = usePetRepository()
+import usePetRepository from '~/repositories/pets'
 import 'vue3-carousel/dist/carousel.css'
+
+const { getRandomPets } = usePetRepository()
 
 definePageMeta({
     layout: 'page'

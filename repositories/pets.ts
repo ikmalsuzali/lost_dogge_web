@@ -1,6 +1,6 @@
-import { definitions } from '~~/types/supabase'
+import { definitions } from '~/types/supabase'
 import axios from 'axios'
-import { PetMatchPossibleType } from '~~/types'
+import { PetMatchPossibleType } from '~/types'
 
 const usePetRepository = () => {
     const { $supabase } = useNuxtApp()
