@@ -8,8 +8,8 @@
                     <a href="#">
                         <span class="sr-only">Your Company</span>
                         <img
-                            class="h-10 w-auto"
-                            src="https://tailwindui.com/img/logos/mark.svg?color=white"
+                            class="h-20 w-auto"
+                            src="https://fhasuqzjmruhvugclutt.supabase.co/storage/v1/object/public/pets/website/logo.png?t=2023-01-08T10%3A13%3A37.506Z"
                             alt=""
                         />
                     </a>
@@ -75,8 +75,8 @@ const router = useRouter()
 const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Lost', href: '/pets?type=found' },
-    { name: 'Found', href: '/pets?type=lost' },
-    { name: 'Pricing', href: '/pricing' }
+    { name: 'Found', href: '/pets?type=lost' }
+    // { name: 'Pricing', href: '/pricing' }
 ]
 
 const routePush = (path: string) => {

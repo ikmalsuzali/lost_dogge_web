@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
     app: {
         head: {
-            titleTemplate: '%s - Nuxt',
+            titleTemplate: 'Lost Doggo',
             meta: [
                 { charset: 'utf-8' },
                 {
@@ -31,9 +31,10 @@ export default defineNuxtConfig({
     ],
     devServerHandlers: [],
     components: {
-        global: true,
+        global: false,
         dirs: ['~/components']
     },
+    plugins: [{ src: './plugins/fbSdk.ts', ssr: false }],
     i18n: {
         locales: ['en', 'id'],
         defaultLocale: 'en',
@@ -73,4 +74,4 @@ export default defineNuxtConfig({
     alias: {
         components: '/src/components'
     }
-});
+})

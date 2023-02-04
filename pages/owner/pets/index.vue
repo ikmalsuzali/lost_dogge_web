@@ -636,7 +636,7 @@ const selectPetStatus = [
 ]
 
 definePageMeta({
-    layout: 'dashboard',
+    layout: 'dashboardv2',
     middleware: 'auth'
 })
 
