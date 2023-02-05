@@ -8,6 +8,10 @@ const useValidations = () => {
         return !inputValue ? `${label || 'Input'} is required` : ''
     }
 
+    const validateImageLength = (images: Object, length: number = 1) => {
+        return images?.length <= length ? `Upload at least ${length} image` : ''
+    }
+
     const validateEmail = (inputValue: string) => {
         if (!inputValue) return validateRequired(inputValue, 'Email')
         const re = /\S+@\S+\.\S+/
@@ -58,7 +62,8 @@ const useValidations = () => {
         validateFacebookUrl,
         validateTwitterHandle,
         validateRequired,
-        isErrorMessageEmpty
+        isErrorMessageEmpty,
+        validateImageLength
     }
 }
 

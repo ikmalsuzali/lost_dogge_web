@@ -1,5 +1,93 @@
 <template>
     <main class="min-w-0 flex-1 border-t border-gray-200 xl:flex">
+        <!-- Message list-->
+        <aside class="hidden xl:order-first xl:block xl:flex-shrink-0">
+            <div
+                class="relative flex h-full w-96 flex-col border-r border-gray-200 bg-gray-100"
+            >
+                <div class="flex-shrink-0">
+                    <div
+                        class="flex h-16 flex-col justify-center bg-white px-6"
+                    >
+                        <div class="flex items-baseline space-x-3">
+                            <h2 class="text-lg font-medium text-gray-900">
+                                My Pets
+                            </h2>
+                            <p class="text-sm font-medium text-gray-500">
+                                {{ myPets.length }} pets
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        class="border-t border-b border-gray-200 bg-gray-50 px-6 py-2 text-sm font-medium text-gray-500"
+                    ></div>
+                </div>
+                <nav
+                    aria-label="Message list"
+                    class="min-h-0 flex-1 overflow-y-auto"
+                >
+                    <ul
+                        role="list"
+                        class="divide-y divide-gray-200 border-b border-gray-200"
+                    >
+                        <li
+                            v-for="pet in myPets"
+                            :key="pet?.id"
+                            class="flex flex-row bg-white py-5 px-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-600 hover:bg-gray-300"
+                            :class="{
+                                'bg-gray-200': route.params.id === pet?.id
+                            }"
+                            @click="
+                                router.push(`/dashboard/pet/${pet.id}/details`)
+                            "
+                        >
+                            <div
+                                class="flex flex-col w-10 h-10 justify-center items-center mr-4"
+                            >
+                                <a href="#" class="block relative">
+                                    <img
+                                        alt="profil"
+                                        :src="pet?.pet_images?.[0]?.url"
+                                        class="mx-auto object-cover rounded-full h-10 w-10"
+                                    />
+                                </a>
+                            </div>
+                            <div class="flex-1 pl-1">
+                                <div class="font-medium dark:text-white">
+                                    {{ pet.name }}
+                                </div>
+                                <div
+                                    class="text-gray-600 dark:text-gray-200 text-sm"
+                                >
+                                    <a>Lost at</a>{{ pet.address }}
+                                </div>
+                            </div>
+                            <div
+                                class="flex flex-row justify-center items-center"
+                            >
+                                <button
+                                    class="w-10 text-right flex justify-end"
+                                >
+                                    <svg
+                                        width="20"
+                                        fill="currentColor"
+                                        height="20"
+                                        class="hover:text-gray-800 dark:hover:text-white dark:text-gray-200 text-gray-500"
+                                        viewBox="0 0 1792 1792"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"
+                                        ></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
         <section
             aria-labelledby="message-heading"
             class="flex h-full min-w-0 flex-1 flex-col overflow-hidden xl:order-last"
@@ -9,49 +97,114 @@
                 <!-- Toolbar-->
                 <div class="flex h-16 flex-col justify-center">
                     <div class="px-4 sm:px-6 lg:px-8">
-                        <div class="flex justify-between py-3">
-                            <!-- Left buttons -->
-                            <div>
-                                <div
-                                    class="isolate inline-flex rounded-md shadow-sm sm:space-x-3 sm:shadow-none"
+                        <div
+                            class="container flex flex-wrap items-center justify-between mx-auto"
+                        >
+                            <span
+                                v-if="
+                                    route.name ===
+                                    'dashboard-pet-id-details___en'
+                                "
+                                class="inline-flex sm:shadow-sm"
+                            >
+                                <button
+                                    type="button"
+                                    class="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-orange-400 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600"
+                                    :class="{
+                                        'bg-orange-300':
+                                            route.name ===
+                                            'dashboard-pet-id-details___en'
+                                    }"
+                                    @click="
+                                        router.push(
+                                            `/dashboard/pet/${route.params.id}/details`
+                                        )
+                                    "
                                 >
-                                    <span class="inline-flex sm:shadow-sm">
-                                        <button
-                                            type="button"
-                                            class="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                        >
-                                            <BookOpenIcon
-                                                class="mr-2.5 h-5 w-5 text-gray-400"
-                                                aria-hidden="true"
-                                            />
-                                            <span>Details</span>
-                                        </button>
-                                        <button
-                                            type="button"
-                                            class="relative -ml-px hidden items-center rounded-r-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
-                                        >
-                                            <MagnifyingGlassIcon
-                                                class="mr-2.5 h-5 w-5 text-gray-400"
-                                                aria-hidden="true"
-                                            />
-                                            <span>Matches</span>
-                                        </button>
-                                    </span>
+                                    <BookOpenIcon
+                                        class="mr-2.5 h-5 w-5 text-gray-400"
+                                        aria-hidden="true"
+                                    />
+                                    <span>Details</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    class="relative -ml-px hidden items-center rounded-r-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
+                                >
+                                    <MagnifyingGlassIcon
+                                        class="mr-2.5 h-5 w-5 text-gray-400"
+                                        aria-hidden="true"
+                                    />
+                                    <span>Matches</span>
+                                </button>
+                            </span>
+                            <div></div>
 
-                                    <span class="hidden space-x-3 lg:flex">
-                                        <button
-                                            type="button"
-                                            class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
-                                        >
-                                            <AcademicCapIcon
-                                                class="mr-2.5 h-5 w-5 text-gray-400"
-                                                aria-hidden="true"
-                                            />
-                                            <span>Create An Ad</span>
-                                        </button>
-                                    </span>
+                            <!-- Left buttons -->
+                            <div class="flex space-x-2">
+                                <span
+                                    v-if="
+                                        route.name ===
+                                        'dashboard-pet-id-details___en'
+                                    "
+                                    class="hidden space-x-3 lg:flex"
+                                >
+                                    <button
+                                        type="button"
+                                        class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
+                                        @click="
+                                            router.push('/dashboard/pet/create')
+                                        "
+                                    >
+                                        <AcademicCapIcon
+                                            class="mr-2.5 h-5 w-5 text-gray-400"
+                                            aria-hidden="true"
+                                        />
+                                        <span>Create Ad</span>
+                                    </button>
+                                </span>
+                                <span
+                                    v-if="
+                                        route.name !==
+                                        'dashboard-pet-create___en'
+                                    "
+                                    class="hidden space-x-3 lg:flex"
+                                    @click="
+                                        router.push('/dashboard/pet/create')
+                                    "
+                                >
+                                    <button
+                                        type="button"
+                                        class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
+                                    >
+                                        <AcademicCapIcon
+                                            class="mr-2.5 h-5 w-5 text-gray-400"
+                                            aria-hidden="true"
+                                        />
+                                        <span>Create a pet posting</span>
+                                    </button>
+                                </span>
+                                <span
+                                    v-if="
+                                        route.name ===
+                                        'dashboard-pet-create___en'
+                                    "
+                                    class="hidden space-x-3 lg:flex"
+                                >
+                                    <button
+                                        type="button"
+                                        class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
+                                        @click="router.push('/dashboard/pet/')"
+                                    >
+                                        <XMarkIcon
+                                            class="mr-2.5 h-5 w-5 text-gray-400"
+                                            aria-hidden="true"
+                                        />
+                                        <span>Cancel</span>
+                                    </button>
+                                </span>
 
-                                    <Menu
+                                <!-- <Menu
                                         as="div"
                                         class="relative -ml-px block sm:shadow-sm lg:hidden"
                                     >
@@ -143,8 +296,7 @@
                                                 </div>
                                             </MenuItems>
                                         </transition>
-                                    </Menu>
-                                </div>
+                                    </Menu> -->
                             </div>
                         </div>
                     </div>
@@ -153,112 +305,9 @@
             </div>
 
             <div class="min-h-0 flex-1 overflow-y-auto">
-                <ul
-                    role="list"
-                    class="space-y-2 py-4 sm:space-y-4 sm:px-6 lg:px-8"
-                >
-                    <li
-                        v-for="pet in myPets"
-                        :key="pet.id"
-                        class="bg-white px-4 py-6 shadow sm:rounded-lg sm:px-6"
-                    >
-                        <div
-                            class="sm:flex sm:items-baseline sm:justify-between"
-                        >
-                            <h3 class="text-base font-medium">
-                                <span class="text-gray-900">{{
-                                    pet.name
-                                }}</span>
-                                {{ ' ' }}
-                                <span class="text-gray-600">wrote</span>
-                            </h3>
-                            <!-- <p
-                                class="mt-1 whitespace-nowrap text-sm text-gray-600 sm:mt-0 sm:ml-3"
-                            >
-                                <time :datetime="item.datetime">{{
-                                    item.date
-                                }}</time>
-                            </p> -->
-                        </div>
-                        <!-- <div
-                            class="mt-4 space-y-6 text-sm text-gray-800"
-                            v-html="item.body"
-                        /> -->
-                    </li>
-                </ul>
+                <NuxtPage />
             </div>
         </section>
-
-        <!-- Message list-->
-        <aside class="hidden xl:order-first xl:block xl:flex-shrink-0">
-            <div
-                class="relative flex h-full w-96 flex-col border-r border-gray-200 bg-gray-100"
-            >
-                <div class="flex-shrink-0">
-                    <div
-                        class="flex h-16 flex-col justify-center bg-white px-6"
-                    >
-                        <div class="flex items-baseline space-x-3">
-                            <h2 class="text-lg font-medium text-gray-900">
-                                My Pets
-                            </h2>
-                            <p class="text-sm font-medium text-gray-500">
-                                {{ myPets.length }} pets
-                            </p>
-                        </div>
-                    </div>
-                    <div
-                        class="border-t border-b border-gray-200 bg-gray-50 px-6 py-2 text-sm font-medium text-gray-500"
-                    ></div>
-                </div>
-                <nav
-                    aria-label="Message list"
-                    class="min-h-0 flex-1 overflow-y-auto"
-                >
-                    <ul
-                        role="list"
-                        class="divide-y divide-gray-200 border-b border-gray-200"
-                    >
-                        <li
-                            v-for="pet in myPets"
-                            :key="pet.id"
-                            class="relative bg-white py-5 px-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-600 hover:bg-gray-50"
-                        >
-                            <div class="flex justify-between space-x-3">
-                                <div class="min-w-0 flex-1">
-                                    <a class="block focus:outline-none">
-                                        <span
-                                            class="absolute inset-0"
-                                            aria-hidden="true"
-                                        />
-                                        <p
-                                            class="truncate text-sm font-medium text-gray-900"
-                                        >
-                                            {{ pet.name }}
-                                        </p>
-                                        <p
-                                            class="truncate text-sm text-gray-500"
-                                        >
-                                            {{ pet.breed }}
-                                        </p>
-                                    </a>
-                                </div>
-                                <!-- <time
-                                    :datetime="message.datetime"
-                                    class="flex-shrink-0 whitespace-nowrap text-sm text-gray-500"
-                                    >{{ message.date }}</time
-                                > -->
-                            </div>
-                            <div class="mt-1">
-                                <!-- <p class="text-sm text-gray-600 line-clamp-2">
-                                    {{ message.preview }}
-                                </p> -->
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </aside>
     </main>
 </template>
 
@@ -273,23 +322,38 @@ import {
     TransitionChild,
     TransitionRoot
 } from '@headlessui/vue'
+import {
+    ArchiveBoxIcon as ArchiveBoxIconMini,
+    ArrowUturnLeftIcon,
+    ChevronDownIcon,
+    ChevronUpIcon,
+    EllipsisVerticalIcon,
+    FolderArrowDownIcon,
+    MagnifyingGlassIcon,
+    PencilIcon,
+    UserPlusIcon,
+    MagnifyingGlassCircleIcon,
+    BookOpenIcon,
+    AcademicCapIcon,
+    XMarkIcon
+} from '@heroicons/vue/20/solid'
+import { useRoute, useRouter } from 'vue-router'
+import usePetRepository from '~/repositories/pets'
+import { useAuthStore } from '~~/stores/auth'
+import type { SelectItem } from '~/components/UI/Select/types'
+import { definitions } from '~~/types/supabase'
+import useValidations from '~/composables/validations'
+import 'vue3-carousel/dist/carousel.css'
 
 definePageMeta({
     layout: 'dashboardv2',
     middleware: 'auth'
 })
 
-import { XMarkIcon } from '@heroicons/vue/24/outline'
-import Input from '~/components/atom/Input.vue'
-import usePetRepository from '~/repositories/pets'
-import { useAuthStore } from '~~/stores/auth'
-import { Carousel, Slide, Pagination } from 'vue3-carousel'
-import Select from '~/components/UI/Select/Select.vue'
-import Switch from '~/components/atom/Switch.vue'
-import type { SelectItem } from '~/components/UI/Select/types'
-import { definitions } from '~~/types/supabase'
-import useValidations from '~/composables/validations'
-import 'vue3-carousel/dist/carousel.css'
+const route = useRoute()
+const router = useRouter()
+
+console.log(route)
 
 enum PetStatus {
     Registered = '0',

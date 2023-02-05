@@ -433,12 +433,7 @@ const navigation = [
     }
 ]
 const sidebarNavigation = [
-    { name: 'Open', href: '#', icon: InboxIcon, current: true },
-    { name: 'Archive', href: '#', icon: ArchiveBoxIconOutline, current: false },
-    { name: 'Customers', href: '#', icon: UserCircleIcon, current: false },
-    { name: 'Flagged', href: '#', icon: FlagIcon, current: false },
-    { name: 'Spam', href: '#', icon: NoSymbolIcon, current: false },
-    { name: 'Drafts', href: '#', icon: PencilSquareIcon, current: false }
+    { name: 'Open', href: '#', icon: InboxIcon, current: true }
 ]
 const userNavigation = [
     { name: 'Your Profile', href: '#' },
@@ -590,6 +585,28 @@ const open = ref(false)
 </script>
 
 <style>
+.animation-pulse {
+    /*box-shadow: 0 0 0 20px rgba(229,62,62, 0.5);
+    transform: scale(0.8);*/
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 #fdba74;
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 5px rgba(229, 62, 62, 0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
 .animation-pulse {
     /*box-shadow: 0 0 0 20px rgba(229,62,62, 0.5);
     transform: scale(0.8);*/
