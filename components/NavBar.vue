@@ -26,7 +26,7 @@
                 <div v-if="auth.user?.id" class="ml-10 space-x-4">
                     <a
                         class="inline-block rounded-md border border-transparent bg-white py-2 px-4 text-base font-medium text-indigo-600 hover:bg-indigo-50 cursor-pointer"
-                        @click="routePush('/owner/pets')"
+                        @click="routePush('/dashboard/pet')"
                         >Dashboard</a
                     >
                     <a
