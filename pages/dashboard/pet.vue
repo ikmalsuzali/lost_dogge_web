@@ -142,13 +142,98 @@
 
                             <!-- Left buttons -->
                             <div class="flex space-x-2">
-                                <span
+                                <!-- Pet create -->
+                                {{ route.name }}
+                                <div v-if="route.name === 'dashboard-pet___en'">
+                                    <span class="hidden space-x-3 lg:flex">
+                                        <button
+                                            type="button"
+                                            class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
+                                            @click="
+                                                router.push(
+                                                    '/dashboard/pet/create'
+                                                )
+                                            "
+                                        >
+                                            <AcademicCapIcon
+                                                class="mr-2.5 h-5 w-5 text-gray-400"
+                                                aria-hidden="true"
+                                            />
+                                            <span>Create a pet posting</span>
+                                        </button>
+                                    </span>
+                                </div>
+                                <!-- Pet Create-->
+                                <div
+                                    v-if="
+                                        route.name ===
+                                        'dashboard-pet-create___en'
+                                    "
+                                >
+                                    <span class="hidden space-x-3 lg:flex">
+                                        <button
+                                            type="button"
+                                            class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
+                                            @click="
+                                                router.push('/dashboard/pet')
+                                            "
+                                        >
+                                            <XMarkIcon
+                                                class="mr-2.5 h-5 w-5 text-gray-400"
+                                                aria-hidden="true"
+                                            />
+                                            <span>Cancel</span>
+                                        </button>
+                                    </span>
+                                </div>
+                                <!-- dashboard-pet-id-update___en -->
+                                <div
                                     v-if="
                                         route.name ===
                                         'dashboard-pet-id-details___en'
                                     "
-                                    class="hidden space-x-3 lg:flex"
                                 >
+                                    <span class="hidden space-x-3 lg:flex">
+                                        <button
+                                            type="button"
+                                            class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
+                                            @click="
+                                                router.push(
+                                                    '/dashboard/pet/create'
+                                                )
+                                            "
+                                        >
+                                            <AcademicCapIcon
+                                                class="mr-2.5 h-5 w-5 text-gray-400"
+                                                aria-hidden="true"
+                                            />
+                                            <span>Create Ad</span>
+                                        </button>
+                                    </span>
+                                </div>
+                                <div
+                                    v-if="
+                                        route.name ===
+                                        'dashboard-pet-id-update___en'
+                                    "
+                                >
+                                    <span class="hidden space-x-3 lg:flex">
+                                        <button
+                                            type="button"
+                                            class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
+                                            @click="
+                                                router.push('/dashboard/pet')
+                                            "
+                                        >
+                                            <XMarkIcon
+                                                class="mr-2.5 h-5 w-5 text-gray-400"
+                                                aria-hidden="true"
+                                            />
+                                            <span>Cancel</span>
+                                        </button>
+                                    </span>
+                                </div>
+                                <!-- <span class="hidden space-x-3 lg:flex">
                                     <button
                                         type="button"
                                         class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
@@ -202,7 +287,7 @@
                                         />
                                         <span>Cancel</span>
                                     </button>
-                                </span>
+                                </span> -->
 
                                 <!-- <Menu
                                         as="div"

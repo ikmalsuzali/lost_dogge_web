@@ -205,7 +205,7 @@ import {
 const route = useRoute()
 
 const sidebarNavigation = ref([
-    { name: 'My Pets', href: '/owner/pets', icon: HomeIcon, current: false },
+    { name: 'My Pets', href: '/dashboard/pet', icon: HomeIcon, current: false },
     {
         name: 'Search',
         href: '/owner/search',
