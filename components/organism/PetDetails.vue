@@ -1,4 +1,4 @@
-<template>
+ <template>
     <div class="min-h-0 flex-1 overflow-y-auto p-6">
         <div
             class="space-y-2 py-4 sm:space-y-4 bg-white px-4 shadow sm:rounded-lg"
@@ -436,31 +436,40 @@ const selectBreeds = ref<SelectItem[]>([])
 const isRegisterPetDrawerOpen = ref(false)
 const isLoading = ref(false)
 
+const states = {
+    VIEW: 'view',
+    CREATE: 'create',
+    UPDATE: 'update'
+}
+
 const routeState = () => {
-    if (route.name === 'dashboard-pet-id-details___en') return 'view'
-    if (route.name === 'dashboard-pet-create___en') return 'create'
-    if (route.name === 'dashboard-pet-id-update___en') return 'update'
+    if (route.name === 'dashboard-pet-id-details___en') return states.VIEW
+    if (route.name === 'dashboard-pet-create___en') return states.CREATE
+    if (route.name === 'dashboard-pet-id-update___en') return states.UPDATE
     return null
 }
 
 const routestateMeta = () => {
-    if (routeState() === 'view') {
+    if (routeState() === states.VIEW) {
         return {
             header: 'My pet details',
-            subtitle: ''
+            subtitle: '',
+            ctaButton: ['update', 'delete']
         }
     }
-    if (routeState() === 'create') {
+    if (routeState() === states.CREATE) {
         return {
             header: 'Register a pet',
             subtitle:
-                'Get started by filling in the information below to register your pet in case of when it get lost'
+                'Get started by filling in the information below to register your pet in case of when it get lost',
+            ctaButton: ['cancel', 'save']
         }
     }
-    if (routeState() === 'update') {
+    if (routeState() === states.UPDATE) {
         return {
             header: 'Update my pet details',
-            subtitle: ''
+            subtitle: '',
+            ctaButton: ['cancel', 'update']
         }
     }
 }
