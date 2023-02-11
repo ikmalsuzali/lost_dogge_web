@@ -5,17 +5,27 @@ const useValidations = () => {
         )
 
     const validateRequired = (inputValue: string, label: string = '') => {
-        return !inputValue ? `${label || 'Input'} is required` : ''
+        return inputValue === null ||
+            inputValue === undefined ||
+            inputValue === ''
+            ? `${label || 'Input'} is required`
+            : ''
     }
 
     const validateImageLength = (images: Object, length: number = 1) => {
-        return images?.length <= length ? `Upload at least ${length} image` : ''
+        return images?.length < length ? `Upload at least ${length} image` : ''
     }
 
     const validateEmail = (inputValue: string) => {
         if (!inputValue) return validateRequired(inputValue, 'Email')
         const re = /\S+@\S+\.\S+/
         return !re.test(inputValue) ? 'Email is invalid' : ''
+    }
+
+    const validatePhoneNumber = (inputValue: string) => {
+        if (!inputValue) return validateRequired(inputValue, 'Contact Number')
+        const re = /^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}/
+        return !re.test(inputValue) ? 'Phone number is invalid' : ''
     }
 
     const validatePassword = (inputValue: string) => {
@@ -63,7 +73,8 @@ const useValidations = () => {
         validateTwitterHandle,
         validateRequired,
         isErrorMessageEmpty,
-        validateImageLength
+        validateImageLength,
+        validatePhoneNumber
     }
 }
 

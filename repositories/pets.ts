@@ -43,12 +43,15 @@ const usePetRepository = () => {
     }
 
     const getPetDetails = async (petId: string) => {
-        await $supabase
+        const { data, error } = await $supabase
             .from('pets')
-            .select('*')
-            .eq('pet_id', petId)
+            .select('*, pet_images(*), breed:breed_id(*)')
+            .eq('id', petId)
             .limit(1)
             .single()
+
+        if (error) throw error
+        return data
     }
 
     const getAnimalTypes = async () => {
@@ -77,9 +80,9 @@ const usePetRepository = () => {
                 breed_id: payload.breed_id,
                 is_vaccinated: payload.is_vaccinated || false,
                 status: payload.status,
-                lost_date: payload.lostDate,
-                found_date: payload.foundDate,
-                contact_number: payload.contactNumber,
+                lost_date: payload.lost_date,
+                found_date: payload.found_date,
+                contact_number: payload.contact_number,
                 email: payload.email,
                 instagram: payload.instagram,
                 facebook: payload.facebook,
@@ -87,7 +90,7 @@ const usePetRepository = () => {
             }
         ])
         if (error) throw error
-        return data
+        return data[0]
     }
 
     const uploadPetImage = async (userId: string, file: File) => {
@@ -116,11 +119,12 @@ const usePetRepository = () => {
             .update({
                 name: payload.name,
                 description: payload.description,
+                user_id: payload.user_id,
                 weight: payload.weight,
                 height: payload.height,
                 gender: payload.gender,
-                breed_id: payload.breedId,
-                is_vaccinated: payload.isVaccinated || false,
+                breed_id: payload.breed_id,
+                is_vaccinated: payload.is_vaccinated || false,
                 status: payload.status,
                 lost_date: payload.lostDate,
                 found_date: payload.foundDate,
