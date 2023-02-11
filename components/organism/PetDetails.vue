@@ -175,95 +175,102 @@
                                     >Pet Image(s)</label
                                 >
                             </div>
-                        </div>
-                        <div>
-                            <Carousel :items-to-show="3">
-                                <Slide
-                                    v-for="(image, index) in myPet.images"
-                                    :key="image"
-                                    class="p-4"
-                                >
-                                    <div class="relative">
-                                        <img
-                                            class="aspect-square object-cover object-center w-40 rounded-md border border-blue-800"
-                                            :src="image"
-                                        />
-                                        <button
-                                            v-if="routeState() !== states.VIEW"
-                                            class="absolute top-0 right-0 bg-red-500 text-white p-2 rounded hover:bg-blue-800 m-2"
-                                            @click="onDeleteImageClick(index)"
-                                        >
-                                            <XMarkIcon
-                                                class="h-3 w-3"
-                                                aria-hidden="true"
+                            <div class="sm:col-span-2">
+                                <Carousel :items-to-show="4" snapAlign="start">
+                                    <Slide
+                                        v-for="(
+                                            image, index
+                                        ) in myPet.pet_images"
+                                        :key="image.url"
+                                        class="p-4"
+                                    >
+                                        <div class="relative">
+                                            <img
+                                                class="aspect-square object-cover object-center w-40 rounded-md border border-blue-800"
+                                                :src="image.url"
                                             />
-                                        </button>
-                                    </div>
-                                </Slide>
+                                            <button
+                                                v-if="
+                                                    routeState() !== states.VIEW
+                                                "
+                                                class="absolute top-0 right-0 bg-red-500 text-white p-2 rounded hover:bg-blue-800 m-2"
+                                                @click="
+                                                    onDeleteImageClick(index)
+                                                "
+                                            >
+                                                <XMarkIcon
+                                                    class="h-3 w-3"
+                                                    aria-hidden="true"
+                                                />
+                                            </button>
+                                        </div>
+                                    </Slide>
 
-                                <template #addons>
-                                    <pagination />
-                                </template>
-                            </Carousel>
-                        </div>
-                        <div
-                            v-if="routeState() !== states.VIEW"
-                            class="flex justify-center items-center w-full"
-                        >
-                            <label
-                                for="dropzone-file"
-                                class="flex flex-col justify-center items-center w-full h-36 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-                            >
+                                    <template #addons>
+                                        <pagination />
+                                    </template>
+                                </Carousel>
                                 <div
-                                    class="flex flex-col justify-center items-center p-2"
+                                    v-if="routeState() !== states.VIEW"
+                                    class="flex justify-center items-center w-full"
                                 >
-                                    <svg
-                                        aria-hidden="true"
-                                        class="mb-3 w-10 h-10 text-gray-400"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg"
+                                    <label
+                                        for="dropzone-file"
+                                        class="flex flex-col justify-center items-center w-full h-36 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                                     >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                                        ></path>
-                                    </svg>
-                                    <p
-                                        class="mb-2 text-sm text-gray-500 dark:text-gray-400"
-                                    >
-                                        <span class="font-semibold"
-                                            >Click to upload</span
+                                        <div
+                                            class="flex flex-col justify-center items-center p-2"
                                         >
-                                        or drag and drop
-                                    </p>
-                                    <p
-                                        class="text-xs text-gray-500 dark:text-gray-400"
-                                    >
-                                        SVG, PNG, JPG (MAX. 800x400px)
-                                    </p>
+                                            <svg
+                                                aria-hidden="true"
+                                                class="mb-3 w-10 h-10 text-gray-400"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                                                ></path>
+                                            </svg>
+                                            <p
+                                                class="mb-2 text-sm text-gray-500 dark:text-gray-400"
+                                            >
+                                                <span class="font-semibold"
+                                                    >Click to upload</span
+                                                >
+                                                or drag and drop
+                                            </p>
+                                            <p
+                                                class="text-xs text-gray-500 dark:text-gray-400"
+                                            >
+                                                SVG, PNG, JPG (MAX. 800x400px)
+                                            </p>
+                                        </div>
+                                        <input
+                                            ref="dropzoneFile"
+                                            id="dropzone-file"
+                                            type="file"
+                                            multiple
+                                            class="hidden"
+                                            accept=".jpg, .jpeg, .png"
+                                            @change="uploadImage($event)"
+                                            @click="$event.target.value = ''"
+                                        />
+                                        <p
+                                            v-if="errorMessages.pet_images"
+                                            class="mt-2 text-sm text-red-600 dark:text-red-500"
+                                        >
+                                            {{ errorMessages.pet_images }}
+                                        </p>
+                                    </label>
                                 </div>
-                                <input
-                                    ref="dropzoneFile"
-                                    id="dropzone-file"
-                                    type="file"
-                                    multiple
-                                    class="hidden"
-                                    accept=".jpg, .jpeg, .png"
-                                    @change="uploadImage($event)"
-                                    @click="$event.target.value = ''"
-                                />
-                                <p
-                                    v-if="errorMessages.images"
-                                    class="mt-2 text-sm text-red-600 dark:text-red-500"
-                                >
-                                    {{ errorMessages.images }}
-                                </p>
-                            </label>
+                            </div>
                         </div>
+
                         <div
                             class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
                         >
@@ -315,7 +322,7 @@
                                     class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
                                 >
                                     {{
-                                        myPetAnimalBreed?.find(
+                                        animalTypes?.find(
                                             breed =>
                                                 breed.id ===
                                                 myPet.animal_type_id
@@ -396,6 +403,7 @@
                                     :error-message="
                                         errorMessages.contact_number
                                     "
+                                    placeholder="123-456-7890"
                                     :disabled="routeState() === states.VIEW"
                                 />
                                 <div
@@ -735,7 +743,7 @@ const myPetInit = () => {
     return {
         ...(route?.params?.id && { id: route.params.id }),
         user_id: auth?.user?.id,
-        images: [],
+        pet_images: [],
         status: '',
         description: '',
         animal_type_id: '',
@@ -752,7 +760,7 @@ const myPetInit = () => {
         email: '',
         contact_number: '',
         gender: Gender.Male,
-        is_vaccinated: true
+        is_vaccinated: 1
     }
 }
 
@@ -766,10 +774,10 @@ const fetchPetDetails = async () => {
             console.log(data)
             myPet.value = {
                 ...unref(myPet),
-                images: data.pet_images?.map(pet => pet.url),
+                pet_images: data.pet_images,
                 status: data.status,
                 description: data?.description,
-                animal_type_id: '',
+                animal_type_id: data.animal_type_id,
                 breed: {},
                 name: data.name,
                 weight: data.weight,
@@ -781,7 +789,7 @@ const fetchPetDetails = async () => {
                 twitter: data.twitter,
                 facebook: data.facebook,
                 email: data.email,
-                contact_number: '',
+                contact_number: data.contact_number,
                 gender: Gender.Male,
                 is_vaccinated: true
             }
@@ -819,7 +827,7 @@ const uploadImage = async (e: InputEvent) => {
     for (const image of images) {
         try {
             const data = await uploadPetImage(auth?.user?.id, image)
-            unref(myPet).images.push(data?.publicURL)
+            unref(myPet).pet_images.push({ url: data?.publicURL })
         } catch (error) {
             console.log(error)
         }
@@ -843,7 +851,7 @@ const myPetImages = petImages => {
 }
 
 const onDeleteImageClick = (index: number) => {
-    unref(myPet).images.splice(index, 1)
+    myPet.value.pet_images.splice(index, 1)
 }
 
 const onEditPetClick = pet => {
@@ -889,7 +897,7 @@ const myPetErrorMessageInit = () => {
         twitter: '',
         instagram: '',
         facebook: '',
-        images: '',
+        pet_images: '',
         email: '',
         contact_number: ''
     }
@@ -906,7 +914,9 @@ const allMyPetErrorMessage = () => {
         unref(myPet)?.animal_type_id,
         'Animal type'
     )
-    errorMessages.value.images = validateImageLength(unref(myPet).images)
+    errorMessages.value.pet_images = validateImageLength(
+        unref(myPet).pet_images
+    )
     errorMessages.value.breed = validateRequired(unref(myPet).breed, 'Breed')
     errorMessages.value.name = validateRequired(unref(myPet).name, 'Name')
     errorMessages.value.email = validateEmail(unref(myPet).email)
@@ -943,10 +953,9 @@ const onSaveMyPet = async state => {
             console.log(data)
         }
 
-        if (state === states.CREATE)
-            return router.push(
-                `/dashboard/pet/${data.id || route.params.id}/details`
-            )
+        return router.push(
+            `/dashboard/pet/${data.id || route.params.id}/details`
+        )
     } catch (error) {
         console.log(error)
     } finally {

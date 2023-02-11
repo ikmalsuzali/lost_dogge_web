@@ -8,7 +8,7 @@ const usePetRepository = () => {
     const getMyPets = async (
         userId: string,
         offset: number = 0,
-        limit: number = 20
+        limit: number = 50
     ) => {
         const { data, error } = await $supabase
             .from('pets')
@@ -76,19 +76,37 @@ const usePetRepository = () => {
                 user_id: payload.user_id,
                 weight: payload.weight,
                 height: payload.height,
-                gender: payload.gender,
+                gender: payload.gender ? 1 : 0,
                 breed_id: payload.breed_id,
-                is_vaccinated: payload.is_vaccinated || false,
+                is_vaccinated: payload.is_vaccinated ? 1 : 0,
                 status: payload.status,
                 lost_date: payload.lost_date,
                 found_date: payload.found_date,
                 contact_number: payload.contact_number,
+                animal_type_id: payload.animal_type_id,
                 email: payload.email,
                 instagram: payload.instagram,
                 facebook: payload.facebook,
                 twitter: payload.twitter
             }
         ])
+
+        console.log(payload.pet_images)
+
+        if (payload.pet_images.length) {
+            const { data: petImageData, error: petImageError } = await $supabase
+                .from('pet_images')
+                .insert(
+                    payload.pet_images?.map(image => {
+                        return {
+                            pet_id: data[0].id,
+                            url: image.url
+                        }
+                    })
+                )
+            if (petImageError) throw petImageError
+        }
+
         if (error) throw error
         return data[0]
     }
@@ -114,7 +132,7 @@ const usePetRepository = () => {
     }
 
     const updatePet = async (petId: string, payload: Pet) => {
-        await $supabase
+        const { data, error } = await $supabase
             .from('pets')
             .update({
                 name: payload.name,
@@ -122,19 +140,43 @@ const usePetRepository = () => {
                 user_id: payload.user_id,
                 weight: payload.weight,
                 height: payload.height,
-                gender: payload.gender,
+                gender: payload.gender ? 1 : 0,
                 breed_id: payload.breed_id,
-                is_vaccinated: payload.is_vaccinated || false,
+                is_vaccinated: payload.is_vaccinated ? 1 : 0,
                 status: payload.status,
-                lost_date: payload.lostDate,
-                found_date: payload.foundDate,
-                contact_number: payload.contactNumber,
+                lost_date: payload.lost_date,
+                found_date: payload.found_date,
+                contact_number: payload.contact_number,
+                animal_type_id: payload.animal_type_id,
                 email: payload.email,
                 instagram: payload.instagram,
                 facebook: payload.facebook,
                 twitter: payload.twitter
             })
             .eq('id', petId)
+
+        if (error) throw error
+
+        const { error: deleteImageError } = await $supabase
+            .from('pet_images')
+            .delete()
+            .eq('pet_id', petId)
+
+        if (payload.pet_images.length) {
+            const { data: imageData, error: imageError } = await $supabase
+                .from('pet_images')
+                .insert(
+                    payload.pet_images?.map(image => {
+                        return {
+                            pet_id: petId,
+                            url: image.url
+                        }
+                    })
+                )
+            if (imageError) throw imageError
+        }
+
+        return data
     }
 
     const deletePet = async (petId: string) => {

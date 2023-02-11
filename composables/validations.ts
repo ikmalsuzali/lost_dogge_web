@@ -25,7 +25,9 @@ const useValidations = () => {
     const validatePhoneNumber = (inputValue: string) => {
         if (!inputValue) return validateRequired(inputValue, 'Contact Number')
         const re = /^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}/
-        return !re.test(inputValue) ? 'Phone number is invalid' : ''
+        return !re.test(inputValue)
+            ? 'Phone number is invalid. Example 123-456-7890'
+            : ''
     }
 
     const validatePassword = (inputValue: string) => {
