@@ -68,7 +68,9 @@ export default defineNuxtConfig({
             gaId: '',
             SUPABASE_PROJECT_URL: process.env.SUPABASE_PROJECT_URL,
             SUPABASE_PUBLIC_KEY: process.env.SUPABASE_PUBLIC_KEY,
-            MAPBOX_KEY: process.env.MAPBOX_KEY
+            MAPBOX_KEY: process.env.MAPBOX_KEY,
+            WEB_HOST: process.env.WEB_HOST,
+            API_HOST: process.env.API_HOST
         }
     },
     alias: {

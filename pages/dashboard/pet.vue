@@ -178,7 +178,7 @@
                                             class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
                                             @click="
                                                 router.push(
-                                                    '/dashboard/pet/create'
+                                                    `/dashboard/pet/${route.params.id}/ad/create`
                                                 )
                                             "
                                         >
