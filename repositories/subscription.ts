@@ -13,6 +13,18 @@ const useSubscriptionRepository = () => {
         return data
     }
 
+    const fetchSubscription = async (id: string) => {
+        const { data, error } = await $supabase
+            .from('payments')
+            .select('*')
+            .eq('id', id)
+            .limit(1)
+            .single()
+
+        if (error) throw error
+        return data
+    }
+
     const subscribeStripePayment = async payload => {
         console.log('stripe payment')
         const { data, error } = await axios.post(
@@ -22,7 +34,6 @@ const useSubscriptionRepository = () => {
                 price_id: payload.price_id,
                 user_id: payload.user_id,
                 success_url: payload.success_url,
-                failure_url: payload.failure_url,
                 cancel_url: payload.cancel_url
             }
         )
@@ -34,7 +45,8 @@ const useSubscriptionRepository = () => {
 
     return {
         getAllSubscriptions,
-        subscribeStripePayment
+        subscribeStripePayment,
+        fetchSubscription
     }
 }
 

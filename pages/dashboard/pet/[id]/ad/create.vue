@@ -246,8 +246,8 @@ const onSubscribeClick = async tierId => {
             pet_id: unref(myPet).id,
             price_id: subscription.stripe_price_id,
             user_id: unref(myPet).user_id,
-            success_url: `${webHost}/dashboard/pet/${unref(myPet).id}/ad/view`,
-            failure_url: `${webHost}/dashboard/pet/${unref(myPet).id}/ad/view`
+            success_url: webHost,
+            cancel_url: webHost
         })
 
         window.location.href = data.stripe_url
