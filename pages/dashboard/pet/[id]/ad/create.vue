@@ -59,6 +59,10 @@
                                         class="text-lg font-semibold leading-8 tracking-normal text-gray-500"
                                         >/day</span
                                     >
+                                    <span
+                                        class="w-1/4 flex text-lg font-semibold leading-8 tracking-normal text-gray-900 px-2"
+                                        >≈ {{ tier.totalPrice }}</span
+                                    >
                                 </div>
                             </div>
                             <div class="flex flex-1 flex-col p-2">
@@ -158,9 +162,10 @@ const tiers = [
         name: '15 days of running ads',
         href: '#',
         priceMonthly: 12,
+        totalPrice: '$180',
         features: [
-            '5 mile radius of where you lost your pet',
-            '500 to 3000+ impressions per day (Facebook Estimates)'
+            'Targeted to 5 mile radius of where you lost your pet',
+            'Reach 500 to 3000+ people per day (Facebook Estimates)'
         ]
     },
     {
@@ -168,9 +173,10 @@ const tiers = [
         name: '30 days of running ads',
         href: '#',
         priceMonthly: 10,
+        totalPrice: '$300',
         features: [
-            '5 mile radius of where you lost your pet',
-            '500 to 3000+ impressions per day (Facebook Estimates)'
+            'Targeted to 5 mile radius of where you lost your pet',
+            'Reach 500 to 3000+ people per day (Facebook Estimates)'
         ]
     }
 ]
@@ -232,9 +238,7 @@ const fetchSubscription = async () => {
 }
 
 const onSubscribeClick = async tierId => {
-    console.log(tierId)
     const webHost = config.WEB_HOST
-    console.log(webHost)
     try {
         isSubscriptionLoading.value = true
         const subscription = unref(subscriptions)?.find(

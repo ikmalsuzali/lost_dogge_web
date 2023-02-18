@@ -4,6 +4,7 @@ import { PetMatchPossibleType } from '~/types'
 
 const usePetRepository = () => {
     const { $supabase } = useNuxtApp()
+    const config = useRuntimeConfig()
 
     const getMyPets = async (
         userId: string,
@@ -33,7 +34,7 @@ const usePetRepository = () => {
     }
 
     const getPets = async payload => {
-        const data = await axios(`http://0.0.0.0:8080/api/v1/pets`, {
+        const data = await axios(`${config.API_HOST}/api/v1/pets`, {
             params: payload
         })
         const petsData = data?.data?.pets

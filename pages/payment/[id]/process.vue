@@ -26,15 +26,19 @@ const { fetchSubscription } = useSubscription()
 
 const subscription = ref()
 let intervalId = ref()
+let count = ref(0)
 
 const getSubscription = async () => {
     try {
         subscription.value = await fetchSubscription(route.params.id)
+        count.value = unref(count) + 1
     } catch (error) {
         console.log(error)
         clearInterval(intervalId.value)
         router.push({
-            path: `/dashboard/pet/${unref(subscription).pet_id}/ad/create`
+            path: `/dashboard/pet/${
+                unref(subscription).pet_id
+            }/ad/create?status=failed`
         })
     }
 }
@@ -64,6 +68,20 @@ watch(
                     unref(subscription).pet_id
                 }/ad/create?status=2`
             })
+    }
+)
+
+watch(
+    () => unref(count),
+    _ => {
+        if (unref(count) === 5) {
+            clearInterval(intervalId.value)
+            router.push({
+                path: `/dashboard/pet/${
+                    unref(subscription).pet_id
+                }/ad/create?status=failed`
+            })
+        }
     }
 )
 

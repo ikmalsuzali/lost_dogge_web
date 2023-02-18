@@ -963,6 +963,7 @@ const filteredBreeds = computed(() => {
     )
 })
 
+
 fetchAnimalTypes()
 fetchBreeds()
 fetchPetDetails()
