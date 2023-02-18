@@ -28,7 +28,7 @@ const useSubscriptionRepository = () => {
     const subscribeStripePayment = async payload => {
         console.log('stripe payment')
         const { data, error } = await axios.post(
-            `http://0.0.0.0:8080/api/v1/checkout-session`,
+            `https://lost-dogge-api.herokuapp.com/api/v1/checkout-session`,
             {
                 pet_id: payload.pet_id,
                 price_id: payload.price_id,

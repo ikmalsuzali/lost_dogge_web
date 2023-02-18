@@ -36,9 +36,10 @@ const getSubscription = async () => {
         console.log(error)
         clearInterval(intervalId.value)
         router.push({
-            path: `/dashboard/pet/${
-                unref(subscription).pet_id
-            }/ad/create?status=failed`
+            path: `/dashboard/pet/${unref(subscription).pet_id}/ad/create`,
+            query: {
+                status: 'failed'
+            }
         })
     }
 }
@@ -62,24 +63,30 @@ watch(
                 path: `/dashboard/pet/${unref(subscription).pet_id}/ad/details`
             })
 
-        if (unref(subscription)?.status === 2)
+        if (unref(subscription)?.status === 2) {
+            console.log('hi im redirection')
             router.push({
-                path: `/dashboard/pet/${
-                    unref(subscription).pet_id
-                }/ad/create?status=2`
+                path: `/dashboard/pet/${unref(subscription).pet_id}/ad/create`,
+                query: {
+                    status: 'failed'
+                }
             })
+        }
     }
 )
 
 watch(
     () => unref(count),
     _ => {
-        if (unref(count) === 5) {
+        if (unref(count) === 3) {
             clearInterval(intervalId.value)
+            console.log('hi im redirection')
+
             router.push({
-                path: `/dashboard/pet/${
-                    unref(subscription).pet_id
-                }/ad/create?status=failed`
+                path: `/dashboard/pet/${unref(subscription).pet_id}/ad/create`,
+                query: {
+                    status: 'failed'
+                }
             })
         }
     }

@@ -1,6 +1,6 @@
 <template>
     <div class="bg-gray-900">
-        <div class="relative overflow-hidden pt-32 pb-96 lg:pt-20">
+        <div class="relative overflow-hidden pt-18 pb-96 lg:pt-4">
             <div>
                 <img
                     class="absolute bottom-0 left-1/2 w-[1440px] max-w-none -translate-x-1/2"
@@ -8,6 +8,35 @@
                 />
             </div>
             <div class="relative mx-auto max-w-7xl px-6 text-center lg:px-8">
+                <div
+                    v-if="$route.query?.status === 'failed'"
+                    class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3 shadow-md mb-8"
+                    role="alert"
+                >
+                    <div class="flex">
+                        <div class="flex">
+                            <div class="py-1">
+                                <svg
+                                    class="fill-current h-6 w-6 text-red-500 mr-4"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path
+                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"
+                                    />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-bold text-left">
+                                    Payment failed
+                                </p>
+                                <p class="text-sm">
+                                    Try again to start creating ads
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="mx-auto max-w-2xl lg:max-w-4xl">
                     <h2 class="text-lg font-semibold leading-8 text-indigo-400">
                         Create Ads Now
@@ -69,7 +98,7 @@
                                 <div
                                     class="flex flex-1 flex-col justify-between rounded-2xl bg-gray-50 p-6 sm:p-8"
                                 >
-                                    <ul role="list" class="space-y-6">
+                                    <ul role="list" class="space-y-3">
                                         <li
                                             v-for="feature in tier.features"
                                             :key="feature"
@@ -91,6 +120,7 @@
                                     <div class="mt-8">
                                         <Button
                                             class="inline-block w-full"
+                                            :loading="isSubscriptionLoading"
                                             @click="onSubscribeClick(tier.id)"
                                             >Start your ads now
                                         </Button>
@@ -120,6 +150,7 @@ enum Gender {
 }
 
 const route = useRoute()
+console.log('route', route)
 const auth = useAuthStore()
 const config = useRuntimeConfig()
 const { getPetDetails, getAnimalTypes } = usePetRepository()
