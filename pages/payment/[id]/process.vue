@@ -60,7 +60,9 @@ watch(
         }
         if (unref(subscription)?.status === 1)
             router.push({
-                path: `/dashboard/pet/${unref(subscription).pet_id}/ad/details`
+                path: `/dashboard/pet/${unref(subscription).pet_id}/ad/${
+                    route.params.id
+                }/details`
             })
 
         if (unref(subscription)?.status === 2) {

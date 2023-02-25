@@ -103,7 +103,9 @@
                             <span
                                 v-if="
                                     route.name ===
-                                    'dashboard-pet-id-details___en'
+                                        'dashboard-pet-id-details___en' ||
+                                    route.name ===
+                                        'dashboard-pet-id-ad-id-details___en'
                                 "
                                 class="inline-flex sm:shadow-sm"
                             >
@@ -178,7 +180,9 @@
                                             class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
                                             @click="
                                                 router.push(
-                                                    `/dashboard/pet/${route.params.id}/ad/create`
+                                                    payment?.id
+                                                        ? `/dashboard/pet/${route.params.id}/ad/${payment.id}/details`
+                                                        : `/dashboard/pet/${route.params.id}/ad/create`
                                                 )
                                             "
                                         >
@@ -186,7 +190,11 @@
                                                 class="mr-2.5 h-5 w-5 text-gray-400"
                                                 aria-hidden="true"
                                             />
-                                            <span>Create Ad</span>
+                                            <span>{{
+                                                payment?.id
+                                                    ? 'View Ad'
+                                                    : 'Create Ad'
+                                            }}</span>
                                         </button>
                                     </span>
                                 </div>
@@ -196,7 +204,9 @@
                                     v-if="
                                         route.name === 'dashboard-pet___en' ||
                                         route.name ===
-                                            'dashboard-pet-id-details___en'
+                                            'dashboard-pet-id-details___en' ||
+                                        route.name ===
+                                            'dashboard-pet-id-ad-id-details___en'
                                     "
                                 >
                                     <span class="hidden space-x-3 lg:flex">
@@ -405,16 +415,6 @@
 
 <script lang="ts" setup>
 import {
-    Dialog,
-    DialogPanel,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    TransitionChild,
-    TransitionRoot
-} from '@headlessui/vue'
-import {
     ArchiveBoxIcon as ArchiveBoxIconMini,
     ArrowUturnLeftIcon,
     ChevronDownIcon,
@@ -431,6 +431,7 @@ import {
 } from '@heroicons/vue/20/solid'
 import { useRoute, useRouter } from 'vue-router'
 import usePetRepository from '~/repositories/pets'
+import useSubscriptionRepository from '~/repositories/subscription'
 import { useAuthStore } from '~~/stores/auth'
 import type { SelectItem } from '~/components/UI/Select/types'
 import { definitions } from '~~/types/supabase'
@@ -444,8 +445,7 @@ definePageMeta({
 
 const route = useRoute()
 const router = useRouter()
-
-console.log(route)
+const { fetchFirstSuccessfulPayment } = useSubscriptionRepository()
 
 enum PetStatus {
     Registered = '0',
@@ -497,6 +497,7 @@ const selectBreeds = ref<SelectItem[]>([])
 
 const isRegisterPetDrawerOpen = ref(false)
 const isLoading = ref(false)
+const payment = ref()
 
 const myPetInit = () => {
     return {
@@ -664,6 +665,22 @@ const filteredBreeds = computed(() => {
         breed => breed.animal_type_id === unref(myPet).value.animal_type
     )
 })
+
+const getUserPayment = async (petId: string) => {
+    payment.value = await fetchFirstSuccessfulPayment(petId)
+    console.log('fetch payment', payment.value)
+}
+
+watch(
+    () => unref(route).params,
+    value => {
+        if (value.id) {
+            payment.value = null
+            getUserPayment(value.id)
+        }
+    },
+    { immediate: true }
+)
 
 fetchAnimalTypes()
 fetchBreeds()
