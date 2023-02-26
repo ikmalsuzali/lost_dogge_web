@@ -1,7 +1,7 @@
 <template>
-    <main class="min-w-0 flex-1 border-t border-gray-200 xl:flex">
+    <main class="min-w-0 flex-1 border-t border-gray-200 sm:flex">
         <!-- Message list-->
-        <aside class="hidden xl:order-first xl:block xl:flex-shrink-0">
+        <aside class="overflow-hidden xl:order-first xl:block xl:flex-shrink-0">
             <div
                 class="relative flex h-full w-96 flex-col border-r border-gray-200 bg-gray-100"
             >
@@ -57,9 +57,16 @@
                                     {{ pet.name }}
                                 </div>
                                 <div
+                                    v-if="pet.is_deleted === false"
                                     class="text-gray-600 dark:text-gray-200 text-sm"
                                 >
                                     <a>Lost at</a>{{ pet.address }}
+                                </div>
+                                <div
+                                    v-else
+                                    class="text-gray-600 dark:text-gray-200 text-sm"
+                                >
+                                    <a>Archived</a>
                                 </div>
                             </div>
                             <div
@@ -90,7 +97,7 @@
 
         <section
             aria-labelledby="message-heading"
-            class="flex h-full min-w-0 flex-1 flex-col overflow-hidden xl:order-last"
+            class="flex h-full min-w-0 flex-1 flex-col xl:order-last"
         >
             <!-- Top section -->
             <div class="flex-shrink-0 border-b border-gray-200 bg-white">
@@ -415,16 +422,7 @@
 
 <script lang="ts" setup>
 import {
-    ArchiveBoxIcon as ArchiveBoxIconMini,
-    ArrowUturnLeftIcon,
-    ChevronDownIcon,
-    ChevronUpIcon,
-    EllipsisVerticalIcon,
-    FolderArrowDownIcon,
     MagnifyingGlassIcon,
-    PencilIcon,
-    UserPlusIcon,
-    MagnifyingGlassCircleIcon,
     BookOpenIcon,
     AcademicCapIcon,
     XMarkIcon
@@ -516,7 +514,8 @@ const myPetInit = () => {
         twitter: '',
         facebook: '',
         gender: Gender.Male,
-        is_vaccinated: false
+        is_vaccinated: false,
+        is_deleted: false
     }
 }
 

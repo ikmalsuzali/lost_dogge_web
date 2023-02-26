@@ -16,6 +16,8 @@ const usePetRepository = () => {
             .select('*, pet_images(*), breed:breed_id(*)')
             .eq('user_id', userId)
             .range(offset, limit)
+            .order('is_deleted', { ascending: true })
+            .order('created_at', { ascending: true })
 
         if (error) throw error
         return data

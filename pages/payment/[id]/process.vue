@@ -10,7 +10,7 @@
             Processing your payment
         </h3>
         <p class="mt-1 text-sm text-gray-500">
-            One step closer to creating your pet
+            One step closer to creating an ad for your beloved pet
         </p>
     </div>
 </template>

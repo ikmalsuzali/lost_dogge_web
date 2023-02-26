@@ -15,7 +15,17 @@
                                     {{ routeStateMeta()?.subtitle }}
                                 </p>
                             </div>
-                            <div class="flex h-7 items-center space-x-2">
+                            <div
+                                v-if="myPet.is_deleted === true"
+                                class="flex h-7 items-center space-x-2"
+                            >
+                                <button
+                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
+                                >
+                                    Archived
+                                </button>
+                            </div>
+                            <div v-else class="flex h-7 items-center space-x-2">
                                 <button
                                     v-if="
                                         routeStateMeta()?.ctaButton.find(
@@ -116,6 +126,7 @@
                                 <button
                                     type="button"
                                     class="relative justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    @click="onConfirmDeletionClick(myPet.id)"
                                 >
                                     <span>Confirm Deletion</span>
                                 </button>
@@ -652,7 +663,8 @@ const {
     createPet,
     getMyPets,
     updatePet,
-    getPetDetails
+    getPetDetails,
+    deletePet
 } = usePetRepository()
 
 const myPets = ref([{}])
@@ -664,6 +676,7 @@ const selectBreeds = ref<SelectItem[]>([])
 const isRegisterPetDrawerOpen = ref(false)
 const isLoading = ref(false)
 const isDeleteToggled = ref(false)
+const isDeleteLoading = ref(false)
 
 const states = {
     VIEW: 'view',
@@ -753,7 +766,8 @@ const myPetInit = () => {
         email: '',
         contact_number: '',
         gender: Gender.Male,
-        is_vaccinated: 1
+        is_vaccinated: 1,
+        is_deleted: false
     }
 }
 
@@ -784,7 +798,8 @@ const fetchPetDetails = async () => {
                 email: data.email,
                 contact_number: data.contact_number,
                 gender: Gender.Male,
-                is_vaccinated: true
+                is_vaccinated: true,
+                is_deleted: data.is_deleted
             }
         } catch (error) {
         } finally {
@@ -808,6 +823,17 @@ const myPetAnimalBreed = computed({
         }
     }
 })
+
+const onConfirmDeletionClick = async (petId: string) => {
+    try {
+        isDeleteLoading.value = true
+        await deletePet(petId)
+        location.reload()
+    } catch (error) {
+    } finally {
+        isDeleteLoading.value = false
+    }
+}
 
 const onRegisterClick = () => {
     myPet.value = myPetInit()
@@ -962,7 +988,6 @@ const filteredBreeds = computed(() => {
         breed => breed.animal_type_id === unref(myPet).value.animal_type
     )
 })
-
 
 fetchAnimalTypes()
 fetchBreeds()

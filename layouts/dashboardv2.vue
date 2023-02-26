@@ -4,12 +4,12 @@
             <!-- Logo area -->
             <div class="absolute inset-y-0 left-0 lg:static lg:flex-shrink-0">
                 <a
-                    href="#"
+                    href="/dashboard/pet"
                     class="flex h-16 w-16 items-center justify-center bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-600 lg:w-20"
                 >
                     <img
-                        class="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=white"
+                        class="w-auto"
+                        src="~/assets/images/lost-doggo-icon.jpg"
                         alt="Your Company"
                     />
                 </a>
@@ -139,11 +139,12 @@
                                 class="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
                             >
                                 <span class="sr-only">Open user menu</span>
-                                <img
+                                <UserCircleIcon class="h-8 w-8" />
+                                <!-- <img
                                     class="h-8 w-8 rounded-full"
                                     :src="user.imageUrl"
                                     alt=""
-                                />
+                                /> -->
                             </MenuButton>
 
                             <transition
@@ -158,7 +159,7 @@
                                     class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                                 >
                                     <div class="py-1">
-                                        <MenuItem v-slot="{ active }">
+                                        <!-- <MenuItem v-slot="{ active }">
                                             <a
                                                 href="#"
                                                 :class="[
@@ -167,7 +168,7 @@
                                                 ]"
                                                 >Your Profile</a
                                             >
-                                        </MenuItem>
+                                        </MenuItem> -->
                                         <MenuItem v-slot="{ active }">
                                             <a
                                                 href="#"
@@ -175,6 +176,7 @@
                                                     active ? 'bg-gray-100' : '',
                                                     'block px-4 py-2 text-sm text-gray-700'
                                                 ]"
+                                                @click="onSignOut"
                                                 >Sign Out</a
                                             >
                                         </MenuItem>
@@ -351,7 +353,7 @@
         <!-- Bottom section -->
         <div class="flex min-h-0 flex-1 overflow-hidden">
             <!-- Narrow sidebar-->
-            <nav
+            <!-- <nav
                 aria-label="Sidebar"
                 class="hidden lg:block lg:flex-shrink-0 lg:overflow-y-auto lg:bg-gray-800"
             >
@@ -375,7 +377,7 @@
                         />
                     </a>
                 </div>
-            </nav>
+            </nav> -->
 
             <NuxtPage />
         </div>
@@ -394,31 +396,16 @@ import {
     TransitionChild,
     TransitionRoot
 } from '@headlessui/vue'
+import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import {
-    ArchiveBoxIcon as ArchiveBoxIconMini,
-    ArrowUturnLeftIcon,
-    ChevronDownIcon,
-    ChevronUpIcon,
-    EllipsisVerticalIcon,
-    FolderArrowDownIcon,
-    MagnifyingGlassIcon,
-    PencilIcon,
-    UserPlusIcon,
-    MagnifyingGlassCircleIcon,
-    BookOpenIcon,
-    AcademicCapIcon
-} from '@heroicons/vue/20/solid'
-import {
-    ArchiveBoxIcon as ArchiveBoxIconOutline,
     Bars3Icon,
     BellIcon,
-    FlagIcon,
-    InboxIcon,
-    NoSymbolIcon,
-    PencilSquareIcon,
-    UserCircleIcon,
-    XMarkIcon
+    XMarkIcon,
+    UserCircleIcon
 } from '@heroicons/vue/24/outline'
+import { useAuthStore } from '~/stores/auth'
+
+const auth = useAuthStore()
 
 const user = {
     name: 'Whitney Francis',
@@ -432,156 +419,14 @@ const navigation = [
         href: '#'
     }
 ]
-const sidebarNavigation = [
-    { name: 'Open', href: '#', icon: InboxIcon, current: true }
-]
-const userNavigation = [
-    { name: 'Your Profile', href: '#' },
-    { name: 'Sign out', href: '#' }
-]
-const messages = [
-    {
-        id: 1,
-        subject: 'Velit placeat sit ducimus non sed',
-        sender: 'Gloria Roberston',
-        href: '#',
-        date: '1d ago',
-        datetime: '2021-01-27T16:35',
-        preview:
-            'Doloremque dolorem maiores assumenda dolorem facilis. Velit vel in a rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus quod dolor.'
-    },
-    {
-        id: 2,
-        subject:
-            'Nemo mollitia repudiandae adipisci explicabo optio consequatur tempora ut nihil',
-        sender: 'Virginia Abshire',
-        href: '#',
-        date: '1d ago',
-        datetime: '2021-01-27T16:35',
-        preview:
-            'Doloremque dolorem maiores assumenda dolorem facilis. Velit vel in a rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus quod dolor.'
-    },
-    {
-        id: 3,
-        subject:
-            'Doloremque reprehenderit et harum quas explicabo nulla architecto dicta voluptatibus',
-        sender: 'Kyle Gulgowski',
-        href: '#',
-        date: '1d ago',
-        datetime: '2021-01-27T16:35',
-        preview:
-            'Doloremque dolorem maiores assumenda dolorem facilis. Velit vel in a rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus quod dolor.'
-    },
-    {
-        id: 4,
-        subject: 'Eos sequi et aut ex impedit',
-        sender: 'Hattie Haag',
-        href: '#',
-        date: '1d ago',
-        datetime: '2021-01-27T16:35',
-        preview:
-            'Doloremque dolorem maiores assumenda dolorem facilis. Velit vel in a rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus quod dolor.'
-    },
-    {
-        id: 5,
-        subject: 'Quisquam veniam explicabo',
-        sender: 'Wilma Glover',
-        href: '#',
-        date: '1d ago',
-        datetime: '2021-01-27T16:35',
-        preview:
-            'Doloremque dolorem maiores assumenda dolorem facilis. Velit vel in a rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus quod dolor.'
-    },
-    {
-        id: 6,
-        subject:
-            'Est ratione molestiae modi maiores consequatur eligendi et excepturi magni',
-        sender: 'Dolores Morissette',
-        href: '#',
-        date: '1d ago',
-        datetime: '2021-01-27T16:35',
-        preview:
-            'Doloremque dolorem maiores assumenda dolorem facilis. Velit vel in a rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus quod dolor.'
-    },
-    {
-        id: 7,
-        subject: 'Commodi deserunt aut veniam rem ipsam',
-        sender: 'Guadalupe Walsh',
-        href: '#',
-        date: '1d ago',
-        datetime: '2021-01-27T16:35',
-        preview:
-            'Doloremque dolorem maiores assumenda dolorem facilis. Velit vel in a rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus quod dolor.'
-    },
-    {
-        id: 8,
-        subject: 'Illo illum aut debitis earum',
-        sender: 'Jasmine Hansen',
-        href: '#',
-        date: '1d ago',
-        datetime: '2021-01-27T16:35',
-        preview:
-            'Doloremque dolorem maiores assumenda dolorem facilis. Velit vel in a rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus quod dolor.'
-    },
-    {
-        id: 9,
-        subject: 'Qui dolore iste ut est cumque sed',
-        sender: 'Ian Volkman',
-        href: '#',
-        date: '1d ago',
-        datetime: '2021-01-27T16:35',
-        preview:
-            'Doloremque dolorem maiores assumenda dolorem facilis. Velit vel in a rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus quod dolor.'
-    },
-    {
-        id: 10,
-        subject: 'Aut sed aut illum delectus maiores laboriosam ex',
-        sender: 'Rafael Klocko',
-        href: '#',
-        date: '1d ago',
-        datetime: '2021-01-27T16:35',
-        preview:
-            'Doloremque dolorem maiores assumenda dolorem facilis. Velit vel in a rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus quod dolor.'
-    }
-]
-const message = {
-    subject: 'Re: New pricing for existing customers',
-    sender: 'joearmstrong@example.com',
-    status: 'Open',
-    items: [
-        {
-            id: 1,
-            author: 'Joe Armstrong',
-            date: 'Yesterday at 7:24am',
-            datetime: '2021-01-28T19:24',
-            body: "<p>Thanks so much! Can't wait to try it out.</p>"
-        },
-        {
-            id: 2,
-            author: 'Monica White',
-            date: 'Wednesday at 4:35pm',
-            datetime: '2021-01-27T16:35',
-            body: `
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada at ultricies tincidunt elit et, enim. Habitant nunc, adipiscing non fermentum, sed est a, aliquet. Lorem in vel libero vel augue aliquet dui commodo.</p>
-          <p>Nec malesuada sed sit ut aliquet. Cras ac pharetra, sapien purus vitae vestibulum auctor faucibus ullamcorper. Leo quam tincidunt porttitor neque, velit sed. Tortor mauris ornare ut tellus sed aliquet amet venenatis condimentum. Convallis accumsan et nunc eleifend.</p>
-          <p><strong style="font-weight: 600;">Monica White</strong><br/>Customer Service</p>
-        `
-        },
-        {
-            id: 3,
-            author: 'Joe Armstrong',
-            date: 'Wednesday at 4:09pm',
-            datetime: '2021-01-27T16:09',
-            body: `
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada at ultricies tincidunt elit et, enim. Habitant nunc, adipiscing non fermentum, sed est a, aliquet. Lorem in vel libero vel augue aliquet dui commodo.</p>
-          <p>Nec malesuada sed sit ut aliquet. Cras ac pharetra, sapien purus vitae vestibulum auctor faucibus ullamcorper. Leo quam tincidunt porttitor neque, velit sed. Tortor mauris ornare ut tellus sed aliquet amet venenatis condimentum. Convallis accumsan et nunc eleifend.</p>
-          <p>– Joe</p>
-        `
-        }
-    ]
-}
+
+const userNavigation = [{ name: 'Sign out', href: '#' }]
 
 const open = ref(false)
+
+const onSignOut = async () => {
+    await auth.logout()
+}
 </script>
 
 <style>

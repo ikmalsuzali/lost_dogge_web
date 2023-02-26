@@ -62,22 +62,8 @@
 </template>
 
 <script lang="ts" setup>
-import {
-    Dialog,
-    DialogPanel,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    TransitionChild,
-    TransitionRoot
-} from '@headlessui/vue'
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
-import {
-    CalendarIcon,
-    CommandLineIcon,
-    MegaphoneIcon
-} from '@heroicons/vue/24/outline'
+import { MegaphoneIcon } from '@heroicons/vue/24/outline'
 
 const items = [
     {
