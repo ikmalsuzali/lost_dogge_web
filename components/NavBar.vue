@@ -9,7 +9,7 @@
                         <span class="sr-only">Your Company</span>
                         <img
                             class="h-20 w-auto"
-                            src="https://fhasuqzjmruhvugclutt.supabase.co/storage/v1/object/public/pets/website/logo.png?t=2023-01-08T10%3A13%3A37.506Z"
+                            src="~/assets/images/lost-doggo-icon.jpg"
                             alt=""
                         />
                     </a>
