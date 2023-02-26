@@ -1,596 +1,663 @@
 <template>
-    <div id="petForm" class="min-h-0 flex-1 overflow-y-auto p-6">
+    <div>
         <div
-            class="space-y-2 py-4 sm:space-y-4 bg-white px-4 shadow sm:rounded-lg"
+            v-if="myPet.status === 0"
+            class="bg-orange-100 border-t-4 border-orange-500 rounded-b text-orange-900 px-4 py-3 shadow-md"
+            role="alert"
         >
-            <form>
-                <div class="flex-1">
-                    <div class="bg-gray-50 px-4 py-6 sm:px-6">
-                        <div class="flex items-start justify-between space-x-3">
-                            <div class="space-y-1">
-                                <div class="text-lg font-medium text-gray-900">
-                                    {{ routeStateMeta()?.header }}
+            <div class="flex">
+                <div class="flex">
+                    <div class="py-1">
+                        <svg
+                            class="fill-current h-6 w-6 text-orange-500 mr-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"
+                            />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-bold text-left">
+                            Before creating your pet ad, set your pet status
+                            either lost or found
+                        </p>
+                        <p class="text-sm">
+                            This will allow other people know the current status
+                            of your pet.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="petForm" class="min-h-0 flex-1 overflow-y-auto p-6">
+            <div
+                class="space-y-2 py-4 sm:space-y-4 bg-white px-4 shadow sm:rounded-lg"
+            >
+                <form>
+                    <div class="flex-1">
+                        <div class="bg-gray-50 px-4 py-6 sm:px-6">
+                            <div
+                                class="flex items-start justify-between space-x-3"
+                            >
+                                <div class="space-y-1">
+                                    <div
+                                        class="text-lg font-medium text-gray-900"
+                                    >
+                                        {{ routeStateMeta()?.header }}
+                                    </div>
+                                    <p class="text-sm text-gray-500">
+                                        {{ routeStateMeta()?.subtitle }}
+                                    </p>
                                 </div>
-                                <p class="text-sm text-gray-500">
-                                    {{ routeStateMeta()?.subtitle }}
-                                </p>
+                                <div
+                                    v-if="myPet.is_deleted === true"
+                                    class="flex h-7 items-center space-x-2"
+                                >
+                                    <button
+                                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
+                                    >
+                                        Archived
+                                    </button>
+                                </div>
+                                <div
+                                    v-else
+                                    class="flex h-7 items-center space-x-2"
+                                >
+                                    <button
+                                        v-if="
+                                            routeStateMeta()?.ctaButton.find(
+                                                button =>
+                                                    button.type === 'cancel'
+                                            )
+                                        "
+                                        type="button"
+                                        class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
+                                        @click="
+                                            routeStateMeta()?.ctaButton.find(
+                                                button =>
+                                                    button.type === 'cancel'
+                                            )?.route
+                                        "
+                                    >
+                                        <span>Cancel</span>
+                                    </button>
+                                    <button
+                                        v-if="
+                                            routeStateMeta()?.ctaButton.find(
+                                                button =>
+                                                    button.type === 'update'
+                                            )
+                                        "
+                                        type="button"
+                                        class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
+                                        @click="
+                                            routeStateMeta()?.ctaButton.find(
+                                                button =>
+                                                    button.type === 'update'
+                                            )?.route
+                                        "
+                                    >
+                                        <span>Update</span>
+                                    </button>
+                                    <Button
+                                        v-if="
+                                            routeStateMeta()?.ctaButton.find(
+                                                button => button.type === 'save'
+                                            )
+                                        "
+                                        :loading="isLoading"
+                                        @click="
+                                            routeStateMeta()?.ctaButton.find(
+                                                button => button.type === 'save'
+                                            )?.route
+                                        "
+                                    >
+                                        Save
+                                    </Button>
+                                    <button
+                                        v-if="
+                                            routeStateMeta()?.ctaButton.find(
+                                                button =>
+                                                    button.type === 'delete'
+                                            )
+                                        "
+                                        type="button"
+                                        class="relative justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                        :class="{
+                                            'bg-red-300': isDeleteToggled
+                                        }"
+                                        @click="
+                                            routeStateMeta()?.ctaButton.find(
+                                                button =>
+                                                    button.type === 'delete'
+                                            )?.route
+                                        "
+                                    >
+                                        <span>Delete</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            v-if="isDeleteToggled === true"
+                            class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3 shadow-md"
+                            role="alert"
+                        >
+                            <div class="flex justify-between">
+                                <div class="flex">
+                                    <div class="py-1">
+                                        <svg
+                                            class="fill-current h-6 w-6 text-red-500 mr-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path
+                                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold">
+                                            Are you sure you want to delete this
+                                            pet
+                                        </p>
+                                        <p class="text-sm">
+                                            Make sure you know how these changes
+                                            affect you and still stop any ads
+                                            running
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="space-x-2">
+                                    <button
+                                        type="button"
+                                        class="relative justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                        @click="
+                                            onConfirmDeletionClick(myPet.id)
+                                        "
+                                    >
+                                        <span>Confirm Deletion</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
+                                        @click="isDeleteToggled = false"
+                                    >
+                                        <span>Cancel</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="space-y-6 py-6 sm:space-y-0 sm:divide-y sm:divide-gray-200 sm:py-0"
+                        >
+                            <div
+                                class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
+                            >
+                                <div>
+                                    <label
+                                        for="project-name"
+                                        class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                                        >Status</label
+                                    >
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <Select
+                                        v-if="routeState() !== states.VIEW"
+                                        v-model="myPet.status"
+                                        placeholder="Status"
+                                        :items="selectPetStatus"
+                                        :error-message="errorMessages.status"
+                                        :disabled="routeState() === states.VIEW"
+                                    />
+                                    <div
+                                        v-else
+                                        class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
+                                    >
+                                        {{
+                                            selectPetStatus.find(
+                                                status =>
+                                                    status.value ===
+                                                    myPet.status
+                                            )?.text
+                                        }}
+                                    </div>
+                                </div>
                             </div>
                             <div
-                                v-if="myPet.is_deleted === true"
-                                class="flex h-7 items-center space-x-2"
+                                class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
                             >
-                                <button
-                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
-                                >
-                                    Archived
-                                </button>
-                            </div>
-                            <div v-else class="flex h-7 items-center space-x-2">
-                                <button
-                                    v-if="
-                                        routeStateMeta()?.ctaButton.find(
-                                            button => button.type === 'cancel'
-                                        )
-                                    "
-                                    type="button"
-                                    class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
-                                    @click="
-                                        routeStateMeta()?.ctaButton.find(
-                                            button => button.type === 'cancel'
-                                        )?.route
-                                    "
-                                >
-                                    <span>Cancel</span>
-                                </button>
-                                <button
-                                    v-if="
-                                        routeStateMeta()?.ctaButton.find(
-                                            button => button.type === 'update'
-                                        )
-                                    "
-                                    type="button"
-                                    class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
-                                    @click="
-                                        routeStateMeta()?.ctaButton.find(
-                                            button => button.type === 'update'
-                                        )?.route
-                                    "
-                                >
-                                    <span>Update</span>
-                                </button>
-                                <Button
-                                    v-if="
-                                        routeStateMeta()?.ctaButton.find(
-                                            button => button.type === 'save'
-                                        )
-                                    "
-                                    :loading="isLoading"
-                                    @click="
-                                        routeStateMeta()?.ctaButton.find(
-                                            button => button.type === 'save'
-                                        )?.route
-                                    "
-                                >
-                                    Save
-                                </Button>
-                                <button
-                                    v-if="
-                                        routeStateMeta()?.ctaButton.find(
-                                            button => button.type === 'delete'
-                                        )
-                                    "
-                                    type="button"
-                                    class="relative justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                    :class="{ 'bg-red-300': isDeleteToggled }"
-                                    @click="
-                                        routeStateMeta()?.ctaButton.find(
-                                            button => button.type === 'delete'
-                                        )?.route
-                                    "
-                                >
-                                    <span>Delete</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        v-if="isDeleteToggled === true"
-                        class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3 shadow-md"
-                        role="alert"
-                    >
-                        <div class="flex justify-between">
-                            <div class="flex">
-                                <div class="py-1">
-                                    <svg
-                                        class="fill-current h-6 w-6 text-red-500 mr-4"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"
-                                        />
-                                    </svg>
-                                </div>
                                 <div>
-                                    <p class="font-bold">
-                                        Are you sure you want to delete this pet
-                                    </p>
-                                    <p class="text-sm">
-                                        Make sure you know how these changes
-                                        affect you and still stop any ads
-                                        running
-                                    </p>
+                                    <label
+                                        for="project-name"
+                                        class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                                        >Pet Image(s)</label
+                                    >
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <Carousel
+                                        :items-to-show="4"
+                                        snapAlign="start"
+                                    >
+                                        <Slide
+                                            v-for="(
+                                                image, index
+                                            ) in myPet.pet_images"
+                                            :key="image.url"
+                                            class="p-4"
+                                        >
+                                            <div class="relative">
+                                                <img
+                                                    class="aspect-square object-cover object-center w-40 rounded-md border border-blue-800"
+                                                    :src="image.url"
+                                                />
+                                                <button
+                                                    v-if="
+                                                        routeState() !==
+                                                        states.VIEW
+                                                    "
+                                                    class="absolute top-0 right-0 bg-red-500 text-white p-2 rounded hover:bg-blue-800 m-2"
+                                                    @click="
+                                                        onDeleteImageClick(
+                                                            index
+                                                        )
+                                                    "
+                                                >
+                                                    <XMarkIcon
+                                                        class="h-3 w-3"
+                                                        aria-hidden="true"
+                                                    />
+                                                </button>
+                                            </div>
+                                        </Slide>
+
+                                        <template #addons>
+                                            <pagination />
+                                        </template>
+                                    </Carousel>
+                                    <div
+                                        v-if="routeState() !== states.VIEW"
+                                        class="flex justify-center items-center w-full"
+                                    >
+                                        <label
+                                            for="dropzone-file"
+                                            class="flex flex-col justify-center items-center w-full h-36 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                                        >
+                                            <div
+                                                class="flex flex-col justify-center items-center p-2"
+                                            >
+                                                <svg
+                                                    aria-hidden="true"
+                                                    class="mb-3 w-10 h-10 text-gray-400"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                                                    ></path>
+                                                </svg>
+                                                <p
+                                                    class="mb-2 text-sm text-gray-500 dark:text-gray-400"
+                                                >
+                                                    <span class="font-semibold"
+                                                        >Click to upload</span
+                                                    >
+                                                    or drag and drop
+                                                </p>
+                                                <p
+                                                    class="text-xs text-gray-500 dark:text-gray-400"
+                                                >
+                                                    SVG, PNG, JPG (MAX.
+                                                    800x400px)
+                                                </p>
+                                            </div>
+                                            <input
+                                                ref="dropzoneFile"
+                                                id="dropzone-file"
+                                                type="file"
+                                                multiple
+                                                class="hidden"
+                                                accept=".jpg, .jpeg, .png"
+                                                @change="uploadImage($event)"
+                                                @click="
+                                                    $event.target.value = ''
+                                                "
+                                            />
+                                            <p
+                                                v-if="errorMessages.pet_images"
+                                                class="mt-2 text-sm text-red-600 dark:text-red-500"
+                                            >
+                                                {{ errorMessages.pet_images }}
+                                            </p>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="space-x-2">
-                                <button
-                                    type="button"
-                                    class="relative justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                    @click="onConfirmDeletionClick(myPet.id)"
-                                >
-                                    <span>Confirm Deletion</span>
-                                </button>
-                                <button
-                                    type="button"
-                                    class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
-                                    @click="isDeleteToggled = false"
-                                >
-                                    <span>Cancel</span>
-                                </button>
+
+                            <div
+                                class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
+                            >
+                                <div>
+                                    <label
+                                        for="project-name"
+                                        class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                                        >Pet's name</label
+                                    >
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <Input
+                                        v-if="routeState() !== states.VIEW"
+                                        v-model="myPet.name"
+                                        required
+                                        :error-message="errorMessages.name"
+                                        :disabled="routeState() === states.VIEW"
+                                    />
+                                    <div
+                                        v-else
+                                        class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
+                                    >
+                                        {{ myPet.name }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
+                            >
+                                <div>
+                                    <label
+                                        for="project-name"
+                                        class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                                        >Type</label
+                                    >
+                                </div>
+                                <div class="sm:col-span-2 space-x-2 flex">
+                                    <Select
+                                        v-if="routeState() !== states.VIEW"
+                                        v-model="myPet.animal_type_id"
+                                        placeholder="Select a type"
+                                        :items="selectAnimalTypes"
+                                        :error-message="
+                                            errorMessages.animal_type
+                                        "
+                                        :disabled="routeState() === states.VIEW"
+                                    />
+                                    <div
+                                        v-else
+                                        class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
+                                    >
+                                        {{
+                                            animalTypes?.find(
+                                                breed =>
+                                                    breed.id ===
+                                                    myPet.animal_type_id
+                                            )?.name
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
+                            >
+                                <div>
+                                    <label
+                                        for="project-name"
+                                        class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                                        >Gender</label
+                                    >
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <Switch
+                                        v-if="routeState() !== states.VIEW"
+                                        v-model="myPet.gender"
+                                        :label="
+                                            myPet.gender
+                                                ? Gender[Gender.Female]
+                                                : Gender[Gender.Male]
+                                        "
+                                    />
+                                    <div
+                                        v-else
+                                        class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
+                                    >
+                                        {{
+                                            myPet.gender === 1
+                                                ? 'Female'
+                                                : 'Male'
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
+                            >
+                                <div>
+                                    <label
+                                        for="project-name"
+                                        class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                                        >Email</label
+                                    >
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <Input
+                                        v-if="routeState() !== states.VIEW"
+                                        v-model="myPet.email"
+                                        :error-message="errorMessages.email"
+                                        :disabled="routeState() === states.VIEW"
+                                    />
+                                    <div
+                                        v-else
+                                        class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
+                                    >
+                                        {{ myPet.email }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
+                            >
+                                <div>
+                                    <label
+                                        for="project-name"
+                                        class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                                        >Contact Number</label
+                                    >
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <Input
+                                        v-if="routeState() !== states.VIEW"
+                                        v-model="myPet.contact_number"
+                                        :error-message="
+                                            errorMessages.contact_number
+                                        "
+                                        placeholder="123-456-7890"
+                                        :disabled="routeState() === states.VIEW"
+                                    />
+                                    <div
+                                        v-else
+                                        class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
+                                    >
+                                        {{ myPet.contact_number }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
+                            >
+                                <div>
+                                    <label
+                                        for="project-description"
+                                        class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                                        >Description</label
+                                    >
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <textarea
+                                        v-if="routeState() !== states.VIEW"
+                                        v-model="myPet.description"
+                                        id="project-description"
+                                        name="project-description"
+                                        rows="3"
+                                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        :class="{
+                                            'bg-slate-50 text-slate-500 border-slate-200 shadow-none':
+                                                routeState() === states.VIEW
+                                        }"
+                                        :disabled="routeState() === states.VIEW"
+                                    />
+                                    <div
+                                        v-else
+                                        class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
+                                    >
+                                        {{ myPet.description }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
+                            >
+                                <div>
+                                    <label
+                                        for="project-name"
+                                        class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                                        >Height/Weight</label
+                                    >
+                                </div>
+                                <div class="sm:col-span-2 space-x-2 flex">
+                                    <Input
+                                        v-if="routeState() !== states.VIEW"
+                                        v-model="myPet.height"
+                                        class="w-full"
+                                        type="number"
+                                        prefix="inches"
+                                        :disabled="routeState() === states.VIEW"
+                                    />
+                                    <Input
+                                        v-if="routeState() !== states.VIEW"
+                                        v-model="myPet.weight"
+                                        class="w-full"
+                                        type="number"
+                                        prefix="pounds"
+                                        :disabled="routeState() === states.VIEW"
+                                    />
+                                    <div
+                                        v-else-if="routeState() === states.VIEW"
+                                        class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
+                                    >
+                                        {{
+                                            `${myPet.height} inches / ${myPet.weight} pounds`
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
+                            >
+                                <div>
+                                    <label
+                                        for="project-name"
+                                        class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                                        >Vaccinated?</label
+                                    >
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <Switch
+                                        v-if="routeState() !== states.VIEW"
+                                        v-model="myPet.is_vaccinated"
+                                    />
+                                    <div
+                                        v-else
+                                        class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
+                                    >
+                                        {{ myPet.is_vaccinated ? 'Yes' : 'No' }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div
-                        class="space-y-6 py-6 sm:space-y-0 sm:divide-y sm:divide-gray-200 sm:py-0"
+                        class="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6"
                     >
-                        <div
-                            class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
-                        >
-                            <div>
-                                <label
-                                    for="project-name"
-                                    class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                                    >Status</label
-                                >
-                            </div>
-                            <div class="sm:col-span-2">
-                                <Select
-                                    v-if="routeState() !== states.VIEW"
-                                    v-model="myPet.status"
-                                    placeholder="Status"
-                                    :items="selectPetStatus"
-                                    :error-message="errorMessages.status"
-                                    :disabled="routeState() === states.VIEW"
-                                />
-                                <div
-                                    v-else
-                                    class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
-                                >
-                                    {{
-                                        selectPetStatus.find(
-                                            status =>
-                                                status.value === myPet.status
-                                        )?.text
-                                    }}
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
-                        >
-                            <div>
-                                <label
-                                    for="project-name"
-                                    class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                                    >Pet Image(s)</label
-                                >
-                            </div>
-                            <div class="sm:col-span-2">
-                                <Carousel :items-to-show="4" snapAlign="start">
-                                    <Slide
-                                        v-for="(
-                                            image, index
-                                        ) in myPet.pet_images"
-                                        :key="image.url"
-                                        class="p-4"
-                                    >
-                                        <div class="relative">
-                                            <img
-                                                class="aspect-square object-cover object-center w-40 rounded-md border border-blue-800"
-                                                :src="image.url"
-                                            />
-                                            <button
-                                                v-if="
-                                                    routeState() !== states.VIEW
-                                                "
-                                                class="absolute top-0 right-0 bg-red-500 text-white p-2 rounded hover:bg-blue-800 m-2"
-                                                @click="
-                                                    onDeleteImageClick(index)
-                                                "
-                                            >
-                                                <XMarkIcon
-                                                    class="h-3 w-3"
-                                                    aria-hidden="true"
-                                                />
-                                            </button>
-                                        </div>
-                                    </Slide>
+                        <div class="flex justify-end space-x-3">
+                            <Button
+                                v-if="
+                                    routeStateMeta()?.ctaButton.find(
+                                        button => button.type === 'cancel'
+                                    )
+                                "
+                                type="secondary"
+                                @click="
+                                    routeStateMeta()?.ctaButton.find(
+                                        button => button.type === 'cancel'
+                                    )?.route
+                                "
+                            >
+                                Cancel
+                            </Button>
 
-                                    <template #addons>
-                                        <pagination />
-                                    </template>
-                                </Carousel>
-                                <div
-                                    v-if="routeState() !== states.VIEW"
-                                    class="flex justify-center items-center w-full"
-                                >
-                                    <label
-                                        for="dropzone-file"
-                                        class="flex flex-col justify-center items-center w-full h-36 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-                                    >
-                                        <div
-                                            class="flex flex-col justify-center items-center p-2"
-                                        >
-                                            <svg
-                                                aria-hidden="true"
-                                                class="mb-3 w-10 h-10 text-gray-400"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                                                ></path>
-                                            </svg>
-                                            <p
-                                                class="mb-2 text-sm text-gray-500 dark:text-gray-400"
-                                            >
-                                                <span class="font-semibold"
-                                                    >Click to upload</span
-                                                >
-                                                or drag and drop
-                                            </p>
-                                            <p
-                                                class="text-xs text-gray-500 dark:text-gray-400"
-                                            >
-                                                SVG, PNG, JPG (MAX. 800x400px)
-                                            </p>
-                                        </div>
-                                        <input
-                                            ref="dropzoneFile"
-                                            id="dropzone-file"
-                                            type="file"
-                                            multiple
-                                            class="hidden"
-                                            accept=".jpg, .jpeg, .png"
-                                            @change="uploadImage($event)"
-                                            @click="$event.target.value = ''"
-                                        />
-                                        <p
-                                            v-if="errorMessages.pet_images"
-                                            class="mt-2 text-sm text-red-600 dark:text-red-500"
-                                        >
-                                            {{ errorMessages.pet_images }}
-                                        </p>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div
-                            class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
-                        >
-                            <div>
-                                <label
-                                    for="project-name"
-                                    class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                                    >Pet's name</label
-                                >
-                            </div>
-                            <div class="sm:col-span-2">
-                                <Input
-                                    v-if="routeState() !== states.VIEW"
-                                    v-model="myPet.name"
-                                    required
-                                    :error-message="errorMessages.name"
-                                    :disabled="routeState() === states.VIEW"
-                                />
-                                <div
-                                    v-else
-                                    class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
-                                >
-                                    {{ myPet.name }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div
-                            class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
-                        >
-                            <div>
-                                <label
-                                    for="project-name"
-                                    class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                                    >Type</label
-                                >
-                            </div>
-                            <div class="sm:col-span-2 space-x-2 flex">
-                                <Select
-                                    v-if="routeState() !== states.VIEW"
-                                    v-model="myPet.animal_type_id"
-                                    placeholder="Select a type"
-                                    :items="selectAnimalTypes"
-                                    :error-message="errorMessages.animal_type"
-                                    :disabled="routeState() === states.VIEW"
-                                />
-                                <div
-                                    v-else
-                                    class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
-                                >
-                                    {{
-                                        animalTypes?.find(
-                                            breed =>
-                                                breed.id ===
-                                                myPet.animal_type_id
-                                        )?.name
-                                    }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div
-                            class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
-                        >
-                            <div>
-                                <label
-                                    for="project-name"
-                                    class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                                    >Gender</label
-                                >
-                            </div>
-                            <div class="sm:col-span-2">
-                                <Switch
-                                    v-if="routeState() !== states.VIEW"
-                                    v-model="myPet.gender"
-                                    :label="
-                                        myPet.gender
-                                            ? Gender[Gender.Female]
-                                            : Gender[Gender.Male]
-                                    "
-                                />
-                                <div
-                                    v-else
-                                    class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
-                                >
-                                    {{ myPet.gender === 1 ? 'Female' : 'Male' }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div
-                            class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
-                        >
-                            <div>
-                                <label
-                                    for="project-name"
-                                    class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                                    >Email</label
-                                >
-                            </div>
-                            <div class="sm:col-span-2">
-                                <Input
-                                    v-if="routeState() !== states.VIEW"
-                                    v-model="myPet.email"
-                                    :error-message="errorMessages.email"
-                                    :disabled="routeState() === states.VIEW"
-                                />
-                                <div
-                                    v-else
-                                    class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
-                                >
-                                    {{ myPet.email }}
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
-                        >
-                            <div>
-                                <label
-                                    for="project-name"
-                                    class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                                    >Contact Number</label
-                                >
-                            </div>
-                            <div class="sm:col-span-2">
-                                <Input
-                                    v-if="routeState() !== states.VIEW"
-                                    v-model="myPet.contact_number"
-                                    :error-message="
-                                        errorMessages.contact_number
-                                    "
-                                    placeholder="123-456-7890"
-                                    :disabled="routeState() === states.VIEW"
-                                />
-                                <div
-                                    v-else
-                                    class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
-                                >
-                                    {{ myPet.contact_number }}
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
-                        >
-                            <div>
-                                <label
-                                    for="project-description"
-                                    class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                                    >Description</label
-                                >
-                            </div>
-                            <div class="sm:col-span-2">
-                                <textarea
-                                    v-if="routeState() !== states.VIEW"
-                                    v-model="myPet.description"
-                                    id="project-description"
-                                    name="project-description"
-                                    rows="3"
-                                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                    :class="{
-                                        'bg-slate-50 text-slate-500 border-slate-200 shadow-none':
-                                            routeState() === states.VIEW
-                                    }"
-                                    :disabled="routeState() === states.VIEW"
-                                />
-                                <div
-                                    v-else
-                                    class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
-                                >
-                                    {{ myPet.description }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div
-                            class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
-                        >
-                            <div>
-                                <label
-                                    for="project-name"
-                                    class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                                    >Height/Weight</label
-                                >
-                            </div>
-                            <div class="sm:col-span-2 space-x-2 flex">
-                                <Input
-                                    v-if="routeState() !== states.VIEW"
-                                    v-model="myPet.height"
-                                    class="w-full"
-                                    type="number"
-                                    prefix="inches"
-                                    :disabled="routeState() === states.VIEW"
-                                />
-                                <Input
-                                    v-if="routeState() !== states.VIEW"
-                                    v-model="myPet.weight"
-                                    class="w-full"
-                                    type="number"
-                                    prefix="pounds"
-                                    :disabled="routeState() === states.VIEW"
-                                />
-                                <div
-                                    v-else-if="routeState() === states.VIEW"
-                                    class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
-                                >
-                                    {{
-                                        `${myPet.height} inches / ${myPet.weight} pounds`
-                                    }}
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
-                        >
-                            <div>
-                                <label
-                                    for="project-name"
-                                    class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                                    >Vaccinated?</label
-                                >
-                            </div>
-                            <div class="sm:col-span-2">
-                                <Switch
-                                    v-if="routeState() !== states.VIEW"
-                                    v-model="myPet.is_vaccinated"
-                                />
-                                <div
-                                    v-else
-                                    class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
-                                >
-                                    {{ myPet.is_vaccinated ? 'Yes' : 'No' }}
-                                </div>
-                            </div>
+                            <button
+                                v-if="
+                                    routeStateMeta()?.ctaButton.find(
+                                        button => button.type === 'update'
+                                    )
+                                "
+                                type="button"
+                                class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
+                                @click="
+                                    routeStateMeta()?.ctaButton.find(
+                                        button => button.type === 'update'
+                                    )?.route
+                                "
+                            >
+                                <span>Update</span>
+                            </button>
+                            <Button
+                                v-if="
+                                    routeStateMeta()?.ctaButton.find(
+                                        button => button.type === 'save'
+                                    )
+                                "
+                                :loading="isLoading"
+                                @click="
+                                    routeStateMeta()?.ctaButton.find(
+                                        button => button.type === 'save'
+                                    )?.route
+                                "
+                            >
+                                Save
+                            </Button>
+                            <button
+                                v-if="
+                                    routeStateMeta()?.ctaButton.find(
+                                        button => button.type === 'delete'
+                                    )
+                                "
+                                type="button"
+                                class="relative justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                @click="
+                                    routeStateMeta()?.ctaButton.find(
+                                        button => button.type === 'delete'
+                                    )?.route
+                                "
+                            >
+                                <span>Delete</span>
+                            </button>
                         </div>
                     </div>
-                </div>
-
-                <div
-                    class="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6"
-                >
-                    <div class="flex justify-end space-x-3">
-                        <Button
-                            v-if="
-                                routeStateMeta()?.ctaButton.find(
-                                    button => button.type === 'cancel'
-                                )
-                            "
-                            type="secondary"
-                            @click="
-                                routeStateMeta()?.ctaButton.find(
-                                    button => button.type === 'cancel'
-                                )?.route
-                            "
-                        >
-                            Cancel
-                        </Button>
-
-                        <button
-                            v-if="
-                                routeStateMeta()?.ctaButton.find(
-                                    button => button.type === 'update'
-                                )
-                            "
-                            type="button"
-                            class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
-                            @click="
-                                routeStateMeta()?.ctaButton.find(
-                                    button => button.type === 'update'
-                                )?.route
-                            "
-                        >
-                            <span>Update</span>
-                        </button>
-                        <Button
-                            v-if="
-                                routeStateMeta()?.ctaButton.find(
-                                    button => button.type === 'save'
-                                )
-                            "
-                            :loading="isLoading"
-                            @click="
-                                routeStateMeta()?.ctaButton.find(
-                                    button => button.type === 'save'
-                                )?.route
-                            "
-                        >
-                            Save
-                        </Button>
-                        <button
-                            v-if="
-                                routeStateMeta()?.ctaButton.find(
-                                    button => button.type === 'delete'
-                                )
-                            "
-                            type="button"
-                            class="relative justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                            @click="
-                                routeStateMeta()?.ctaButton.find(
-                                    button => button.type === 'delete'
-                                )?.route
-                            "
-                        >
-                            <span>Delete</span>
-                        </button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </template>

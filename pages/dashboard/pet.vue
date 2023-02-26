@@ -161,7 +161,7 @@
                                     <span class="hidden space-x-3 lg:flex">
                                         <button
                                             type="button"
-                                            class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
+                                            class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
                                             @click="
                                                 router.push('/dashboard/pet')
                                             "
@@ -244,7 +244,7 @@
                                     <span class="hidden space-x-3 lg:flex">
                                         <button
                                             type="button"
-                                            class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
+                                            class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
                                             @click="
                                                 router.push('/dashboard/pet')
                                             "
@@ -257,155 +257,6 @@
                                         </button>
                                     </span>
                                 </div>
-                                <!-- <span class="hidden space-x-3 lg:flex">
-                                    <button
-                                        type="button"
-                                        class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
-                                        @click="
-                                            router.push('/dashboard/pet/create')
-                                        "
-                                    >
-                                        <AcademicCapIcon
-                                            class="mr-2.5 h-5 w-5 text-gray-400"
-                                            aria-hidden="true"
-                                        />
-                                        <span>Create Ad</span>
-                                    </button>
-                                </span>
-                                <span
-                                    v-if="
-                                        route.name !==
-                                        'dashboard-pet-create___en'
-                                    "
-                                    class="hidden space-x-3 lg:flex"
-                                    @click="
-                                        router.push('/dashboard/pet/create')
-                                    "
-                                >
-                                    <button
-                                        type="button"
-                                        class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
-                                    >
-                                        <AcademicCapIcon
-                                            class="mr-2.5 h-5 w-5 text-gray-400"
-                                            aria-hidden="true"
-                                        />
-                                        <span>Create a pet posting</span>
-                                    </button>
-                                </span>
-                                <span
-                                    v-if="
-                                        route.name ===
-                                        'dashboard-pet-create___en'
-                                    "
-                                    class="hidden space-x-3 lg:flex"
-                                >
-                                    <button
-                                        type="button"
-                                        class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
-                                        @click="router.push('/dashboard/pet/')"
-                                    >
-                                        <XMarkIcon
-                                            class="mr-2.5 h-5 w-5 text-gray-400"
-                                            aria-hidden="true"
-                                        />
-                                        <span>Cancel</span>
-                                    </button>
-                                </span> -->
-
-                                <!-- <Menu
-                                        as="div"
-                                        class="relative -ml-px block sm:shadow-sm lg:hidden"
-                                    >
-                                        <div>
-                                            <MenuButton
-                                                class="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:rounded-md sm:px-3"
-                                            >
-                                                <span class="sr-only sm:hidden"
-                                                    >More</span
-                                                >
-                                                <span class="hidden sm:inline"
-                                                    >More</span
-                                                >
-                                                <ChevronDownIcon
-                                                    class="h-5 w-5 text-gray-400 sm:ml-2 sm:-mr-1"
-                                                    aria-hidden="true"
-                                                />
-                                            </MenuButton>
-                                        </div>
-
-                                        <transition
-                                            enter-active-class="transition ease-out duration-100"
-                                            enter-from-class="transform opacity-0 scale-95"
-                                            enter-to-class="transform opacity-100 scale-100"
-                                            leave-active-class="transition ease-in duration-75"
-                                            leave-from-class="transform opacity-100 scale-100"
-                                            leave-to-class="transform opacity-0 scale-95"
-                                        >
-                                            <MenuItems
-                                                class="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                            >
-                                                <div class="py-1">
-                                                    <MenuItem
-                                                        v-slot="{ active }"
-                                                    >
-                                                        <a
-                                                            href="#"
-                                                            :class="[
-                                                                active
-                                                                    ? 'bg-gray-100 text-gray-900'
-                                                                    : 'text-gray-700',
-                                                                'block px-4 py-2 text-sm sm:hidden'
-                                                            ]"
-                                                            >Note</a
-                                                        >
-                                                    </MenuItem>
-                                                    <MenuItem
-                                                        v-slot="{ active }"
-                                                    >
-                                                        <a
-                                                            href="#"
-                                                            :class="[
-                                                                active
-                                                                    ? 'bg-gray-100 text-gray-900'
-                                                                    : 'text-gray-700',
-                                                                'block px-4 py-2 text-sm sm:hidden'
-                                                            ]"
-                                                            >Assign</a
-                                                        >
-                                                    </MenuItem>
-                                                    <MenuItem
-                                                        v-slot="{ active }"
-                                                    >
-                                                        <a
-                                                            href="#"
-                                                            :class="[
-                                                                active
-                                                                    ? 'bg-gray-100 text-gray-900'
-                                                                    : 'text-gray-700',
-                                                                'block px-4 py-2 text-sm'
-                                                            ]"
-                                                            >Archive</a
-                                                        >
-                                                    </MenuItem>
-                                                    <MenuItem
-                                                        v-slot="{ active }"
-                                                    >
-                                                        <a
-                                                            href="#"
-                                                            :class="[
-                                                                active
-                                                                    ? 'bg-gray-100 text-gray-900'
-                                                                    : 'text-gray-700',
-                                                                'block px-4 py-2 text-sm'
-                                                            ]"
-                                                            >Move</a
-                                                        >
-                                                    </MenuItem>
-                                                </div>
-                                            </MenuItems>
-                                        </transition>
-                                    </Menu> -->
                             </div>
                         </div>
                     </div>
