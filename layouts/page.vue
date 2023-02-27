@@ -35,7 +35,7 @@
                                 leave-to="translate-x-full"
                             >
                                 <DialogPanel
-                                    class="pointer-events-auto w-screen max-w-md"
+                                    class="pointer-events-auto w-screen md:max-w-xl"
                                 >
                                     <div
                                         class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl"
@@ -108,11 +108,14 @@
                                                                     </p>
 
                                                                     <div
-                                                                        class="mt-1 grid grid-cols-3 gap-3"
+                                                                        class="mt-1 grid grid-cols-1 gap-3"
                                                                     >
-                                                                        <div>
+                                                                        <div
+                                                                            @click="
+                                                                                onSignFacebookClick()
+                                                                            "
+                                                                        >
                                                                             <a
-                                                                                href="#"
                                                                                 class="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                                                                             >
                                                                                 <span
@@ -137,7 +140,7 @@
                                                                             </a>
                                                                         </div>
 
-                                                                        <div>
+                                                                        <!-- <div>
                                                                             <a
                                                                                 href="#"
                                                                                 class="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
@@ -160,9 +163,9 @@
                                                                                     />
                                                                                 </svg>
                                                                             </a>
-                                                                        </div>
+                                                                        </div> -->
 
-                                                                        <div>
+                                                                        <!-- <div>
                                                                             <a
                                                                                 href="#"
                                                                                 class="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
@@ -187,7 +190,7 @@
                                                                                     />
                                                                                 </svg>
                                                                             </a>
-                                                                        </div>
+                                                                        </div> -->
                                                                     </div>
                                                                 </div>
 
@@ -537,7 +540,18 @@
                                                                     </div>
 
                                                                     <div>
-                                                                        <button
+                                                                        <Button
+                                                                            class="w-full"
+                                                                            :loading="
+                                                                                isLoading
+                                                                            "
+                                                                            @click="
+                                                                                onSignupClick
+                                                                            "
+                                                                        >
+                                                                            Save
+                                                                        </Button>
+                                                                        <!-- <button
                                                                             type="button"
                                                                             class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                                                             @click="
@@ -546,7 +560,7 @@
                                                                         >
                                                                             Sign
                                                                             up
-                                                                        </button>
+                                                                        </button> -->
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -584,8 +598,9 @@
 <script lang="ts" setup>
 import { InputType } from '~/types/InputType'
 import Input from '~/components/atom/Input.vue'
-import Footer from '~~/components/Footer.vue'
-import NavBar from '~~/components/NavBar.vue'
+import Footer from '~/components/Footer.vue'
+import NavBar from '~/components/NavBar.vue'
+import Button from '~/components/atom/Button.vue'
 import { AuthType, useDrawerStore } from '~~/stores/drawer'
 import { useAuthStore } from '~~/stores/auth'
 import { usePetStore } from '~~/stores/pet'
@@ -596,9 +611,9 @@ import {
     TransitionRoot
 } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
-import useAuthRepository from '~/repositories/auth'
+import useAuthRepository, { AuthProviderType } from '~/repositories/auth'
 
-const { signUp, getUserByEmail, signIn } = useAuthRepository()
+const { signUp, getUserByEmail, signIn, signInProvider } = useAuthRepository()
 const drawer = useDrawerStore()
 const authStore = useAuthStore()
 const petStore = usePetStore()
@@ -690,6 +705,10 @@ const allSignupErrorMessageValidation = async () => {
             ? 'Email has been taken'
             : ''
     }
+}
+
+const onSignFacebookClick = async () => {
+    await signInProvider(AuthProviderType.FACEBOOK)
 }
 
 const allLoginErrorMessageValidation = async () => {
