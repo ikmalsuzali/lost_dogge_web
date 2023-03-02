@@ -35,7 +35,7 @@
                             :key="pet?.id"
                             class="flex flex-row bg-white py-5 px-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-600 hover:bg-gray-300"
                             :class="{
-                                'bg-gray-200': route.params.id === pet?.id
+                                'bg-gray-200': petIdByRoute === pet?.id
                             }"
                             @click="
                                 router.push(`/dashboard/pet/${pet.id}/details`)
@@ -254,7 +254,7 @@
             </div>
 
             <div class="min-h-0 flex-1 overflow-y-auto">
-                <NuxtPage />
+                <NuxtPage :myPet="myPet" />
             </div>
         </section>
     </main>
@@ -285,6 +285,8 @@ definePageMeta({
 const route = useRoute()
 const router = useRouter()
 const { fetchFirstSuccessfulPayment } = useSubscriptionRepository()
+
+const petIdByRoute = ref()
 
 enum PetStatus {
     Registered = '0',
@@ -390,9 +392,7 @@ const uploadImage = async (e: InputEvent) => {
         try {
             const data = await uploadPetImage(auth?.user?.id, image)
             unref(myPet).images.push(data?.publicURL)
-        } catch (error) {
-            console.log(error)
-        }
+        } catch (error) {}
     }
 }
 
@@ -479,9 +479,7 @@ const allMyPetErrorMessage = () => {
 const fetchMyPets = async (userId: string) => {
     try {
         myPets.value = await getMyPets(userId)
-    } catch (error) {
-        console.log(error)
-    }
+    } catch (error) {}
 }
 fetchMyPets(auth?.user?.id)
 
@@ -491,9 +489,7 @@ const onSaveMyPet = async () => {
         allMyPetErrorMessage()
         if (isErrorMessageEmpty(unref(errorMessages))) return
         const data = await createPet(unref(myPet))
-        console.log(data)
     } catch (error) {
-        console.log(error)
     } finally {
         isLoading.value = false
     }
@@ -518,6 +514,15 @@ watch(
             payment.value = null
             getUserPayment(value.id)
         }
+    },
+    { immediate: true }
+)
+
+watch(
+    () => unref(route).fullPath,
+    value => {
+        petIdByRoute.value = unref(route).fullPath?.split('/')?.[3]
+        myPet.value = unref(myPets)?.find(pet => pet.id === petIdByRoute.value)
     },
     { immediate: true }
 )
