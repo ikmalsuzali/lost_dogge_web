@@ -35,7 +35,7 @@
                             :key="pet?.id"
                             class="flex flex-row bg-white py-5 px-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-600 hover:bg-gray-300"
                             :class="{
-                                'bg-gray-200': route.params.id === pet?.id
+                                'bg-gray-200': petIdByRoute === pet?.id
                             }"
                             @click="
                                 router.push(`/dashboard/pet/${pet.id}/details`)
@@ -75,18 +75,7 @@
                                 <button
                                     class="w-10 text-right flex justify-end"
                                 >
-                                    <svg
-                                        width="20"
-                                        fill="currentColor"
-                                        height="20"
-                                        class="hover:text-gray-800 dark:hover:text-white dark:text-gray-200 text-gray-500"
-                                        viewBox="0 0 1792 1792"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"
-                                        ></path>
-                                    </svg>
+                                    <ArrowSmallRightIcon class="h-3 w-3" />
                                 </button>
                             </div>
                         </li>
@@ -265,7 +254,7 @@
             </div>
 
             <div class="min-h-0 flex-1 overflow-y-auto">
-                <NuxtPage />
+                <NuxtPage :myPet="myPet" />
             </div>
         </section>
     </main>
@@ -276,7 +265,8 @@ import {
     MagnifyingGlassIcon,
     BookOpenIcon,
     AcademicCapIcon,
-    XMarkIcon
+    XMarkIcon,
+    ArrowSmallRightIcon
 } from '@heroicons/vue/20/solid'
 import { useRoute, useRouter } from 'vue-router'
 import usePetRepository from '~/repositories/pets'
@@ -295,6 +285,8 @@ definePageMeta({
 const route = useRoute()
 const router = useRouter()
 const { fetchFirstSuccessfulPayment } = useSubscriptionRepository()
+
+const petIdByRoute = ref()
 
 enum PetStatus {
     Registered = '0',
@@ -400,9 +392,7 @@ const uploadImage = async (e: InputEvent) => {
         try {
             const data = await uploadPetImage(auth?.user?.id, image)
             unref(myPet).images.push(data?.publicURL)
-        } catch (error) {
-            console.log(error)
-        }
+        } catch (error) {}
     }
 }
 
@@ -489,9 +479,7 @@ const allMyPetErrorMessage = () => {
 const fetchMyPets = async (userId: string) => {
     try {
         myPets.value = await getMyPets(userId)
-    } catch (error) {
-        console.log(error)
-    }
+    } catch (error) {}
 }
 fetchMyPets(auth?.user?.id)
 
@@ -501,9 +489,7 @@ const onSaveMyPet = async () => {
         allMyPetErrorMessage()
         if (isErrorMessageEmpty(unref(errorMessages))) return
         const data = await createPet(unref(myPet))
-        console.log(data)
     } catch (error) {
-        console.log(error)
     } finally {
         isLoading.value = false
     }
@@ -528,6 +514,15 @@ watch(
             payment.value = null
             getUserPayment(value.id)
         }
+    },
+    { immediate: true }
+)
+
+watch(
+    () => unref(route).fullPath,
+    value => {
+        petIdByRoute.value = unref(route).fullPath?.split('/')?.[3]
+        myPet.value = unref(myPets)?.find(pet => pet.id === petIdByRoute.value)
     },
     { immediate: true }
 )

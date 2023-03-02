@@ -20,8 +20,9 @@
                 <CogIcon class="h-6 w-6" aria-hidden="true" />
             </button>
         </div>
-        <div class="w-3/12 flex mx-auto" v-if="isLoading">
+        <div v-if="isLoading" class="w-5/12 flex mx-auto justify-center mt-20">
             <Vue3Lottie
+                class="w-80"
                 animationLink="https://fhasuqzjmruhvugclutt.supabase.co/storage/v1/object/public/pets/website/lost-dog-loading.json"
             />
         </div>
@@ -345,11 +346,7 @@
                                     :radius="1"
                                 />
 
-                                <MapboxMarker :lngLat="selectedPetLatLong">
-                                    <v-icon slot="marker"
-                                        >mdi-map-marker</v-icon
-                                    >
-                                </MapboxMarker>
+                                <MapboxMarker :lngLat="selectedPetLatLong" />
                             </MapboxMap>
                         </div>
                     </div>

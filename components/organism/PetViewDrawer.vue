@@ -221,11 +221,7 @@
                                     :radius="1"
                                 />
 
-                                <MapboxMarker :lngLat="selectedPetLatLong">
-                                    <v-icon slot="marker"
-                                        >mdi-map-marker</v-icon
-                                    >
-                                </MapboxMarker>
+                                <MapboxMarker :lngLat="selectedPetLatLong" />
                             </MapboxMap>
                         </div>
                     </div>

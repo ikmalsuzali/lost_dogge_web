@@ -18,7 +18,7 @@
             <div class="fixed inset-0 overflow-hidden">
                 <div class="absolute inset-0 overflow-hidden">
                     <div
-                        class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16"
+                        class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full"
                     >
                         <TransitionChild
                             as="template"
@@ -30,7 +30,7 @@
                             leave-to="translate-x-full"
                         >
                             <DialogPanel
-                                class="pointer-events-auto w-screen max-w-md"
+                                class="pointer-events-auto w-screen max-w-[100%] md:max-w-xl"
                             >
                                 <div
                                     class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl"
