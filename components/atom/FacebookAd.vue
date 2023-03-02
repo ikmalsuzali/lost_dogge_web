@@ -47,6 +47,7 @@
             :items-to-show="1"
             snapAlign="start"
             wrapAround
+            :autoplay="5000"
         >
             <Slide v-for="(image, index) in images" :key="image.url">
                 <div class="relative">
@@ -56,9 +57,6 @@
                     />
                 </div>
             </Slide>
-            <!-- <template #addons>
-                <pagination />
-            </template> -->
         </Carousel>
         <div class="">
             <div
@@ -178,10 +176,7 @@ const props = withDefaults(
         adHeader: string
     }>(),
     {
-        images: () => [
-            'https://loremflickr.com/640/480/city',
-            'https://loremflickr.com/640/480/city'
-        ],
+        images: () => [],
         adHeader:
             'Live in perject harmony with nature yet remain distintively urban in spirit Sunway dhill Kota Damansara Live in perject harmony with nature yet remain distintively urban in spirit Sunway dhill Kota Damansara'
     }
@@ -204,11 +199,7 @@ const showTruncate = computed(() => {
     }
 })
 
-const { resume } = useIntervalFn(() => {
-    //     console.log('hello')
-    //     console.log(unref(myCarousel))
+const onNext = () => {
     unref(myCarousel).next()
-}, 5000)
-
-resume()
+}
 </script>
