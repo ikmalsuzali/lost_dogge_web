@@ -47,7 +47,7 @@
             :items-to-show="1"
             snapAlign="start"
             wrapAround
-            :autoplay="5000"
+            :autoplay="isAutoPlay ? 5000 : 0"
         >
             <Slide v-for="(image, index) in images" :key="image.url">
                 <div class="relative">
@@ -174,11 +174,13 @@ const props = withDefaults(
     defineProps<{
         images: string[]
         adHeader: string
+        isAutoPlay: boolean
     }>(),
     {
         images: () => [],
         adHeader:
-            'Live in perject harmony with nature yet remain distintively urban in spirit Sunway dhill Kota Damansara Live in perject harmony with nature yet remain distintively urban in spirit Sunway dhill Kota Damansara'
+            'Live in perject harmony with nature yet remain distintively urban in spirit Sunway dhill Kota Damansara Live in perject harmony with nature yet remain distintively urban in spirit Sunway dhill Kota Damansara',
+        isAutoPlay: false
     }
 )
 
