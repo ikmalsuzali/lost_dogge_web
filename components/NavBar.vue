@@ -1,90 +1,110 @@
 <template>
-    <header class="bg-indigo-600">
-        <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Top">
-            <div
-                class="flex w-full items-center justify-between border-b border-indigo-500 py-6 lg:border-none"
-            >
-                <div class="flex items-center">
-                    <a href="#">
-                        <span class="sr-only">Your Company</span>
+    <nav class="">
+        <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
+            <div class="flex h-20 justify-between">
+                <div class="flex px-2 lg:px-0">
+                    <div class="flex flex-shrink-0 items-center">
                         <img
-                            class="h-20 w-auto"
-                            src="https://fhasuqzjmruhvugclutt.supabase.co/storage/v1/object/public/pets/website/logo.png?t=2023-01-08T10%3A13%3A37.506Z"
-                            alt=""
+                            class="block h-16 w-auto"
+                            src="~/assets/images/logo-lost-doggo.svg"
+                            alt="Your Company"
                         />
-                    </a>
-                    <div class="ml-10 hidden space-x-8 lg:block">
+                    </div>
+                    <div class="hidden lg:ml-6 lg:flex lg:space-x-8">
                         <a
                             v-for="link in navigation"
                             :key="link.name"
                             :href="link.href"
-                            class="text-base font-medium text-white hover:text-indigo-50"
+                            class="inline-flex items-center px-1 pt-1 text-base font-bold decoration-wavy underline-offset-8 transition"
+                            :class="{
+                                'text-[#5B1310] underline':
+                                    currentRouteName === link.href,
+                                'text-[#5B1310]/60  hover:text-[#5B1310] hover:underline':
+                                    currentRouteName !== link.href
+                            }"
                             >{{ link.name }}</a
                         >
                     </div>
                 </div>
-                <div v-if="auth.user?.id" class="ml-10 space-x-4">
-                    <a
-                        class="inline-block rounded-md border border-transparent bg-white py-2 px-4 text-base font-medium text-indigo-600 hover:bg-indigo-50 cursor-pointer"
-                        @click="routePush('/dashboard/pet')"
-                        >Dashboard</a
-                    >
-                    <a
-                        class="inline-block rounded-md border border-transparent bg-indigo-500 py-2 px-4 text-base font-medium text-white hover:bg-opacity-75 cursor-pointer"
-                        @click="auth.logout"
-                        >Logout</a
-                    >
-                </div>
-                <div v-else class="ml-10 space-x-4">
-                    <a
-                        class="inline-block rounded-md border border-transparent bg-indigo-500 py-2 px-4 text-base font-medium text-white hover:bg-opacity-75 cursor-pointer"
-                        @click="toggleSignupLoginDrawer(AuthType.SIGN_IN)"
-                        >Sign in</a
-                    >
-                    <a
-                        class="inline-block rounded-md border border-transparent bg-white py-2 px-4 text-base font-medium text-indigo-600 hover:bg-indigo-50 cursor-pointer"
-                        @click="toggleSignupLoginDrawer(AuthType.SIGN_UP)"
-                        >Sign up</a
-                    >
-                </div>
-            </div>
-            <div class="flex flex-wrap justify-center space-x-6 py-4 lg:hidden">
-                <a
-                    v-for="link in navigation"
-                    :key="link.name"
-                    @click="routePush(link.href)"
-                    class="text-base font-medium text-white hover:text-indigo-50"
-                    >{{ link.name }}</a
+                <div
+                    class="flex flex-1 items-center justify-center px-2 lg:ml-6 lg:justify-end"
                 >
+                    <div class="w-full max-w-lg lg:max-w-xs">
+                        <label for="search" class="sr-only">Search</label>
+                        <div class="relative">
+                            <div
+                                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+                            >
+                                <svg
+                                    class="h-5 w-5 text-gray-400"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        fill-rule="evenodd"
+                                        d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                                        clip-rule="evenodd"
+                                    />
+                                </svg>
+                            </div>
+                            <input
+                                id="search"
+                                name="search"
+                                class="block w-full rounded-md border border-gray-300 bg-white/70 py-2 pl-10 pr-3 leading-5 placeholder-gray-500 focus:border-[#5C1511] focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#5C1511] sm:text-sm"
+                                placeholder="Search"
+                                type="search"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="grid grid-cols-2 gap-2 items-center justify-items-start"
+                >
+                    <template v-if="auth.user?.id">
+                        <a
+                            href="#"
+                            class="text-center inline-flex items-center rounded-md border border-transparent bg-[#5C1511] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#5C1511]/80 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2"
+                            >Dashboard</a
+                        >
+                        <a
+                            href="#"
+                            class="text-center inline-flex items-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-[#5C1511] shadow-sm hover:bg-white/80 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2"
+                            >Logout</a
+                        >
+                    </template>
+                    <template v-else>
+                        <a
+                            href="#"
+                            class="text-center inline-flex items-center rounded-md border border-transparent bg-[#5C1511] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#5C1511]/80 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2"
+                            >Sign in</a
+                        >
+                        <a
+                            href="#"
+                            class="text-center inline-flex items-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-[#5C1511] shadow-sm hover:bg-white/80 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2"
+                            >Sign up</a
+                        >
+                    </template>
+                </div>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useDrawerStore } from '~~/stores/drawer'
-import { AuthType } from '~~/stores/drawer'
 import { useAuthStore } from '~~/stores/auth'
 
-const drawer = useDrawerStore()
 const auth = useAuthStore()
 
 const router = useRouter()
+const currentRouteName = computed(() => router.currentRoute.value.fullPath)
 
 const navigation = [
     { name: 'Home', href: '/' },
-    { name: 'Lost', href: '/pets?type=found' },
-    { name: 'Found', href: '/pets?type=lost' }
+    { name: 'Lost', href: '/pets?type=lost' },
+    { name: 'Found', href: '/pets?type=found' }
     // { name: 'Pricing', href: '/pricing' }
 ]
-
-const routePush = (path: string) => {
-    router.push(path)
-}
-
-const toggleSignupLoginDrawer = (type: AuthType) => {
-    drawer.toggleSignupLoginDrawer()
-    drawer.setDrawerType(type)
-}
 </script>
