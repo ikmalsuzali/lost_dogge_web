@@ -6,7 +6,7 @@
             <div class="flex mr-2">
                 <img
                     class="h-10 w-auto rounded-full"
-                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80"
+                    src="~/assets/images/logo-lost-doggo.svg"
                     alt="Your Company"
                 />
             </div>
@@ -52,7 +52,7 @@
             <Slide v-for="(image, index) in images" :key="image.url">
                 <div class="relative">
                     <img
-                        class="aspect-square object-cover object-center"
+                        class="aspect-video object-contain object-center"
                         :src="image"
                     />
                 </div>
@@ -204,4 +204,6 @@ const showTruncate = computed(() => {
 const onNext = () => {
     unref(myCarousel).next()
 }
+
+defineExpose({ onNext })
 </script>

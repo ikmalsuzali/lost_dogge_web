@@ -96,7 +96,7 @@
                         <div
                             class="container flex flex-wrap items-center justify-between mx-auto"
                         >
-                            <span
+                            <!-- <span
                                 v-if="
                                     route.name ===
                                         'dashboard-pet-id-details___en' ||
@@ -135,7 +135,7 @@
                                     />
                                     <span>Matches</span>
                                 </button>
-                            </span>
+                            </span> -->
                             <div></div>
 
                             <!-- Left buttons -->
@@ -291,7 +291,8 @@ const petIdByRoute = ref()
 enum PetStatus {
     Registered = '0',
     Lost = '1',
-    Found = '2'
+    Found = '2',
+    Success = '3'
 }
 
 enum Gender {
@@ -479,6 +480,8 @@ const allMyPetErrorMessage = () => {
 const fetchMyPets = async (userId: string) => {
     try {
         myPets.value = await getMyPets(userId)
+        petIdByRoute.value = unref(route).fullPath?.split('/')?.[3]
+        myPet.value = unref(myPets)?.find(pet => pet.id === petIdByRoute.value)
     } catch (error) {}
 }
 fetchMyPets(auth?.user?.id)

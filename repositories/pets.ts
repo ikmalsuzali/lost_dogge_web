@@ -23,16 +23,19 @@ const usePetRepository = () => {
         return data
     }
 
-    const getRandomPets = async (petStatus: number) => {
-        const { data, error } = await $supabase
-            .from('pets')
-            .select('id, name, pet_images(*)')
-            .eq('status', petStatus)
-            .range(0, 30)
-            .order('created_at', { ascending: false })
+    const getRandomPets = async (limit: number) => {
+        const data = await axios(
+            `${config.API_HOST}/api/v1/pets/latest-activity`,
+            {
+                params: {
+                    limit
+                }
+            }
+        )
 
-        if (error) throw error
-        return data
+        const petsData = data?.data?.pets
+        if (!petsData) return []
+        return petsData
     }
 
     const getPets = async payload => {

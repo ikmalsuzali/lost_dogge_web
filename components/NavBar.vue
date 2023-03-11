@@ -1,4 +1,4 @@
-<template>
+i<template>
     <nav class="">
         <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
             <div class="flex h-20 justify-between">
@@ -26,7 +26,7 @@
                         >
                     </div>
                 </div>
-                <div
+                <!-- <div
                     class="flex flex-1 items-center justify-center px-2 lg:ml-6 lg:justify-end"
                 >
                     <div class="w-full max-w-lg lg:max-w-xs">
@@ -57,31 +57,33 @@
                             />
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div
                     class="grid grid-cols-2 gap-2 items-center justify-items-start"
                 >
                     <template v-if="auth.user?.id">
                         <a
-                            href="#"
+                            href="/dashboard/pet"
                             class="text-center inline-flex items-center rounded-md border border-transparent bg-[#5C1511] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#5C1511]/80 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2"
                             >Dashboard</a
                         >
                         <a
-                            href="#"
                             class="text-center inline-flex items-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-[#5C1511] shadow-sm hover:bg-white/80 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2"
-                            >Logout</a
+                            @click="onLogoutClick"
                         >
+                            Logout
+                        </a>
                     </template>
                     <template v-else>
                         <a
-                            href="#"
                             class="text-center inline-flex items-center rounded-md border border-transparent bg-[#5C1511] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#5C1511]/80 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2"
+                            @click="$emit('sign-in')"
                             >Sign in</a
                         >
                         <a
                             href="#"
                             class="text-center inline-flex items-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-[#5C1511] shadow-sm hover:bg-white/80 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2"
+                            @click="$emit('sign-up')"
                             >Sign up</a
                         >
                     </template>
@@ -97,9 +99,14 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '~~/stores/auth'
 
 const auth = useAuthStore()
-
 const router = useRouter()
 const currentRouteName = computed(() => router.currentRoute.value.fullPath)
+
+const emit = defineEmits(['sign-up', 'sign-in'])
+
+const onLogoutClick = () => {
+    auth.logout()
+}
 
 const navigation = [
     { name: 'Home', href: '/' },

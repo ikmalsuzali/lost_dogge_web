@@ -1,4 +1,4 @@
-import Vue3Toasity, { type ToastContainerOptions } from 'vue3-toastify'
+import Vue3Toasity, { type ToastContainerOptions, toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
 
 export default defineNuxtPlugin(nuxtApp => {
@@ -6,4 +6,8 @@ export default defineNuxtPlugin(nuxtApp => {
         autoClose: 3000
         // ...
     } as ToastContainerOptions)
+
+    return {
+        provide: { toast }
+    }
 })

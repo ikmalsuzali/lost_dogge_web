@@ -7,7 +7,8 @@
             'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 text-white ':
                 type === 'primary',
             ' border-gray-300 bg-white text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600':
-                type === 'secondary'
+                type === 'secondary',
+            'w-full': block
         }"
         type="button"
         @click="$emit('click')"
@@ -44,6 +45,7 @@ const props = withDefaults(
         errorMessage?: string | undefined
         disabled?: Boolean
         type: string
+        block: Boolean
     }>(),
     {
         type: 'primary'
