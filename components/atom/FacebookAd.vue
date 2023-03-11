@@ -52,7 +52,7 @@
             <Slide v-for="(image, index) in images" :key="image.url">
                 <div class="relative">
                     <img
-                        class="aspect-video object-contain object-center"
+                        class="aspect-video object-scale-down object-center"
                         :src="image"
                     />
                 </div>
@@ -184,6 +184,8 @@ const props = withDefaults(
     }
 )
 
+const emit = defineEmits(['slide-start'])
+
 const adHeaderElement = ref()
 const myCarousel = ref()
 console.log(adHeaderElement)
@@ -205,5 +207,5 @@ const onNext = () => {
     unref(myCarousel).next()
 }
 
-defineExpose({ onNext })
+defineExpose({ onNext, myCarousel })
 </script>

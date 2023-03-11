@@ -35,7 +35,7 @@
                 <FacebookAd
                     ref="mockFacebookAd"
                     :adHeader="facebookAdDetails.adHeader"
-                    :images="[facebookAdDetails.image]"
+                    :images="randomPetImages"
                     :isAutoPlay="false"
                 />
 
@@ -80,6 +80,14 @@ const facebookDetailsInit = () => {
     }
 }
 
+const randomPetImages = computed(() => {
+    return (
+        unref(randomPetDetails).map(randomPet => randomPet.image) || [
+            unref(facebookAdDetails).image
+        ]
+    )
+})
+
 const fetchRandomPets = async () => {
     try {
         isRandomPetLoading.value = true
@@ -104,39 +112,21 @@ const fetchRandomPets = async () => {
     }
 }
 
-// const randomPetDetails = computed(() => {
-//     let i = 0
-//     const slideArr = []
-//     pets.value.forEach(pet => {
-//         if (i % 5 === 0) {
-//             slideArr.push(facebookInit())
-//         }
-//         slideArr.push({
-//             image: pet.pet_images?.[0]?.url,
-//             adHeader: pet.description
-//         })
-//         i = i++
-//     })
-
-//     return slideArr
-// })
-
 const { pause, resume, isActive } = useIntervalFn(() => {
     nextFbAdSlide()
-}, 1000)
+}, 3000)
 
 const nextFbAdSlide = () => {
-    // let i = 0
-    // if (i >= randomPetDetails.length) {
-    //     i = 0
-    // }
-    // console.log('fb ad slide')
-    // // facebookAdDetails.value = {
-    // //     unref(randomPetDetails)[i]
-    // // }
-    // unref(mockFacebookAd).onNext()
-    // // Destroy cleanup
-    // i = i++
+    unref(mockFacebookAd).onNext()
+    facebookAdDetails.value.adHeader =
+        unref(randomPetDetails)[
+            unref(mockFacebookAd)?.myCarousel?.data.currentSlide.value
+        ]?.adHeader
+}
+
+const slideStart = payload => {
+    console.log('slide start')
+    console.log(payload)
 }
 
 facebookAdDetails.value = facebookDetailsInit()
