@@ -11,10 +11,12 @@ export type PetState = {
 }
 
 const pets = ref(useStorage(LocalStorage.PETS, []))
+const recentlyClickedPets = ref(useStorage(LocalStorage.))
 
 export const usePetStore = defineStore('pet', () => {
     const { getMyPets } = usePetRepository()
     const auth = useAuthStore()
+    const recentlyClick
 
     const fetchMyPets = async () => {
         try {

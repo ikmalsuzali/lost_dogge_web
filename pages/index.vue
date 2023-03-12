@@ -20,6 +20,7 @@
                     <a
                         href="#"
                         class="rounded-md bg-[#5C1511] px-6 py-3 text-lg font-extrabold text-white shadow-sm hover:[#5C1511]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5C1511]"
+                        @click="randomToast"
                         >Get started</a
                     >
                     <a
@@ -60,6 +61,8 @@
 import FacebookAd from '~/components/atom/FacebookAd.vue'
 import usePetRepository from '~/repositories/pets'
 import { useIntervalFn } from '@vueuse/core'
+import { toast } from 'vue3-toastify'
+import CustomToast from '~/components/atom/CustomToast.vue'
 
 definePageMeta({
     layout: 'page'
@@ -71,6 +74,7 @@ const isRandomPetLoading = ref(false)
 const mockFacebookAd = ref()
 const facebookAdDetails = ref()
 const randomPetDetails = ref()
+const interval = ref()
 
 const facebookDetailsInit = () => {
     return {
@@ -88,10 +92,63 @@ const randomPetImages = computed(() => {
     )
 })
 
-const fetchRandomPets = async () => {
+const setRandomInterval = (intervalFunction, minDelay, maxDelay) => {
+    let timeout
+
+    if (!document.hidden) {
+        clearTimeout(timeout)
+    }
+
+    const runInterval = () => {
+        const timeoutFunction = () => {
+            intervalFunction()
+            runInterval()
+        }
+
+        const delay =
+            Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay
+
+        timeout = setTimeout(timeoutFunction, delay)
+    }
+
+    runInterval()
+
+    return {
+        clear() {
+            clearTimeout(timeout)
+        }
+    }
+}
+
+const notifyPetDetails = ref()
+const randomToast = async () => {
+    console.log('random toast', randomToast)
+    notifyPetDetails.value = await getRandomPets(1)
+    const petStatus = unref(notifyPetDetails)[0]?.status || 0
+
+    const statusTitle = {
+        0: ['posted as lost pet'],
+        1: ['created an ad'],
+        2: ['posted as found', 'have been found recently']
+    }
+
+    useNuxtApp().$toast(CustomToast, {
+        transition: 'bounce',
+        position: 'top-center',
+        data: {
+            petImage: unref(notifyPetDetails)[0]?.pet_images?.[0].url,
+            petName: unref(notifyPetDetails)[0]?.name,
+            title: randomItemFromArr(statusTitle[petStatus])
+        }
+    })
+}
+
+const randomItemFromArr = arr => arr[Math.floor(Math.random() * arr.length)]
+
+const fetchRandomPets = async (count: number) => {
     try {
         isRandomPetLoading.value = true
-        pets.value = await getRandomPets(30)
+        pets.value = await getRandomPets(count)
         let i = 0
         let slideArr = []
         pets.value?.forEach(pet => {
@@ -129,7 +186,7 @@ const slideStart = payload => {
     console.log(payload)
 }
 
+interval.value = setRandomInterval(() => randomToast(), 5000, 10000)
 facebookAdDetails.value = facebookDetailsInit()
-
-fetchRandomPets()
+fetchRandomPets(30)
 </script>

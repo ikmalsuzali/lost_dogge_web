@@ -35,7 +35,7 @@
                     class="mx-auto flex w-full flex-col justify-center bg-white rounded-2xl shadow-none shadow-slate-300/60 cursor-pointer hover:shadow-xl"
                     @click="onPetClick(pet)"
                 >
-                    <img
+                    <VLazyImage
                         class="aspect-video w-full rounded-t-2xl object-cover object-center"
                         :src="
                             pet.pet_images.length
@@ -183,12 +183,13 @@
                         v-for="(image, index) in selectedPet.pet_images"
                         :key="index"
                     >
-                        <img
+                        <VLazyImage
                             class="aspect-video w-full object-cover object-center"
                             :src="
                                 image.url ||
                                 'https://images.pexels.com/photos/3311574/pexels-photo-3311574.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
                             "
+                            src-placeholder="~/assets/images/logo-lost-doggo.svg"
                         />
                     </slide>
 
@@ -230,78 +231,27 @@
                                 </div>
                             </div>
                             <div
-                                class="mt-5 flex flex-wrap space-y-3 sm:space-y-0 sm:space-x-3"
+                                class="text-xl font-bold text-gray-900 sm:text-2xl pt-4"
                             >
-                                <button
-                                    type="button"
-                                    class="inline-flex w-full flex-shrink-0 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:flex-1"
+                                Have you seen me?
+                            </div>
+                            <div
+                                class="mt-2 grid grid-cols-1 sm:grid-cols-2 space-y-3 sm:space-y-0 sm:space-x-3 w-full"
+                            >
+                                <Button
+                                    :block="true"
+                                    @click="
+                                        onCallNowClick(
+                                            selectedPet.contact_number
+                                        )
+                                    "
+                                    >Call Now</Button
                                 >
-                                    Have you seen me?
-                                </button>
-
-                                <div class="ml-3 inline-flex sm:ml-0">
-                                    <Menu
-                                        as="div"
-                                        class="relative inline-block text-left"
-                                    >
-                                        <MenuButton
-                                            class="inline-flex items-center rounded-md border border-gray-300 bg-white p-2 text-sm font-medium text-gray-400 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                        >
-                                            <span class="sr-only"
-                                                >isPetDetailsDrawerOpen options
-                                                menu</span
-                                            >
-                                            <EllipsisVerticalIcon
-                                                class="h-5 w-5"
-                                                aria-hidden="true"
-                                            />
-                                        </MenuButton>
-                                        <transition
-                                            enter-active-class="transition ease-out duration-100"
-                                            enter-from-class="transform opacity-0 scale-95"
-                                            enter-to-class="transform opacity-100 scale-100"
-                                            leave-active-class="transition ease-in duration-75"
-                                            leave-from-class="transform opacity-100 scale-100"
-                                            leave-to-class="transform opacity-0 scale-95"
-                                        >
-                                            <MenuItems
-                                                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                            >
-                                                <div class="py-1">
-                                                    <MenuItem
-                                                        v-slot="{ active }"
-                                                    >
-                                                        <a
-                                                            href="#"
-                                                            :class="[
-                                                                active
-                                                                    ? 'bg-gray-100 text-gray-900'
-                                                                    : 'text-gray-700',
-                                                                'block px-4 py-2 text-sm'
-                                                            ]"
-                                                            >View profile</a
-                                                        >
-                                                    </MenuItem>
-                                                    <MenuItem
-                                                        v-slot="{ active }"
-                                                    >
-                                                        <a
-                                                            href="#"
-                                                            :class="[
-                                                                active
-                                                                    ? 'bg-gray-100 text-gray-900'
-                                                                    : 'text-gray-700',
-                                                                'block px-4 py-2 text-sm'
-                                                            ]"
-                                                            >Copy profile
-                                                            link</a
-                                                        >
-                                                    </MenuItem>
-                                                </div>
-                                            </MenuItems>
-                                        </transition>
-                                    </Menu>
-                                </div>
+                                <Button
+                                    :block="true"
+                                    @click="onEmailNowClick(selectedPet.email)"
+                                    >Email Now</Button
+                                >
                             </div>
                         </div>
                     </div>
@@ -383,9 +333,10 @@
 </template>
 
 <script lang="ts" setup>
+import VLazyImage from 'v-lazy-image'
 import Autocomplete from '@/components/atom/Autocomplete.vue'
 import { MapboxMap, MapboxMarker, MapboxGeogeometryCircle } from 'vue-mapbox-ts'
-import { watchEffect, ref } from 'vue'
+import { watchEffect, ref, nextTick, onMounted } from 'vue'
 import { Carousel, Slide, Pagination } from 'vue3-carousel'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { CogIcon } from '@heroicons/vue/24/outline'
@@ -396,6 +347,7 @@ import * as dayjs from 'dayjs'
 import { useRoute } from 'vue-router'
 import 'vue3-carousel/dist/carousel.css'
 import Drawer from '@/components/atom/Drawer.vue'
+import Button from '@/components/atom/Button.vue'
 import Select from '~/components/UI/Select/Select.vue'
 
 const PetStatus = {
@@ -406,7 +358,7 @@ const PetStatus = {
 const route = useRoute()
 const config = useRuntimeConfig()
 const { getGeocodingLocations } = useMapboxRepository()
-const { getAnimalTypes, getBreeds, getPets } = usePetRepository()
+const { getAnimalTypes, getBreeds, getPets, getPetDetails } = usePetRepository()
 
 const mapboxApi = config.MAPBOX_KEY
 const pets = ref([])
@@ -563,6 +515,27 @@ const onSaveFilter = async () => {
     await fetchPets()
 }
 
+const openPetDrawer = async () => {
+    const petId = route.query?.pet_id
+    if (!petId) return
+    try {
+        selectedPet.value = await getPetDetails(petId)
+        isPetDetailsDrawerOpen.value = true
+    } catch (error) {
+        useNuxtApp().$toast.error(
+            'Failed to find pet, most likely the pet has already been found'
+        )
+    }
+}
+
+const onCallNowClick = contactNumber => {
+    window.location = `tel:${contactNumber}`
+}
+
+const onEmailNowClick = email => {
+    window.location = `mailto:${email}`
+}
+
 // watch(isFilterDrawerOpen, val => {
 //     if (!val) filterDrawer.value = filterDrawerInit()
 // })
@@ -573,4 +546,7 @@ fetchAnimalTypes()
 fetchBreeds()
 fetchTypes()
 fetchPets()
+onMounted(() => {
+    openPetDrawer()
+})
 </script>

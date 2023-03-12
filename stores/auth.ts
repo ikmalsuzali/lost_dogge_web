@@ -6,7 +6,8 @@ export enum LocalStorage {
     LOCATION = 'location',
     TOKEN = 'authToken',
     USER = 'user',
-    PETS = 'pet'
+    PETS = 'pet',
+    RECENTLY_CLICKED = 'recentlyClicked'
 }
 export interface AuthUser extends Record<string, any> {}
 export interface Location {
