@@ -27,6 +27,7 @@
                     class="min-h-0 flex-1 overflow-y-auto"
                 >
                     <ul
+                        v-if="myPets.length"
                         role="list"
                         class="divide-y divide-gray-200 border-b border-gray-200"
                     >
@@ -80,6 +81,23 @@
                             </div>
                         </li>
                     </ul>
+                    <div
+                        class="bg-white py-5 px-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-600 hover:bg-gray-300 space-y-3"
+                    >
+                        <Vue3Lottie
+                            class="w-20 m-auto"
+                            animationLink="https://fhasuqzjmruhvugclutt.supabase.co/storage/v1/object/public/pets/website/lost-dog-loading.json"
+                        />
+                        <div class="text-center">No Pets Found</div>
+                        <div class="text-center">
+                            <Button
+                                class="m-auto"
+                                @click="router.push('/dashboard/pet/create')"
+                            >
+                                Create a pet posting
+                            </Button>
+                        </div>
+                    </div>
                 </nav>
             </div>
         </aside>
@@ -182,7 +200,7 @@
                                                 )
                                             "
                                         >
-                                            <AcademicCapIcon
+                                            <PlusIcon
                                                 class="mr-2.5 h-5 w-5 text-gray-400"
                                                 aria-hidden="true"
                                             />
@@ -215,7 +233,7 @@
                                                 )
                                             "
                                         >
-                                            <AcademicCapIcon
+                                            <PlusIcon
                                                 class="mr-2.5 h-5 w-5 text-gray-400"
                                                 aria-hidden="true"
                                             />
@@ -266,13 +284,15 @@ import {
     BookOpenIcon,
     AcademicCapIcon,
     XMarkIcon,
-    ArrowSmallRightIcon
+    ArrowSmallRightIcon,
+    PlusIcon
 } from '@heroicons/vue/20/solid'
 import { useRoute, useRouter } from 'vue-router'
 import usePetRepository from '~/repositories/pets'
 import useSubscriptionRepository from '~/repositories/subscription'
 import { useAuthStore } from '~~/stores/auth'
 import type { SelectItem } from '~/components/UI/Select/types'
+import Button from '~/components/atom/Button.vue'
 import { definitions } from '~~/types/supabase'
 import useValidations from '~/composables/validations'
 import 'vue3-carousel/dist/carousel.css'

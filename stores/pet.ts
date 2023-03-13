@@ -8,15 +8,15 @@ export interface Pet extends Record<string, any> {}
 
 export type PetState = {
     pets: RemovableRef<Pet[]> | null
+    recentlyViewedPets: RemovableRef<string[]> | null
 }
 
 const pets = ref(useStorage(LocalStorage.PETS, []))
-const recentlyClickedPets = ref(useStorage(LocalStorage.))
+const recentlyViewedPets = ref(useStorage(LocalStorage.RECENTLY_CLICKED, []))
 
 export const usePetStore = defineStore('pet', () => {
     const { getMyPets } = usePetRepository()
     const auth = useAuthStore()
-    const recentlyClick
 
     const fetchMyPets = async () => {
         try {
@@ -27,7 +27,27 @@ export const usePetStore = defineStore('pet', () => {
         }
     }
 
+    const onRecentlyViewedPetsClick = (petId: string) => {
+        try {
+            console.log('pet id', petId)
+            recentlyViewedPets.value.unshift(petId)
+            recentlyViewedPets.value = [...new Set(unref(recentlyViewedPets))]
+            unref(recentlyViewedPets).length = 20
+            console.log(recentlyViewedPets.value)
+            localStorage.setItem(
+                LocalStorage.RECENTLY_CLICKED,
+                JSON.stringify(unref(recentlyViewedPets))
+            )
+        } catch (error) {}
+    }
+
     const myPetIds = computed(() => pets.value?.map(pet => pet.id) || [])
 
-    return { pets, fetchMyPets, myPetIds }
+    return {
+        pets,
+        fetchMyPets,
+        myPetIds,
+        onRecentlyViewedPetsClick,
+        recentlyViewedPets
+    }
 })

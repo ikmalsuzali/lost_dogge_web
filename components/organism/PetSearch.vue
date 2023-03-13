@@ -349,12 +349,14 @@ import 'vue3-carousel/dist/carousel.css'
 import Drawer from '@/components/atom/Drawer.vue'
 import Button from '@/components/atom/Button.vue'
 import Select from '~/components/UI/Select/Select.vue'
+import { usePetStore } from '~/stores/pet'
 
 const PetStatus = {
     LOST: 0,
     FOUND: 1
 }
 
+const petStore = usePetStore()
 const route = useRoute()
 const config = useRuntimeConfig()
 const { getGeocodingLocations } = useMapboxRepository()
@@ -549,4 +551,14 @@ fetchPets()
 onMounted(() => {
     openPetDrawer()
 })
+
+watch(
+    () => unref(selectedPet),
+    value => {
+        if (unref(selectedPet)?.pet_id) {
+            petStore.onRecentlyViewedPetsClick(unref(selectedPet).pet_id)
+        }
+    },
+    { immediate: true }
+)
 </script>

@@ -454,7 +454,7 @@
                                                                     <div>
                                                                         <Button
                                                                             :loading="
-                                                                                isLoginLoading
+                                                                                isSigninLoading
                                                                             "
                                                                             @click="
                                                                                 onSignupClick
@@ -519,8 +519,8 @@ import Footer from '~/components/Footer.vue'
 import NavBar from '~/components/NavBar.vue'
 import Button from '~/components/atom/Button.vue'
 import { AuthType, useDrawerStore } from '~~/stores/drawer'
-import { useAuthStore } from '~~/stores/auth'
-import { usePetStore } from '~~/stores/pet'
+import { useAuthStore } from '~/stores/auth'
+import { usePetStore } from '~/stores/pet'
 import {
     Dialog,
     DialogPanel,
