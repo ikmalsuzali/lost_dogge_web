@@ -63,26 +63,32 @@
 
 <script lang="ts" setup>
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
-import { MegaphoneIcon } from '@heroicons/vue/24/outline'
+import {
+    MegaphoneIcon,
+i    BanknotesIcon,
+    DocumentTextIcon
+} from '@heroicons/vue/24/outline'
 
 const items = [
     {
         name: 'Register your first pet',
-        description: 'I think the kids call these memes these days.',
-        href: '#',
-        iconColor: 'bg-green-500',
-        icon: MegaphoneIcon
+        description: 'You can register a pet first or post a lost/found pet',
+        href: 'pet/create',
+        iconColor: 'bg-blue-500',
+        icon: DocumentTextIcon
     },
     {
-        name: 'Found a lost pet',
-        description: 'I think the kids call these memes these days.',
+        name: 'Purchase a subscription',
+        description:
+            'Choose a subscription of either 15 or 30 days to run ads for',
         href: '#',
         iconColor: 'bg-blue-500',
-        icon: MegaphoneIcon
+        icon: BanknotesIcon
     },
     {
-        name: 'Lost a pet',
-        description: 'I think the kids call these memes these days.',
+        name: 'Create an ad',
+        description:
+            'Review the ad and immediately get started posting a Facebook & Instagram Ad',
         href: '#',
         iconColor: 'bg-blue-500',
         icon: MegaphoneIcon
