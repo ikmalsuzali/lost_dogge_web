@@ -38,6 +38,16 @@ const usePetRepository = () => {
         return petsData
     }
 
+    const getPetsById = async (ids: string[]) => {
+        const { data, error } = await $supabase
+            .from('pets')
+            .select('*')
+            .in('id', ids)
+
+        if (error) throw error
+        return data
+    }
+
     const getPets = async payload => {
         const data = await axios(`${config.API_HOST}/api/v1/pets`, {
             params: payload
@@ -309,7 +319,8 @@ const usePetRepository = () => {
         getPetChatLists,
         createNewMessage,
         onNewMessage,
-        getRandomPets
+        getRandomPets,
+        getPetsById
     }
 }
 

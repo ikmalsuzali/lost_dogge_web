@@ -8,14 +8,16 @@ export interface Pet extends Record<string, any> {}
 
 export type PetState = {
     pets: RemovableRef<Pet[]> | null
-    recentlyViewedPets: RemovableRef<string[]> | null
+    recentlyViewedPetIds: RemovableRef<string[]> | null
+    recentlyViewedPetDetails: RemovableRef<Pet[]> | null
 }
 
 const pets = ref(useStorage(LocalStorage.PETS, []))
-const recentlyViewedPets = ref(useStorage(LocalStorage.RECENTLY_CLICKED, []))
+const recentlyViewedPetIds = ref(useStorage(LocalStorage.RECENTLY_CLICKED, []))
+const recentlyViewedPetDetails = ref([])
 
 export const usePetStore = defineStore('pet', () => {
-    const { getMyPets } = usePetRepository()
+    const { getMyPets, getPetsById } = usePetRepository()
     const auth = useAuthStore()
 
     const fetchMyPets = async () => {
@@ -29,25 +31,39 @@ export const usePetStore = defineStore('pet', () => {
 
     const onRecentlyViewedPetsClick = (petId: string) => {
         try {
-            console.log('pet id', petId)
-            recentlyViewedPets.value.unshift(petId)
-            recentlyViewedPets.value = [...new Set(unref(recentlyViewedPets))]
-            unref(recentlyViewedPets).length = 20
-            console.log(recentlyViewedPets.value)
+            recentlyViewedPetIds.value.unshift(petId)
+            recentlyViewedPetIds.value = [
+                ...new Set(unref(recentlyViewedPetIds))
+            ]
+            unref(recentlyViewedPetIds).length = 20
+            fetchPetsById()
+            console.log(recentlyViewedPetIds.value)
             localStorage.setItem(
                 LocalStorage.RECENTLY_CLICKED,
-                JSON.stringify(unref(recentlyViewedPets))
+                JSON.stringify(unref(recentlyViewedPetIds))
             )
         } catch (error) {}
     }
 
     const myPetIds = computed(() => pets.value?.map(pet => pet.id) || [])
 
+    const fetchPetsById = () => {
+        try {
+            if (!unref(recentlyViewedPetIds).length) return
+
+            recentlyViewedPetDetails.value = getPetsById(
+                unref(recentlyViewedPetIds)
+            )
+        } catch (error) {}
+    }
+
+    fetchPetsById()
+
     return {
         pets,
         fetchMyPets,
         myPetIds,
         onRecentlyViewedPetsClick,
-        recentlyViewedPets
+        recentlyViewedPetIds
     }
 })

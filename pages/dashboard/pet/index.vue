@@ -65,7 +65,7 @@
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import {
     MegaphoneIcon,
-i    BanknotesIcon,
+    BanknotesIcon,
     DocumentTextIcon
 } from '@heroicons/vue/24/outline'
 
