@@ -17,7 +17,7 @@ const usePetRepository = () => {
             .eq('user_id', userId)
             .range(offset, limit)
             .order('is_deleted', { ascending: true })
-            .order('created_at', { ascending: true })
+            .order('created_at', { ascending: false })
 
         if (error) throw error
         return data
@@ -103,7 +103,10 @@ const usePetRepository = () => {
                 email: payload.email,
                 instagram: payload.instagram,
                 facebook: payload.facebook,
-                twitter: payload.twitter
+                twitter: payload.twitter,
+                address: payload.address,
+                longitude: payload.longitude,
+                latitude: payload.latitude
             }
         ])
 
@@ -167,7 +170,10 @@ const usePetRepository = () => {
                 email: payload.email,
                 instagram: payload.instagram,
                 facebook: payload.facebook,
-                twitter: payload.twitter
+                twitter: payload.twitter,
+                address: payload.address,
+                longitude: payload.longitude,
+                latitude: payload.latitude
             })
             .eq('id', petId)
 

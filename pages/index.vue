@@ -186,7 +186,7 @@ const slideStart = payload => {
     console.log(payload)
 }
 
-interval.value = setRandomInterval(() => randomToast(), 5000, 10000)
+interval.value = setRandomInterval(() => randomToast(), 5000, 30000)
 facebookAdDetails.value = facebookDetailsInit()
 fetchRandomPets(30)
 </script>

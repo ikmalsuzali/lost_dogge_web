@@ -404,6 +404,40 @@
                                     </div>
                                 </div>
                             </div>
+                            <div
+                                v-if="myPet?.status !== 0"
+                                class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
+                            >
+                                <div>
+                                    <label
+                                        for="project-name"
+                                        class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                                    >
+                                        {{ getStatusText }}
+                                    </label>
+                                </div>
+
+                                <div class="sm:col-span-2">
+                                    <Autocomplete
+                                        v-if="routeState() !== states.VIEW"
+                                        v-model="myPet.address"
+                                        placeholder="Search last seen location of your pet"
+                                        :throttle-time="1000"
+                                        :items="geocodingLocations"
+                                        item-key="id"
+                                        item-value="place_name"
+                                        :block="true"
+                                        :error-message="errorMessages.address"
+                                        @returned-object="updateLocationFilter"
+                                    />
+                                    <div
+                                        v-else
+                                        class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
+                                    >
+                                        {{ myPet.address }}
+                                    </div>
+                                </div>
+                            </div>
 
                             <div
                                 class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
@@ -663,7 +697,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import Input from '~/components/atom/Input.vue'
 import Button from '~/components/atom/Button.vue'
@@ -677,6 +711,8 @@ import { definitions } from '~~/types/supabase'
 import useValidations from '~/composables/validations'
 import 'vue3-carousel/dist/carousel.css'
 import { useRoute, useRouter } from 'vue-router'
+import useMapboxRepository from '@/repositories/mapbox'
+import Autocomplete from '@/components/atom/Autocomplete.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -733,12 +769,14 @@ const {
     getPetDetails,
     deletePet
 } = usePetRepository()
+const { getGeocodingLocations } = useMapboxRepository()
 
 const myPets = ref([{}])
 const animalTypes = ref<definitions['animal_types'][]>([])
 const selectAnimalTypes = ref<SelectItem[]>([])
 const breeds = ref<definitions['animal_breeds'][]>()
 const selectBreeds = ref<SelectItem[]>([])
+const geocodingLocations = ref([])
 
 const isRegisterPetDrawerOpen = ref(false)
 const isLoading = ref(false)
@@ -817,7 +855,7 @@ const myPetInit = () => {
         ...(route?.params?.id && { id: route.params.id }),
         user_id: auth?.user?.id,
         pet_images: [],
-        status: '',
+        status: 0,
         description: '',
         animal_type_id: '',
         breed: {},
@@ -840,6 +878,16 @@ const myPetInit = () => {
 
 const myPet = ref(myPetInit())
 
+const getStatusText = computed(() => {
+    if (unref(myPet).status == 1) {
+        return 'Lost at'
+    } else if (unref(myPet).status == 2) {
+        return 'Found at'
+    } else {
+        return ''
+    }
+})
+
 const fetchPetDetails = async () => {
     if (unref(myPet).id) {
         try {
@@ -857,9 +905,9 @@ const fetchPetDetails = async () => {
                 weight: data.weight,
                 height: data.height,
                 instagram: '',
-                address: '',
-                longitude: '',
-                latitude: '',
+                address: data.address,
+                longitude: data.longitude,
+                latitude: data.latitude,
                 twitter: data.twitter,
                 facebook: data.facebook,
                 email: data.email,
@@ -932,6 +980,12 @@ const breedAndTypeName = pet => {
     }`
 }
 
+const updateLocationFilter = val => {
+    myPet.value.longitude = val.itemMeta?.center[0]
+    myPet.value.latitude = val.itemMeta?.center[1]
+    myPet.value.address = val.name
+}
+
 const myPetImages = petImages => {
     return petImages.map(image => image.url)
 }
@@ -1000,6 +1054,13 @@ const allMyPetErrorMessage = () => {
         unref(myPet)?.animal_type_id,
         'Animal type'
     )
+
+    if (unref(myPet).status == 1 || unref(myPet).status == 2)
+        errorMessages.value.address = validateRequired(
+            unref(myPet)?.address,
+            'Select an address where the pet was lost or found '
+        )
+
     errorMessages.value.pet_images = validateImageLength(
         unref(myPet).pet_images
     )
@@ -1055,6 +1116,13 @@ const filteredBreeds = computed(() => {
         breed => breed.animal_type_id === unref(myPet).value.animal_type
     )
 })
+
+const onSearchedLocation = async () => {
+    geocodingLocations.value = []
+    geocodingLocations.value = await getGeocodingLocations(myPet.value?.address)
+}
+
+watchEffect(() => onSearchedLocation())
 
 fetchAnimalTypes()
 fetchBreeds()

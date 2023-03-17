@@ -54,17 +54,25 @@
                                 </a>
                             </div>
                             <div class="flex-1 pl-1">
-                                <div class="font-medium dark:text-white">
+                                <div
+                                    class="font-medium dark:text-white text-ellipsis"
+                                >
                                     {{ pet.name }}
                                 </div>
                                 <div
-                                    v-if="pet.is_deleted === false"
-                                    class="text-gray-600 dark:text-gray-200 text-sm"
+                                    v-if="pet.status === 1"
+                                    class="text-gray-600 dark:text-gray-200 text-sm text-ellipsis line-clamp-2"
                                 >
-                                    <a>Lost at</a>{{ pet.address }}
+                                    <a>Lost at </a>{{ pet.address }}
                                 </div>
                                 <div
-                                    v-else
+                                    v-if="pet.status === 2"
+                                    class="text-gray-600 dark:text-gray-200 text-sm text-ellipsis line-clamp-2"
+                                >
+                                    <a>Found at </a>{{ pet.address }}
+                                </div>
+                                <div
+                                    v-else-if="pet.is_deleted == true"
                                     class="text-gray-600 dark:text-gray-200 text-sm"
                                 >
                                     <a>Archived</a>
@@ -82,6 +90,7 @@
                         </li>
                     </ul>
                     <div
+                        v-if="!myPets.length"
                         class="bg-white py-5 px-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-600 hover:bg-gray-300 space-y-3"
                     >
                         <Vue3Lottie

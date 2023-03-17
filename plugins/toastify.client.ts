@@ -3,7 +3,10 @@ import 'vue3-toastify/dist/index.css'
 
 export default defineNuxtPlugin(nuxtApp => {
     nuxtApp.vueApp.use(Vue3Toasity, {
-        autoClose: 3000
+        autoClose: 3000,
+        limit: 2,
+        pauseOnFocusLoss: false,
+        pauseOnHover: false
         // ...
     } as ToastContainerOptions)
 

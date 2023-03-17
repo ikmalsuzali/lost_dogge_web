@@ -51,10 +51,7 @@
         >
             <Slide v-for="(image, index) in images" :key="image.url">
                 <div class="relative">
-                    <img
-                        class="aspect-video object-scale-down object-center"
-                        :src="image"
-                    />
+                    <img class="aspect-square object-cover" :src="image" />
                 </div>
             </Slide>
         </Carousel>

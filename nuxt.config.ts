@@ -4,6 +4,10 @@ export default defineNuxtConfig({
         head: {
             titleTemplate: 'Lost Doggo',
             meta: [
+                {
+                    name: 'facebook-domain-verification',
+                    content: '2kwyqr1ami477rthgyqlwq4x711oxa'
+                },
                 { charset: 'utf-8' },
                 {
                     name: 'viewport',
