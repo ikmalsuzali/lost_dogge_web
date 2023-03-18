@@ -8,7 +8,6 @@
     <div class="relative mt-1 rounded-md shadow-sm w-full">
         <input
             :value="modelValue"
-            id="input"
             name="input"
             :type="type"
             :required="required"

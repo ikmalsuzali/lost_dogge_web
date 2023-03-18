@@ -178,25 +178,22 @@
     >
         <div>
             <div class="pb-1 sm:pb-6">
-                <carousel :items-to-show="1">
-                    <slide
+                <Carousel :items-to-show="1">
+                    <Slide
                         v-for="(image, index) in selectedPet.pet_images"
                         :key="index"
                     >
                         <VLazyImage
                             class="aspect-video w-full object-cover object-center"
-                            :src="
-                                image.url ||
-                                'https://images.pexels.com/photos/3311574/pexels-photo-3311574.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-                            "
+                            :src="image.url"
                             src-placeholder="~/assets/images/logo-lost-doggo.svg"
                         />
-                    </slide>
+                    </Slide>
 
                     <template #addons>
-                        <pagination />
+                        <Pagination />
                     </template>
-                </carousel>
+                </Carousel>
                 <div>
                     <div class="mt-6 px-4 sm:mt-8 sm:flex sm:items-end sm:px-6">
                         <div class="sm:flex-1">
@@ -310,19 +307,9 @@
                             <dd
                                 class="mt-1 text-sm text-gray-900 sm:col-span-2"
                             >
-                                ashleyporter.com
-                            </dd>
-                        </div>
-                        <div>
-                            <dt
-                                class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0"
-                            >
-                                Birthday
-                            </dt>
-                            <dd
-                                class="mt-1 text-sm text-gray-900 sm:col-span-2"
-                            >
-                                <time datetime="1988-06-23">June 23, 1988</time>
+                                {{ selectedPet.instagram }}
+                                {{ selectedPet.facebook }}
+                                {{ selectedPet.twitter }}
                             </dd>
                         </div>
                     </div>
@@ -343,13 +330,13 @@ import { CogIcon } from '@heroicons/vue/24/outline'
 import { EllipsisVerticalIcon } from '@heroicons/vue/20/solid'
 import usePetRepository from '@/repositories/pets'
 import useMapboxRepository from '@/repositories/mapbox'
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import { useRoute } from 'vue-router'
 import 'vue3-carousel/dist/carousel.css'
 import Drawer from '@/components/atom/Drawer.vue'
 import Button from '@/components/atom/Button.vue'
-import Select from '~/components/UI/Select/Select.vue'
-import { usePetStore } from '~/stores/pet'
+import Select from '@/components/UI/Select/Select.vue'
+import { usePetStore } from '@/stores/pet'
 
 const PetStatus = {
     LOST: 0,
@@ -395,7 +382,7 @@ const filter = ref({
     radius: null,
     gender: null,
     breed: null,
-    status: PetStatus[route.query.type?.toUpperCase || 0]
+    status: PetStatus[route?.query?.type?.toUpperCase || 0]
 })
 
 const filterDrawerInit = () => {

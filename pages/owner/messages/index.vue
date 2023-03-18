@@ -36,8 +36,8 @@
                                             <div
                                                 class="w-12 h-12 max-w-sm rounded-lg"
                                             >
-                                                <carousel :items-to-show="1">
-                                                    <slide
+                                                <Carousel :items-to-show="1">
+                                                    <Slide
                                                         v-for="(
                                                             image, imageIndex
                                                         ) in petMatch
@@ -49,8 +49,8 @@
                                                             class="aspect-square w-full object-fit object-center rounded-lg"
                                                             :src="image.url"
                                                         />
-                                                    </slide>
-                                                </carousel>
+                                                    </Slide>
+                                                </Carousel>
                                             </div>
                                             <div class="flex-1 px-2">
                                                 <div class="truncate w-32">

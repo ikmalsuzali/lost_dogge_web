@@ -206,22 +206,24 @@
                                 </div>
                                 <div class="sm:col-span-2">
                                     <Select
-                                        v-if="routeState() !== states.VIEW"
+                                        v-if="routeState() !== states?.VIEW"
                                         v-model="myPet.status"
                                         placeholder="Status"
                                         :items="selectPetStatus"
-                                        :error-message="errorMessages.status"
-                                        :disabled="routeState() === states.VIEW"
+                                        :error-message="errorMessages?.status"
+                                        :disabled="
+                                            routeState() === states?.VIEW
+                                        "
                                     />
                                     <div
                                         v-else
                                         class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
                                     >
                                         {{
-                                            selectPetStatus.find(
+                                            selectPetStatus?.find(
                                                 status =>
-                                                    status.value ===
-                                                    myPet.status
+                                                    status?.value ===
+                                                    myPet?.status
                                             )?.text
                                         }}
                                     </div>
@@ -238,26 +240,69 @@
                                     >
                                 </div>
                                 <div class="sm:col-span-2">
-                                    <Carousel
+                                    <div>
+                                        <Carousel
+                                            v-model="initialSlide"
+                                            ref="myCarousel"
+                                            :items-to-show="4"
+                                        >
+                                            <Slide
+                                                v-for="(
+                                                    image, index
+                                                ) in myPet?.pet_images"
+                                                :key="index"
+                                                class="p-4"
+                                            >
+                                                <div class="relative">
+                                                    <VLazyImage
+                                                        class="aspect-square object-cover object-center w-40 rounded-md border border-blue-800"
+                                                        :src="image?.url"
+                                                    />
+                                                    <button
+                                                        v-if="
+                                                            routeState() !==
+                                                            states?.VIEW
+                                                        "
+                                                        class="absolute top-0 right-0 bg-red-500 text-white p-2 rounded hover:bg-blue-800 m-2"
+                                                        @click="
+                                                            onDeleteImageClick(
+                                                                index
+                                                            )
+                                                        "
+                                                    >
+                                                        <XMarkIcon
+                                                            class="h-3 w-3"
+                                                            aria-hidden="true"
+                                                        />
+                                                    </button>
+                                                </div>
+                                            </Slide>
+                                            <template #addons>
+                                                <Pagination />
+                                            </template>
+                                        </Carousel>
+                                    </div>
+
+                                    <!-- <Carousel
                                         :items-to-show="4"
-                                        snapAlign="start"
+                                        snap-align="start"
                                     >
                                         <Slide
                                             v-for="(
                                                 image, index
-                                            ) in myPet.pet_images"
-                                            :key="image.url"
+                                            ) in myPet?.pet_images"
+                                            :key="index"
                                             class="p-4"
                                         >
                                             <div class="relative">
-                                                <img
+                                                <VLazyImage
                                                     class="aspect-square object-cover object-center w-40 rounded-md border border-blue-800"
-                                                    :src="image.url"
+                                                    :src="image?.url"
                                                 />
                                                 <button
                                                     v-if="
                                                         routeState() !==
-                                                        states.VIEW
+                                                        states?.VIEW
                                                     "
                                                     class="absolute top-0 right-0 bg-red-500 text-white p-2 rounded hover:bg-blue-800 m-2"
                                                     @click="
@@ -275,11 +320,11 @@
                                         </Slide>
 
                                         <template #addons>
-                                            <pagination />
+                                            <Pagination />
                                         </template>
-                                    </Carousel>
+                                    </Carousel> -->
                                     <div
-                                        v-if="routeState() !== states.VIEW"
+                                        v-if="routeState() !== states?.VIEW"
                                         class="flex justify-center items-center w-full"
                                     >
                                         <label
@@ -354,11 +399,13 @@
                                 </div>
                                 <div class="sm:col-span-2">
                                     <Input
-                                        v-if="routeState() !== states.VIEW"
+                                        v-if="routeState() !== states?.VIEW"
                                         v-model="myPet.name"
                                         required
-                                        :error-message="errorMessages.name"
-                                        :disabled="routeState() === states.VIEW"
+                                        :error-message="errorMessages?.name"
+                                        :disabled="
+                                            routeState() === states?.VIEW
+                                        "
                                     />
                                     <div
                                         v-else
@@ -419,7 +466,7 @@
 
                                 <div class="sm:col-span-2">
                                     <Autocomplete
-                                        v-if="routeState() !== states.VIEW"
+                                        v-if="routeState() !== states?.VIEW"
                                         v-model="myPet.address"
                                         placeholder="Search last seen location of your pet"
                                         :throttle-time="1000"
@@ -427,7 +474,7 @@
                                         item-key="id"
                                         item-value="place_name"
                                         :block="true"
-                                        :error-message="errorMessages.address"
+                                        :error-message="errorMessages?.address"
                                         @returned-object="updateLocationFilter"
                                     />
                                     <div
@@ -451,10 +498,10 @@
                                 </div>
                                 <div class="sm:col-span-2">
                                     <Switch
-                                        v-if="routeState() !== states.VIEW"
+                                        v-if="routeState() !== states?.VIEW"
                                         v-model="myPet.gender"
                                         :label="
-                                            myPet.gender
+                                            myPet?.gender
                                                 ? Gender[Gender.Female]
                                                 : Gender[Gender.Male]
                                         "
@@ -464,7 +511,7 @@
                                         class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-2"
                                     >
                                         {{
-                                            myPet.gender === 1
+                                            myPet?.gender === 1
                                                 ? 'Female'
                                                 : 'Male'
                                         }}
@@ -697,20 +744,21 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect, onMounted } from 'vue'
+import VLazyImage from 'v-lazy-image'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
-import Input from '~/components/atom/Input.vue'
-import Button from '~/components/atom/Button.vue'
-import usePetRepository from '~/repositories/pets'
-import { useAuthStore } from '~~/stores/auth'
 import { Carousel, Slide, Pagination } from 'vue3-carousel'
-import Select from '~/components/UI/Select/Select.vue'
-import Switch from '~/components/atom/Switch.vue'
-import type { SelectItem } from '~/components/UI/Select/types'
-import { definitions } from '~~/types/supabase'
-import useValidations from '~/composables/validations'
 import 'vue3-carousel/dist/carousel.css'
+import Select from '@/components/UI/Select/Select.vue'
+import Switch from '@/components/atom/Switch.vue'
+import Input from '@/components/atom/Input.vue'
+import Button from '@/components/atom/Button.vue'
+import type { SelectItem } from '@/components/UI/Select/types'
+import { definitions } from '@/types/supabase'
+import useValidations from '@/composables/validations'
 import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+import usePetRepository from '@/repositories/pets'
 import useMapboxRepository from '@/repositories/mapbox'
 import Autocomplete from '@/components/atom/Autocomplete.vue'
 
@@ -777,11 +825,14 @@ const selectAnimalTypes = ref<SelectItem[]>([])
 const breeds = ref<definitions['animal_breeds'][]>()
 const selectBreeds = ref<SelectItem[]>([])
 const geocodingLocations = ref([])
+const initialSlide = ref(0)
 
 const isRegisterPetDrawerOpen = ref(false)
 const isLoading = ref(false)
 const isDeleteToggled = ref(false)
 const isDeleteLoading = ref(false)
+const myCarousel = ref()
+const mySlider = ref()
 
 const states = {
     VIEW: 'view',
@@ -1121,6 +1172,14 @@ const onSearchedLocation = async () => {
     geocodingLocations.value = []
     geocodingLocations.value = await getGeocodingLocations(myPet.value?.address)
 }
+
+onMounted(() => {
+    setTimeout(() => {
+        initialSlide.value = 0
+        unref(myCarousel).restartCarousel()
+        unref(myCarousel).updateSlideWidth()
+    }, 500)
+})
 
 watchEffect(() => onSearchedLocation())
 

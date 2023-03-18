@@ -24,6 +24,7 @@ export default defineNuxtConfig({
             ]
         }
     },
+    target: 'static',
     ssr: false,
     build: {
         transpile: ['@headlessui/vue', '@vueuse/nuxt']
@@ -39,6 +40,7 @@ export default defineNuxtConfig({
         global: false,
         dirs: ['~/components']
     },
+    debug: true,
     plugins: [{ src: './plugins/fbSdk.ts', ssr: false }],
     i18n: {
         locales: ['en', 'id'],
@@ -80,5 +82,8 @@ export default defineNuxtConfig({
     },
     alias: {
         components: '/src/components'
+    },
+    nitro: {
+        preset: 'vercel'
     }
 })

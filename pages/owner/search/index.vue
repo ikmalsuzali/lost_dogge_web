@@ -11,7 +11,7 @@
                 your beloved pet. Please select the pet you lost to get started.
             </p>
         </div>
-        <carousel
+        <Carousel
             :items-to-show="5"
             class="my-5"
             :autoplay="3000"
@@ -19,7 +19,7 @@
             autoplayHoverPause
             snapAlign="start"
         >
-            <slide v-for="(pet, index) in myPets" :key="index" class="p-2">
+            <Slide v-for="(pet, index) in myPets" :key="index" class="p-2">
                 <div
                     class="mx-auto flex w-full flex-col justify-center bg-white rounded-2xl shadow-none shadow-slate-300/60 cursor-pointer hover:shadow-xl"
                     @click="onPetClick(pet)"
@@ -33,8 +33,8 @@
                         "
                     />
                 </div>
-            </slide>
-        </carousel>
+            </Slide>
+        </Carousel>
         <OrganismPetSearch />
     </div>
 </template>

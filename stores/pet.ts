@@ -32,10 +32,15 @@ export const usePetStore = defineStore('pet', () => {
     const onRecentlyViewedPetsClick = (petId: string) => {
         try {
             recentlyViewedPetIds.value.unshift(petId)
+            unref(recentlyViewedPetIds).length = 20
             recentlyViewedPetIds.value = [
                 ...new Set(unref(recentlyViewedPetIds))
             ]
-            unref(recentlyViewedPetIds).length = 20
+            recentlyViewedPetIds.value = recentlyViewedPetIds.filter(function (
+                petId
+            ) {
+                return petId !== undefined || petId !== null
+            })
             fetchPetsById()
             console.log(recentlyViewedPetIds.value)
             localStorage.setItem(

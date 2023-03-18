@@ -13,8 +13,8 @@
                     class="w-12 h-12 max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
                 >
                     <div v-if="petMatch?.found_pet_id.pet_images?.length">
-                        <carousel :items-to-show="1">
-                            <slide
+                        <Carousel :items-to-show="1">
+                            <Slide
                                 v-for="(image, imageIndex) in petMatch
                                     ?.found_pet_id.pet_images"
                                 :key="imageIndex"
@@ -23,8 +23,8 @@
                                     class="aspect-video w-full object-fill object-center"
                                     :src="image.url"
                                 />
-                            </slide>
-                        </carousel>
+                            </Slide>
+                        </Carousel>
                     </div>
                     <div class="p-5">
                         <div class="flex items-center justify-between">

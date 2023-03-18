@@ -2,8 +2,8 @@
     <Drawer v-model:drawer-open="drawerOpenState" drawerTitle="Pet Details">
         <div>
             <div class="pb-1 sm:pb-6">
-                <carousel :items-to-show="1">
-                    <slide
+                <Carousel :items-to-show="1">
+                    <Slide
                         v-for="(image, index) in props.selectedPet?.pet_images"
                         :key="index"
                     >
@@ -11,12 +11,12 @@
                             class="aspect-video w-full object-cover object-center"
                             :src="image.url"
                         />
-                    </slide>
+                    </Slide>
 
                     <template #addons>
-                        <pagination />
+                        <Pagination />
                     </template>
-                </carousel>
+                </Carousel>
                 <div>
                     <div class="mt-6 px-4 sm:mt-8 sm:flex sm:items-end sm:px-6">
                         <div class="sm:flex-1">
@@ -47,7 +47,7 @@
                                     >
                                         {{
                                             dayjs(
-                                                props.selectedPet.created_at
+                                                props.selectedPet?.created_at
                                             ).format('MMM DD, YYYY hh:mm A')
                                         }}
                                     </dd>
@@ -266,7 +266,7 @@ import { Carousel, Slide, Pagination } from 'vue3-carousel'
 import { definitions } from '~~/types/supabase'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { MapboxMap, MapboxMarker, MapboxGeogeometryCircle } from 'vue-mapbox-ts'
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import { PetType, PetMatchPossibleType } from '~/types/index'
 
 const emit = defineEmits([
