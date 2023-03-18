@@ -239,90 +239,49 @@
                                         >Pet Image(s)</label
                                     >
                                 </div>
-                                <div
-                                    v-if="myPet?.pet_images?.length"
-                                    class="sm:col-span-2"
-                                >
-                                    <Carousel
-                                        ref="myCarousel"
-                                        :items-to-show="4"
-                                    >
-                                        <Slide
-                                            v-for="(
-                                                image, index
-                                            ) in myPet?.pet_images"
-                                            :key="index"
-                                            class="p-4"
+                                <div class="sm:col-span-2">
+                                    <div v-if="myPet?.pet_images?.length">
+                                        <Carousel
+                                            ref="myCarousel"
+                                            :items-to-show="4"
                                         >
-                                            <div class="relative">
-                                                <VLazyImage
-                                                    class="aspect-square object-cover object-center w-40 rounded-md border border-blue-800"
-                                                    :src="image?.url"
-                                                />
-                                                <button
-                                                    v-if="
-                                                        routeState() !==
-                                                        states?.VIEW
-                                                    "
-                                                    class="absolute top-0 right-0 bg-red-500 text-white p-2 rounded hover:bg-blue-800 m-2"
-                                                    @click="
-                                                        onDeleteImageClick(
-                                                            index
-                                                        )
-                                                    "
-                                                >
-                                                    <XMarkIcon
-                                                        class="h-3 w-3"
-                                                        aria-hidden="true"
+                                            <Slide
+                                                v-for="(
+                                                    image, index
+                                                ) in myPet?.pet_images"
+                                                :key="index"
+                                                class="p-4"
+                                            >
+                                                <div class="relative">
+                                                    <VLazyImage
+                                                        class="aspect-square object-cover object-center w-40 rounded-md border border-blue-800"
+                                                        :src="image?.url"
                                                     />
-                                                </button>
-                                            </div>
-                                        </Slide>
-                                        <template #addons>
-                                            <Pagination />
-                                        </template>
-                                    </Carousel>
+                                                    <button
+                                                        v-if="
+                                                            routeState() !==
+                                                            states?.VIEW
+                                                        "
+                                                        class="absolute top-0 right-0 bg-red-500 text-white p-2 rounded hover:bg-blue-800 m-2"
+                                                        @click="
+                                                            onDeleteImageClick(
+                                                                index
+                                                            )
+                                                        "
+                                                    >
+                                                        <XMarkIcon
+                                                            class="h-3 w-3"
+                                                            aria-hidden="true"
+                                                        />
+                                                    </button>
+                                                </div>
+                                            </Slide>
+                                            <template #addons>
+                                                <Pagination />
+                                            </template>
+                                        </Carousel>
+                                    </div>
 
-                                    <!-- <Carousel
-                                        :items-to-show="4"
-                                        snap-align="start"
-                                    >
-                                        <Slide
-                                            v-for="(
-                                                image, index
-                                            ) in myPet?.pet_images"
-                                            :key="index"
-                                            class="p-4"
-                                        >
-                                            <div class="relative">
-                                                <VLazyImage
-                                                    class="aspect-square object-cover object-center w-40 rounded-md border border-blue-800"
-                                                    :src="image?.url"
-                                                />
-                                                <button
-                                                    v-if="
-                                                        routeState() !==
-                                                        states?.VIEW
-                                                    "
-                                                    class="absolute top-0 right-0 bg-red-500 text-white p-2 rounded hover:bg-blue-800 m-2"
-                                                    @click="
-                                                        onDeleteImageClick(
-                                                            index
-                                                        )
-                                                    "
-                                                >
-                                                    <XMarkIcon
-                                                        class="h-3 w-3"
-                                                        aria-hidden="true"
-                                                    />
-                                                </button>
-                                            </div>
-                                        </Slide>
-
-                                        <template #addons>
-                                            <Pagination />
-                                        </template>
-                                    </Carousel> -->
                                     <div
                                         v-if="routeState() !== states?.VIEW"
                                         class="flex justify-center items-center w-full"
