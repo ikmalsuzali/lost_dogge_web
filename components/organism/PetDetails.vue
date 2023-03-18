@@ -240,51 +240,48 @@
                                     >
                                 </div>
                                 <div
-                                    v-if="myPet?.pet_images"
+                                    v-if="myPet?.pet_images?.length"
                                     class="sm:col-span-2"
                                 >
-                                    <div>
-                                        <Carousel
-                                            v-model="initialSlide"
-                                            ref="myCarousel"
-                                            :items-to-show="4"
+                                    <Carousel
+                                        ref="myCarousel"
+                                        :items-to-show="4"
+                                    >
+                                        <Slide
+                                            v-for="(
+                                                image, index
+                                            ) in myPet?.pet_images"
+                                            :key="index"
+                                            class="p-4"
                                         >
-                                            <Slide
-                                                v-for="(
-                                                    image, index
-                                                ) in myPet?.pet_images"
-                                                :key="index"
-                                                class="p-4"
-                                            >
-                                                <div class="relative">
-                                                    <VLazyImage
-                                                        class="aspect-square object-cover object-center w-40 rounded-md border border-blue-800"
-                                                        :src="image?.url"
+                                            <div class="relative">
+                                                <VLazyImage
+                                                    class="aspect-square object-cover object-center w-40 rounded-md border border-blue-800"
+                                                    :src="image?.url"
+                                                />
+                                                <button
+                                                    v-if="
+                                                        routeState() !==
+                                                        states?.VIEW
+                                                    "
+                                                    class="absolute top-0 right-0 bg-red-500 text-white p-2 rounded hover:bg-blue-800 m-2"
+                                                    @click="
+                                                        onDeleteImageClick(
+                                                            index
+                                                        )
+                                                    "
+                                                >
+                                                    <XMarkIcon
+                                                        class="h-3 w-3"
+                                                        aria-hidden="true"
                                                     />
-                                                    <button
-                                                        v-if="
-                                                            routeState() !==
-                                                            states?.VIEW
-                                                        "
-                                                        class="absolute top-0 right-0 bg-red-500 text-white p-2 rounded hover:bg-blue-800 m-2"
-                                                        @click="
-                                                            onDeleteImageClick(
-                                                                index
-                                                            )
-                                                        "
-                                                    >
-                                                        <XMarkIcon
-                                                            class="h-3 w-3"
-                                                            aria-hidden="true"
-                                                        />
-                                                    </button>
-                                                </div>
-                                            </Slide>
-                                            <template #addons>
-                                                <Pagination />
-                                            </template>
-                                        </Carousel>
-                                    </div>
+                                                </button>
+                                            </div>
+                                        </Slide>
+                                        <template #addons>
+                                            <Pagination />
+                                        </template>
+                                    </Carousel>
 
                                     <!-- <Carousel
                                         :items-to-show="4"
@@ -1178,7 +1175,6 @@ const onSearchedLocation = async () => {
 
 onMounted(() => {
     setTimeout(() => {
-        initialSlide.value = 0
         unref(myCarousel).restartCarousel()
         unref(myCarousel).updateSlideWidth()
     }, 500)
