@@ -239,7 +239,10 @@
                                         >Pet Image(s)</label
                                     >
                                 </div>
-                                <div class="sm:col-span-2">
+                                <div
+                                    v-if="myPet?.pet_images"
+                                    class="sm:col-span-2"
+                                >
                                     <div>
                                         <Carousel
                                             v-model="initialSlide"

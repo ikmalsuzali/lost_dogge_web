@@ -82,8 +82,8 @@ export default defineNuxtConfig({
     },
     alias: {
         components: '/src/components'
-    },
-    nitro: {
-        preset: 'vercel'
     }
+    // nitro: {
+    //     preset: 'vercel'
+    // }
 })
