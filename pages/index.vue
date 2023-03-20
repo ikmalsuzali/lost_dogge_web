@@ -12,28 +12,29 @@
                 </h1>
                 <p class="mt-4 text-lg max-w-lg leading-8 text-gray-600">
                     We love our pets and we want to reunite you with yours,
-                    safely. Find your lost pet or post a Lost & Found message on
-                    our app. We are here to help you find your beloved little
-                    friend.
+                    safely. Create an ad for your lost pet in less than 5
+                    minutes, and get your ad viewed by thousands of people
+                    within the area of your lost or found pet.
                 </p>
                 <div class="mt-4 flex items-center gap-x-6">
                     <a
                         href="#"
                         class="rounded-md bg-[#5C1511] px-6 py-3 text-lg font-extrabold text-white shadow-sm hover:[#5C1511]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5C1511]"
                         @click="randomToast"
-                        >Get started</a
+                        >Create an Facebook / Instagram Ad Now</a
                     >
-                    <a
+                    <!-- <a
                         href="#"
                         class="text-lg font-semibold leading-6 text-gray-700 underline decoration-wavy decoration-[#F96A64] underline-offset-4"
                         >See how it works <span aria-hidden="true">→</span></a
-                    >
+                    > -->
                 </div>
             </div>
             <div
                 class="mt-16 sm:mt-24 lg:mt-0 lg:flex-shrink-0 lg:flex-grow relative"
             >
                 <FacebookAd
+                    v-if="randomPetImages"
                     ref="mockFacebookAd"
                     :adHeader="facebookAdDetails.adHeader"
                     :images="randomPetImages"
@@ -63,6 +64,7 @@ import usePetRepository from '~/repositories/pets'
 import { useIntervalFn } from '@vueuse/core'
 import { toast } from 'vue3-toastify'
 import CustomToast from '~/components/atom/CustomToast.vue'
+import { AuthType, useDrawerStore } from '~~/stores/drawer'
 
 definePageMeta({
     layout: 'page'
@@ -186,7 +188,7 @@ const slideStart = payload => {
     console.log(payload)
 }
 
-interval.value = setRandomInterval(() => randomToast(), 5000, 30000)
+interval.value = setRandomInterval(() => randomToast(), 5000, 60000)
 facebookAdDetails.value = facebookDetailsInit()
 fetchRandomPets(30)
 </script>

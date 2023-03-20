@@ -48,12 +48,7 @@
                                                     id="slide-over-heading"
                                                     class="text-lg font-medium text-gray-900"
                                                 >
-                                                    {{
-                                                        drawer.type ===
-                                                        AuthType.LOGIN
-                                                            ? 'Sign in'
-                                                            : 'Sign up'
-                                                    }}
+                                                    {{ drawer.type }}
                                                 </h2>
                                                 <div
                                                     class="ml-3 flex h-7 items-center"
@@ -235,8 +230,10 @@
                                                                             class="text-sm"
                                                                         >
                                                                             <a
-                                                                                href="#"
                                                                                 class="font-medium text-indigo-600 hover:text-indigo-500"
+                                                                                @click="
+                                                                                    onForgetPasswordClick
+                                                                                "
                                                                                 >Forgot
                                                                                 your
                                                                                 password?</a
@@ -270,7 +267,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div v-else>
+                                        <div
+                                            v-if="
+                                                drawer.type === AuthType.SIGN_UP
+                                            "
+                                        >
                                             <div class="flex">
                                                 <div
                                                     class="flex flex-1 flex-col justify-center py-6"
@@ -310,8 +311,9 @@
                                                                         <div>
                                                                             <a
                                                                                 class="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
-                                                                                @click="onSignFacebookClick"
-
+                                                                                @click="
+                                                                                    onSignFacebookClick
+                                                                                "
                                                                             >
                                                                                 <span
                                                                                     class="sr-only"
@@ -464,7 +466,96 @@
                                                                                 true
                                                                             "
                                                                         >
-                                                                            Save
+                                                                            Sign
+                                                                            up
+                                                                        </Button>
+                                                                        <!-- <button
+                                                                            type="button"
+                                                                            class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                                                            @click="
+                                                                                onSignupClick
+                                                                            "
+                                                                        >
+                                                                            Sign
+                                                                            up
+                                                                        </button> -->
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            v-if="
+                                                drawer.type ===
+                                                AuthType.FORGOT_PASSWORD
+                                            "
+                                        >
+                                            <div class="flex">
+                                                <div
+                                                    class="flex flex-1 flex-col justify-center py-6"
+                                                >
+                                                    <div
+                                                        class="mx-auto w-full max-w-sm"
+                                                    >
+                                                        <div
+                                                            class="flex space-x-2"
+                                                        >
+                                                            <img
+                                                                class="block h-10 w-auto"
+                                                                src="~/assets/images/logo-lost-doggo.svg"
+                                                                alt="Your Company"
+                                                            />
+                                                            <h2
+                                                                class="text-3xl font-bold tracking-tight text-gray-900"
+                                                            >
+                                                                Forget your
+                                                                password?
+                                                            </h2>
+                                                        </div>
+
+                                                        <div class="mt-8">
+                                                            <div class="mt-6">
+                                                                <form
+                                                                    action="#"
+                                                                    method="POST"
+                                                                    class="space-y-6"
+                                                                >
+                                                                    <div>
+                                                                        <Input
+                                                                            v-model="
+                                                                                authForgetPassword.email
+                                                                            "
+                                                                            label="Email address"
+                                                                            required
+                                                                            :type="
+                                                                                InputType.EMAIL
+                                                                            "
+                                                                            :error-message="
+                                                                                errorMessages.email
+                                                                            "
+                                                                        />
+                                                                    </div>
+
+                                                                    <div>
+                                                                        <Button
+                                                                            :loading="
+                                                                                isForgetPasswordSubmitLoading
+                                                                            "
+                                                                            @click="
+                                                                                onForgetPasswordSubmitClick
+                                                                            "
+                                                                            :block="
+                                                                                true
+                                                                            "
+                                                                        >
+                                                                            Send
+                                                                            Email
+                                                                            to
+                                                                            Reset
+                                                                            Password
                                                                         </Button>
                                                                         <!-- <button
                                                                             type="button"
@@ -531,7 +622,8 @@ import {
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import useAuthRepository, { AuthProviderType } from '~/repositories/auth'
 
-const { signUp, getUserByEmail, signIn, signInProvider } = useAuthRepository()
+const { signUp, getUserByEmail, signIn, signInProvider, forgetPassword } =
+    useAuthRepository()
 const drawer = useDrawerStore()
 const authStore = useAuthStore()
 const petStore = usePetStore()
@@ -545,11 +637,18 @@ const toggleSignupLoginDrawer = (authType: AuthType) => {
 
 const isLoginLoading = ref(false)
 const isSigninLoading = ref(false)
+const isForgetPasswordSubmitLoading = ref(false)
 
 const authLoginInit = () => {
     return {
         email: '',
         password: ''
+    }
+}
+
+const authForgetPasswordInit = () => {
+    return {
+        email: ''
     }
 }
 
@@ -566,6 +665,8 @@ const authSignupErrorMessageInit = () => {
 
 const authLogin = ref(authLoginInit())
 const authSignup = ref(authSignupErrorMessageInit())
+const authForgetPassword = ref(authForgetPasswordInit())
+
 const errorMessages = ref(authSignupErrorMessageInit())
 
 const resetState = () => {
@@ -627,6 +728,23 @@ const allSignupErrorMessageValidation = async () => {
     }
 }
 
+const onForgetPasswordClick = () => {
+    resetState()
+    drawer.setDrawerType(AuthType.FORGOT_PASSWORD)
+}
+
+const onForgetPasswordSubmitClick = async () => {
+    try {
+        isForgetPasswordSubmitLoading.value = true
+        await allForgetPasswordErrorMessageValidation()
+        if (!isErrorMessageEmpty(unref(errorMessages))) return
+        await forgetPassword(unref(authForgetPassword).email)
+    } catch (error) {
+    } finally {
+        isForgetPasswordSubmitLoading.value = false
+    }
+}
+
 const onSignFacebookClick = async () => {
     await signInProvider(AuthProviderType.FACEBOOK)
 }
@@ -637,6 +755,10 @@ const allLoginErrorMessageValidation = async () => {
         unref(authLogin).password,
         'Password'
     )
+}
+
+const allForgetPasswordErrorMessageValidation = async () => {
+    errorMessages.value.email = validateEmail(unref(authForgetPassword).email)
 }
 
 const onSignupClick = async () => {
