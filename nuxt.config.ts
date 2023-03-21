@@ -5,6 +5,11 @@ export default defineNuxtConfig({
             titleTemplate: 'Lost Doggo',
             meta: [
                 {
+                    name: 'description',
+                    content:
+                        'Lost your pet? Create a facebook or instagram pet within 5 mins and reach around 3000+ people per day within the lost location of your pet'
+                },
+                {
                     name: 'facebook-domain-verification',
                     content: '2kwyqr1ami477rthgyqlwq4x711oxa'
                 },
@@ -33,7 +38,21 @@ export default defineNuxtConfig({
         '@nuxtjs/tailwindcss',
         '@pinia/nuxt',
         'nuxt-icon',
-        '@nuxtjs/i18n'
+        '@nuxtjs/i18n',
+        [
+            '@nuxtjs/robots',
+            {
+                UserAgent: '*',
+                Disallow: '/dashboard',
+                Sitemap: (req: any) => `https://${req.headers.host}/sitemap.xml`
+            }
+        ],
+        [
+            '@nuxtjs/google-analytics',
+            {
+                id: 'G-4BFCELVD9Q'
+            }
+        ]
     ],
     devServerHandlers: [],
     components: {

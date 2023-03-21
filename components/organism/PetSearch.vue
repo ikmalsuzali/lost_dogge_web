@@ -1,24 +1,38 @@
 <template>
     <div class="mx-10">
         <div class="flex space-x-4">
-            <Autocomplete
-                v-model="filter.location.name"
-                placeholder="Search last seen location of your pet"
-                :throttle-time="1000"
-                :items="geocodingLocations"
-                item-key="id"
-                item-value="place_name"
-                @returned-object="updateLocationFilter"
-            />
-            <button
-                type="button"
-                class="inline-flex flex-shrink-0 items-center justify-center rounded-md border border-transparent bg-[#5C1511] hover:bg-[#5C1511]/80 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2 w-34 !ml-auto"
-                @click="isFilterDrawerOpen = true"
-            >
-                <span class="mr-2">Filters</span>
+            <div class="w-full">
+                <Autocomplete
+                    v-model="filter.location.name"
+                    placeholder="Search last seen location of your pet"
+                    :throttle-time="1000"
+                    :items="geocodingLocations"
+                    item-key="id"
+                    item-value="place_name"
+                    :block="true"
+                    @returned-object="updateLocationFilter"
+                />
+            </div>
+            <div class="flex-none mt-1">
+                <button
+                    type="button"
+                    class="inline-flex flex-shrink-0 items-center justify-center rounded-md border border-transparent bg-[#5C1511] hover:bg-[#5C1511]/80 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2 w-34 !ml-auto mr-2"
+                    @click="isFilterDrawerOpen = true"
+                >
+                    <span class="mr-2">Recently Viewed</span>
 
-                <CogIcon class="h-6 w-6" aria-hidden="true" />
-            </button>
+                    <StarIcon class="h-6 w-6" aria-hidden="true" />
+                </button>
+                <button
+                    type="button"
+                    class="inline-flex flex-shrink-0 items-center justify-center rounded-md border border-transparent bg-[#5C1511] hover:bg-[#5C1511]/80 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2 w-34 !ml-auto"
+                    @click="isFilterDrawerOpen = true"
+                >
+                    <span class="mr-2">Filters</span>
+
+                    <CogIcon class="h-6 w-6" aria-hidden="true" />
+                </button>
+            </div>
         </div>
         <div v-if="isLoading" class="w-5/12 flex mx-auto justify-center mt-20">
             <Vue3Lottie
@@ -44,9 +58,9 @@
                         "
                     />
                     <div class="p-4">
-                        <small class="text-blue-400 text-xs">{{
-                            breedAndTypeName(pet)
-                        }}</small>
+                        <small class="text-blue-400 text-xs">
+                            {{ pet?.animal_types?.name }}
+                        </small>
                         <h1 class="text-2xl font-medium text-slate-600 pb-2">
                             {{ pet.name }}
                         </h1>
@@ -203,11 +217,13 @@
                                         <h3
                                             class="text-xl font-bold text-gray-900 sm:text-2xl"
                                         >
-                                            {{ selectedPet?.name }}
+                                            {{
+                                                selectedPet?.animal_types?.name
+                                            }}
                                         </h3>
                                     </div>
                                     <p class="text-sm text-gray-500">
-                                        {{ breedAndTypeName(selectedPet) }}
+                                        {{ selectedPet?.name }}
                                     </p>
                                 </div>
                                 <div class="pt-2">
@@ -275,7 +291,7 @@
                             Last Seen Location
                         </dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">
-                            New York, NY, USA
+                            {{ selectedPet.address }}
                         </dd>
                         <div class="h-96 my-2">
                             <MapboxMap
@@ -325,9 +341,7 @@ import Autocomplete from '@/components/atom/Autocomplete.vue'
 import { MapboxMap, MapboxMarker, MapboxGeogeometryCircle } from 'vue-mapbox-ts'
 import { watchEffect, ref, nextTick, onMounted } from 'vue'
 import { Carousel, Slide, Pagination } from 'vue3-carousel'
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { CogIcon } from '@heroicons/vue/24/outline'
-import { EllipsisVerticalIcon } from '@heroicons/vue/20/solid'
+import { CogIcon, StarIcon } from '@heroicons/vue/24/outline'
 import usePetRepository from '@/repositories/pets'
 import useMapboxRepository from '@/repositories/mapbox'
 import dayjs from 'dayjs'
@@ -438,11 +452,8 @@ const onPetClick = pet => {
     isPetDetailsDrawerOpen.value = true
 }
 
-const breedAndTypeName = pet => {
-    if (!pet?.breed) return ''
-    return `${pet?.breed?.type ? pet?.breed?.type + ' - ' : ''}${
-        pet?.breed.name || ''
-    }`
+const animalType = pet => {
+    return `${pet.animal_types.name}`
 }
 
 const onSearchedLocation = async () => {

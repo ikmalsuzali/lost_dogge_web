@@ -35,13 +35,13 @@
                 </svg>
             </div>
         </div>
-        <p
+        <!-- <p
             ref="adHeaderElement"
             class="p-4 pt-0 pb-1 mt-[-5px]"
             :class="showTruncate"
         >
             {{ adHeader }}
-        </p>
+        </p> -->
         <Carousel
             ref="myCarousel"
             :items-to-show="1"
@@ -49,9 +49,12 @@
             wrapAround
             :autoplay="isAutoPlay ? 5000 : 0"
         >
-            <Slide v-for="(image, index) in images" :key="image.url">
-                <div class="relative">
-                    <img class="aspect-square object-cover" :src="image" />
+            <Slide v-for="(image, index) in images" :key="index">
+                <div class="h-[300px]">
+                    <img
+                        class="aspect-video object-cover h-[300px]"
+                        :src="image"
+                    />
                 </div>
             </Slide>
         </Carousel>
