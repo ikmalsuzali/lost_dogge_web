@@ -46,12 +46,6 @@ export default defineNuxtConfig({
                 Disallow: '/dashboard',
                 Sitemap: (req: any) => `https://${req.headers.host}/sitemap.xml`
             }
-        ],
-        [
-            '@nuxtjs/google-analytics',
-            {
-                id: 'G-4BFCELVD9Q'
-            }
         ]
     ],
     devServerHandlers: [],
@@ -91,7 +85,7 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         public: {
-            gaId: '',
+            gaId: process.env.NUXT_PUBLIC_GA_ID,
             SUPABASE_PROJECT_URL: process.env.SUPABASE_PROJECT_URL,
             SUPABASE_PUBLIC_KEY: process.env.SUPABASE_PUBLIC_KEY,
             MAPBOX_KEY: process.env.MAPBOX_KEY,
