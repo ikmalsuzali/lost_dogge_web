@@ -1,5 +1,6 @@
 <template>
     <div
+        v-if="images.length"
         class="bg-white rounded-sm shadow-md shadow-slate-400 w-[375px] hover:shadow-slate-500"
     >
         <div class="items-start flex p-3">
@@ -167,7 +168,6 @@
 
 <script lang="ts" setup>
 import { Carousel, Slide, Pagination } from 'vue3-carousel'
-import { useIntervalFn } from '@vueuse/core'
 import 'vue3-carousel/dist/carousel.css'
 
 const props = withDefaults(

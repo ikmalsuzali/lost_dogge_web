@@ -34,7 +34,7 @@
                 class="mt-16 sm:mt-24 lg:mt-0 lg:flex-shrink-0 lg:flex-grow relative"
             >
                 <FacebookAd
-                    v-if="randomPetImages"
+                    v-if="randomPetImages?.length"
                     ref="mockFacebookAd"
                     :adHeader="facebookAdDetails.adHeader"
                     :images="randomPetImages"
@@ -70,14 +70,6 @@ definePageMeta({
     layout: 'page'
 })
 
-const pets = ref([])
-const { getRandomPets } = usePetRepository()
-const isRandomPetLoading = ref(false)
-const mockFacebookAd = ref()
-const facebookAdDetails = ref()
-const randomPetDetails = ref()
-const interval = ref()
-
 const facebookDetailsInit = () => {
     return {
         image: 'https://fhasuqzjmruhvugclutt.supabase.co/storage/v1/object/public/pets/website/lost_doggo.jpg',
@@ -85,6 +77,14 @@ const facebookDetailsInit = () => {
             'Generate and run ads. Increase the chances of you finding your pet'
     }
 }
+
+const pets = ref([facebookDetailsInit()])
+const { getRandomPets } = usePetRepository()
+const isRandomPetLoading = ref(false)
+const mockFacebookAd = ref()
+const facebookAdDetails = ref()
+const randomPetDetails = ref([])
+const interval = ref()
 
 const randomPetImages = computed(() => {
     return (
@@ -151,6 +151,8 @@ const fetchRandomPets = async (count: number) => {
     try {
         isRandomPetLoading.value = true
         pets.value = await getRandomPets(count)
+
+        console.log('hi', pets.value)
         let i = 0
         let slideArr = []
         pets.value?.forEach(pet => {
@@ -176,11 +178,13 @@ const { pause, resume, isActive } = useIntervalFn(() => {
 }, 3000)
 
 const nextFbAdSlide = () => {
-    unref(mockFacebookAd).onNext()
-    facebookAdDetails.value.adHeader =
-        unref(randomPetDetails)[
-            unref(mockFacebookAd)?.myCarousel?.data.currentSlide.value
-        ]?.adHeader
+    unref(mockFacebookAd)?.onNext()
+    if (unref(randomPetDetails).length) {
+        facebookAdDetails.value.adHeader =
+            unref(randomPetDetails)[
+                unref(mockFacebookAd)?.myCarousel?.data.currentSlide.value
+            ]?.adHeader
+    }
 }
 
 const slideStart = payload => {
@@ -190,5 +194,10 @@ const slideStart = payload => {
 
 interval.value = setRandomInterval(() => randomToast(), 5000, 60000)
 facebookAdDetails.value = facebookDetailsInit()
-fetchRandomPets(30)
+
+// onMounted(() => {
+nextTick(() => {
+    fetchRandomPets(30)
+})
+// })
 </script>
