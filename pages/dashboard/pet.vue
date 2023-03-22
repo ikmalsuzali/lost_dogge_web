@@ -103,7 +103,7 @@
                                 class="m-auto"
                                 @click="router.push('/dashboard/pet/create')"
                             >
-                                Create a pet posting
+                                Lost/Found a pet?
                             </Button>
                         </div>
                     </div>
@@ -246,7 +246,7 @@
                                                 class="mr-2.5 h-5 w-5 text-gray-400"
                                                 aria-hidden="true"
                                             />
-                                            <span>Create a pet posting</span>
+                                            <span>Lost/Found a pet?</span>
                                         </button>
                                     </span>
                                 </div>
