@@ -5175,6 +5175,11 @@ mapbox-gl@^2.10.0, mapbox-gl@^2.11.1:
     tinyqueue "^2.0.3"
     vt-pbf "^3.1.3"
 
+maska@^2.1.7:
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/maska/-/maska-2.1.7.tgz#225a1124b311ccd603379cdf3d18920fbee27c54"
+  integrity sha512-WMQzwCgFN2lQf8opJwHwdik7YQ1F8IggGEPdky6qyaaKaE9fUCc8wfbx0U4SfnFiPTsE3/5PzI0Qka4xTBczrw==
+
 mdn-data@2.0.14:
   version "2.0.14"
   resolved "https://registry.yarnpkg.com/mdn-data/-/mdn-data-2.0.14.tgz#7113fc4281917d63ce29b43446f701e68c25ba50"
@@ -7739,6 +7744,13 @@ vue-i18n@^9.2.0, vue-i18n@^9.2.2:
     "@intlify/vue-devtools" "9.2.2"
     "@vue/devtools-api" "^6.2.1"
 
+vue-input-mask@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/vue-input-mask/-/vue-input-mask-0.0.11.tgz#16589c819779fa7bb0bcf572c5ebcfff8e0453b2"
+  integrity sha512-QiY67mNW7DlUsCQXmeCOGUw2nz/hUF+Z7lEGlKrOeh6M46buzZlqsPis4ZOgJazX3gml/y8hKRq7uGJXRaBDJg==
+  dependencies:
+    vue "^2.4.4"
+
 vue-mapbox-ts@^0.9.3:
   version "0.9.7"
   resolved "https://registry.yarnpkg.com/vue-mapbox-ts/-/vue-mapbox-ts-0.9.7.tgz#a59e40dd796c8ea1d9b64b5a1dff4f2d4351a5ac"
@@ -7792,7 +7804,7 @@ vue3-toastify@^0.1.1:
   resolved "https://registry.yarnpkg.com/vue3-toastify/-/vue3-toastify-0.1.1.tgz#f6e5adba5c25a8a482c3cfe99bdf985e88eed11c"
   integrity sha512-Riy4PnkQNRWppPytaC4J7UP3ICNER9VOVDrgfuIBlEOkz1PO24lrQ49kI4BdLJrS3KMlDyJFdawDyB4+DZFjfg==
 
-vue@^2.5.17:
+vue@^2.4.4, vue@^2.5.17:
   version "2.7.14"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.7.14.tgz#3743dcd248fd3a34d421ae456b864a0246bafb17"
   integrity sha512-b2qkFyOM0kwqWFuQmgd4o+uHGU7T+2z3T+WQp8UBjADfEv2n4FEMffzBmCKNP0IGzOEEfYjvtcC62xaSKeQDrQ==

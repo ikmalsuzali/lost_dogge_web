@@ -520,6 +520,7 @@
                                         :error-message="
                                             errorMessages.contact_number
                                         "
+                                        mask="###-###-#####"
                                         placeholder="123-456-7890"
                                         :disabled="routeState() === states.VIEW"
                                     />

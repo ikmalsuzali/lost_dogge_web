@@ -13,6 +13,8 @@
             :required="required"
             :disabled="disabled"
             :placeholder="placeholder"
+            v-maska
+            :data-maska="mask"
             class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
             :class="{
                 'bg-slate-50 text-slate-500 border-slate-200 shadow-none':
@@ -44,6 +46,8 @@
 </template>
 
 <script lang="ts" setup>
+import { vMaska } from 'maska'
+
 defineProps<{
     modelValue?: string | number | undefined
     required?: boolean
@@ -53,6 +57,7 @@ defineProps<{
     prefix?: string | undefined
     disabled?: boolean
     placeholder: string
+    mask?: string
 }>()
 
 defineEmits(['update:modelValue'])

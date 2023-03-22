@@ -1,6 +1,8 @@
 <template>
-    <div>
-        <div class="relative m-10 rounded-xl">
+    <div
+        class="mx-auto max-w-7xl px-6 py-24 lg:items-center lg:gap-x-10 lg:px-8"
+    >
+        <div class="relative mx-10 mb-10 rounded-xl">
             <div
                 class="h-56 sm:h-72 md:absolute md:left-0 md:h-full md:w-1/2 rounded-xl z-10"
             >
