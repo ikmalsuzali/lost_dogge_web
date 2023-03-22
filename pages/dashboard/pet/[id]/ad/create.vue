@@ -195,7 +195,7 @@ const tiers = [
         priceMonthly: 12,
         totalPrice: '$180',
         features: [
-            'Targeted to 5 mile radius of where you lost your pet',
+            'Targeted to 10 mile radius of where you lost your pet',
             'Reach 500 to 3000+ people per day (Facebook Estimates)'
         ]
     },
@@ -206,7 +206,7 @@ const tiers = [
         priceMonthly: 10,
         totalPrice: '$300',
         features: [
-            'Targeted to 5 mile radius of where you lost your pet',
+            'Targeted to 10 mile radius of where you lost your pet',
             'Reach 500 to 3000+ people per day (Facebook Estimates)'
         ]
     }

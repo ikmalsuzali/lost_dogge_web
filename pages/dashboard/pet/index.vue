@@ -5,7 +5,7 @@
         >
             <div class="mx-auto max-w-lg">
                 <h2 class="text-lg font-medium text-gray-900">
-                    To get started finding your pet with just these two steps
+                    Get started finding your pet with just these two steps
                 </h2>
                 <p class="mt-1 text-sm text-gray-500">
                     Get started by posting a lost pet. If you found a lost pet,
