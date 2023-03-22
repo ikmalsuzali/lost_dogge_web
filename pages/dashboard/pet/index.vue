@@ -5,7 +5,7 @@
         >
             <div class="mx-auto max-w-lg">
                 <h2 class="text-lg font-medium text-gray-900">
-                    Register your first pet and post a found pet
+                    To get started finding your pet with just these two steps
                 </h2>
                 <p class="mt-1 text-sm text-gray-500">
                     Get started by posting a lost pet. If you found a lost pet,
@@ -26,11 +26,7 @@
                                         'inline-flex items-center justify-center h-10 w-10 rounded-lg'
                                     ]"
                                 >
-                                    <component
-                                        :is="item.icon"
-                                        class="h-6 w-6 text-white"
-                                        aria-hidden="true"
-                                    />
+                                    {{ itemIdx + 1 }}
                                 </span>
                             </div>
                             <div class="min-w-0 flex-1">
@@ -74,23 +70,15 @@ const items = [
         name: 'Register your first pet',
         description: 'You can register a pet first or post a lost/found pet',
         href: 'pet/create',
-        iconColor: 'bg-blue-500',
+        iconColor: 'bg-[#F96A64]',
         icon: DocumentTextIcon
-    },
-    {
-        name: 'Purchase a subscription',
-        description:
-            'Choose a subscription of either 15 or 30 days to run ads for',
-        href: '#',
-        iconColor: 'bg-blue-500',
-        icon: BanknotesIcon
     },
     {
         name: 'Create an ad',
         description:
             'Review the ad and immediately get started posting a Facebook & Instagram Ad',
         href: '#',
-        iconColor: 'bg-blue-500',
+        iconColor: 'bg-[#F96A64]',
         icon: MegaphoneIcon
     }
 ]
