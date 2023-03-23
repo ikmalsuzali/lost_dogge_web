@@ -1,6 +1,5 @@
 <template>
     <div
-        v-if="images.length"
         class="bg-white rounded-sm shadow-md shadow-slate-400 w-[375px] hover:shadow-slate-500"
     >
         <div class="items-start flex p-3">
@@ -177,9 +176,10 @@ const props = withDefaults(
         isAutoPlay: boolean
     }>(),
     {
-        images: () => [],
-        adHeader:
-            'Live in perject harmony with nature yet remain distintively urban in spirit Sunway dhill Kota Damansara Live in perject harmony with nature yet remain distintively urban in spirit Sunway dhill Kota Damansara',
+        images: () => [
+            'https://fhasuqzjmruhvugclutt.supabase.co/storage/v1/object/public/pets/website/lost_doggo.jpg'
+        ],
+        adHeader: '',
         isAutoPlay: false
     }
 )

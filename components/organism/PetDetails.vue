@@ -485,8 +485,12 @@
                                     <label
                                         for="project-name"
                                         class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                                        >Email</label
+                                        >Contact Email</label
                                     >
+                                    <div class="text-xs text-gray-500">
+                                        This will be the email, users will
+                                        contact you by.
+                                    </div>
                                 </div>
                                 <div class="sm:col-span-2">
                                     <Input
@@ -512,6 +516,10 @@
                                         class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
                                         >Contact Number</label
                                     >
+                                    <div class="text-xs text-gray-500">
+                                        This will be the contact, users will
+                                        contact you by.
+                                    </div>
                                 </div>
                                 <div class="sm:col-span-2">
                                     <Input
@@ -623,6 +631,52 @@
                                     >
                                         {{ myPet.is_vaccinated ? 'Yes' : 'No' }}
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-slate-100 rounded border-t-4 border-orange-500 rounded-b text-orange-900 px-4 py-3 shadow-md"
+                        role="alert"
+                    >
+                        <div class="flex">
+                            <div class="flex">
+                                <div class="py-1">
+                                    <svg
+                                        class="fill-current h-6 w-6 text-orange-500 mr-4"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"
+                                        />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-left">
+                                        By saving and registering a pet, you
+                                        agree to the terms of use and privacy
+                                        policy of LostDoggo
+                                    </p>
+                                    <p class="text-sm">
+                                        We will using your contact email and
+                                        contact number to others to contact you
+                                        about your lost or found pet
+                                    </p>
+                                    <p class="text-sm space-x-3">
+                                        <a
+                                            href="/privacy-policy"
+                                            target="_blank"
+                                            class="underline text-blue-600"
+                                            >Privacy Policy</a
+                                        >
+                                        <a
+                                            href="/terms-of-service"
+                                            target="_blank"
+                                            class="underline text-blue-600"
+                                            >Terms of Service</a
+                                        >
+                                    </p>
                                 </div>
                             </div>
                         </div>

@@ -34,7 +34,6 @@
                 class="mt-16 sm:mt-24 lg:mt-0 lg:flex-shrink-0 lg:flex-grow relative"
             >
                 <FacebookAd
-                    v-if="randomPetImages?.length"
                     ref="mockFacebookAd"
                     :adHeader="facebookAdDetails.adHeader"
                     :images="randomPetImages"
@@ -78,19 +77,17 @@ const facebookDetailsInit = () => {
     }
 }
 
-const pets = ref([facebookDetailsInit()])
+const pets = ref([])
 const { getRandomPets } = usePetRepository()
 const isRandomPetLoading = ref(false)
 const mockFacebookAd = ref()
 const facebookAdDetails = ref()
-const randomPetDetails = ref([])
+const randomPetDetails = ref([facebookDetailsInit()])
 const interval = ref()
 
 const randomPetImages = computed(() => {
-    return (
-        unref(randomPetDetails).map(randomPet => randomPet.image) || [
-            unref(facebookAdDetails).image
-        ]
+    return unref(randomPetDetails).map(
+        randomPet => randomPet?.image || [unref(facebookAdDetails).image]
     )
 })
 
