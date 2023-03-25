@@ -20,7 +20,7 @@
                     <a
                         href="#"
                         class="rounded-md bg-[#5C1511] px-6 py-3 text-lg font-extrabold text-white shadow-sm hover:[#5C1511]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5C1511]"
-                        @click="randomToast"
+                        @click="openDrawer"
                         >Create an Facebook / Instagram Ad Now</a
                     >
                     <!-- <a
@@ -62,6 +62,7 @@ import FacebookAd from '~/components/atom/FacebookAd.vue'
 import usePetRepository from '~/repositories/pets'
 import { useIntervalFn } from '@vueuse/core'
 import CustomToast from '~/components/atom/CustomToast.vue'
+import { AuthType, useDrawerStore } from '~/stores/drawer'
 
 definePageMeta({
     layout: 'page'
@@ -77,6 +78,7 @@ const facebookDetailsInit = () => {
 
 const pets = ref([])
 const { getRandomPets } = usePetRepository()
+const { toggleSignupLoginDrawer, setDrawerType } = useDrawerStore()
 const isRandomPetLoading = ref(false)
 const mockFacebookAd = ref()
 const facebookAdDetails = ref()
@@ -118,6 +120,12 @@ const setRandomInterval = (intervalFunction, minDelay, maxDelay) => {
 }
 
 const notifyPetDetails = ref()
+
+const openDrawer = () => {
+    setDrawerType(AuthType.SIGN_UP)
+    toggleSignupLoginDrawer()
+}
+
 const randomToast = async () => {
     notifyPetDetails.value = await getRandomPets(1)
     const petStatus = unref(notifyPetDetails)[0]?.status || 0
