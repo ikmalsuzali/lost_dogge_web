@@ -110,8 +110,6 @@ const usePetRepository = () => {
             }
         ])
 
-        console.log(payload.pet_images)
-
         if (payload.pet_images.length) {
             const { data: petImageData, error: petImageError } = await $supabase
                 .from('pet_images')
@@ -140,11 +138,9 @@ const usePetRepository = () => {
 
         if (uploadError) throw uploadError
 
-        console.log(uploadData)
         const { data: publicUrlData, error: publicUrlError } =
             await $supabase.storage.from('pets').getPublicUrl(petPath)
 
-        console.log(publicUrlData)
         if (publicUrlError) throw publicUrlError
 
         return publicUrlData
@@ -263,7 +259,6 @@ const usePetRepository = () => {
     //         await $supabase
     //             .from(`messages:pet_ma=eq.${id}`)
     //             .on('*', payload => {
-    //                 console.log(payload)
     //             })
     //             .subscribe()
     //     }

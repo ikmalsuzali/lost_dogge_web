@@ -27,7 +27,6 @@ const useSubscriptionRepository = () => {
     }
 
     const subscribeStripePayment = async payload => {
-        console.log('stripe payment')
         const { data, error } = await axios.post(
             `${config.API_HOST}/api/v1/checkout-session`,
             {
@@ -58,7 +57,6 @@ const useSubscriptionRepository = () => {
     }
 
     const fetchPaymentAd = async (paymentId: string) => {
-        console.log('fetchpaymentad')
         const { data, error } = await $supabase
             .from('payments')
             .select('*, fb_adsets(*)')
@@ -66,14 +64,12 @@ const useSubscriptionRepository = () => {
             .limit(1)
             .single()
 
-        console.log('fetchpaymentad', data)
-
         if (error) throw error
         return data
     }
 
     const confirmAd = async (paymentId: string) => {
-        const { data, error } = await axios.post(
+        const { data, error } = await axios.post<Ad>(
             `${config.API_HOST}/api/v1/fb/ad`,
             {
                 payment_id: paymentId

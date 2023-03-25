@@ -441,7 +441,6 @@ const fetchPets = async () => {
                 })
         })
     } catch (error) {
-        console.log(error)
     } finally {
         isLoading.value = false
     }

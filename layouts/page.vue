@@ -721,7 +721,6 @@ const allSignupErrorMessageValidation = async () => {
     )
     if (unref(authSignup).email !== '') {
         const data = await getUserByEmail(unref(authSignup).email)
-        console.log(data!.data!.length)
         errorMessages.value.email = data!.data!.length
             ? 'Email has been taken'
             : ''
@@ -772,7 +771,6 @@ const onSignupClick = async () => {
         authStore.setUser(data!.data![0])
         drawer.toggleSignupLoginDrawer()
     } catch (error) {
-        console.log(error)
     } finally {
         isSigninLoading.value = false
     }

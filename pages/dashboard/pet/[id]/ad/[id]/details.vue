@@ -18,7 +18,12 @@
                             />
                         </svg>
                     </div>
-                    <div>
+                    <div
+                        v-if="
+                            payment.payment?.fb_adsets?.status ===
+                                'PENDING_REVIEW' || !payment.payment?.adset_id
+                        "
+                    >
                         <p class="font-bold text-left">Review and verify</p>
                         <p class="text-sm">
                             After confirmation, Facebook will take 3 to 24+
@@ -46,95 +51,190 @@
                                 @click="onConfirmAdClick"
                                 >Confirm Ad</Button
                             >
+                            <button
+                                v-if="
+                                    payment?.adset_id &&
+                                    payment?.fb_adsets?.status ===
+                                        'PENDING_REVIEW'
+                                "
+                                class="py-2 px-4 shadow-md no-underline rounded-full bg-slate text-white font-sans font-semibold text-sm border-slate btn-primary hover:text-white hover:bg-slate-light focus:outline-none active:shadow-none mr-2"
+                            >
+                                Pending Facebook Review
+                            </button>
+                            <button
+                                v-if="
+                                    payment?.adset_id &&
+                                    payment?.fb_adsets?.status === 'DISAPPROVED'
+                                "
+                                class="py-2 px-4 shadow-md no-underline rounded-full bg-red text-white font-sans font-semibold text-sm border-red btn-primary hover:text-white hover:bg-red-light focus:outline-none active:shadow-none mr-2"
+                            >
+                                Facebook Rejected
+                            </button>
+                            <button
+                                v-if="
+                                    payment?.adset_id &&
+                                    payment?.fb_adsets?.status === 'IN_PROCESS'
+                                "
+                                class="py-2 px-4 shadow-md no-underline rounded-full bg-slate text-white font-sans font-semibold text-sm border-slate btn-primary hover:text-white hover:bg-slate-light focus:outline-none active:shadow-none mr-2"
+                            >
+                                In Progress
+                            </button>
+                            <button
+                                v-if="
+                                    payment?.adset_id &&
+                                    payment?.fb_adsets?.status === 'ARCHIVED'
+                                "
+                                class="py-2 px-4 shadow-md no-underline rounded-full bg-slate text-white font-sans font-semibold text-sm border-slate btn-primary hover:text-white hover:bg-slate-light focus:outline-none active:shadow-none mr-2"
+                            >
+                                Archived
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div
-                    v-if="
-                        payment?.adset_id &&
-                        payment?.fb_adsets?.status === 'ACTIVE'
-                    "
-                    class="mt-6 px-4 sm:px-6 lg:px-8"
-                >
-                    <ul
-                        role="list"
-                        class="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6 xl:grid-cols-3"
-                    >
-                        <li
-                            class="relative col-span-1 flex rounded-md shadow-sm"
-                        >
-                            <div
-                                class="flex-shrink-0 flex items-center justify-center w-16 bg-green-600 text-white text-sm font-medium rounded-l-md"
-                            >
-                                AV
-                            </div>
-                            <div
-                                class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white"
-                            >
-                                <div class="flex-1 truncate px-4 py-2 text-sm">
-                                    <a
-                                        href="#"
-                                        class="font-medium text-gray-900 hover:text-gray-600"
-                                        >1000</a
-                                    >
-                                    <p class="text-gray-500">Ad views</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li
-                            class="relative col-span-1 flex rounded-md shadow-sm"
-                        >
-                            <div
-                                class="flex-shrink-0 flex items-center justify-center w-16 bg-yellow-400 text-white text-sm font-medium rounded-l-md"
-                            >
-                                AC
-                            </div>
-                            <div
-                                class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white"
-                            >
-                                <div class="flex-1 truncate px-4 py-2 text-sm">
-                                    <a
-                                        href="#"
-                                        class="font-medium text-gray-900 hover:text-gray-600"
-                                        >1000</a
-                                    >
-                                    <p class="text-gray-500">Ad clicks</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li
-                            class="relative col-span-1 flex rounded-md shadow-sm"
-                        >
-                            <div
-                                class="flex-shrink-0 flex items-center justify-center w-16 bg-red-400 text-white text-sm font-medium rounded-l-md"
-                            >
-                                DL
-                            </div>
-                            <div
-                                class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white"
-                            >
-                                <div class="flex-1 truncate px-4 py-2 text-sm">
-                                    <a
-                                        href="#"
-                                        class="font-medium text-gray-900 hover:text-gray-600"
-                                        >30</a
-                                    >
-                                    <p class="text-gray-500">days left</p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+
                 <!-- Facebook ad -->
-                <div>
-                    <div class="text-lg font-medium text-gray-900 py-2">
-                        Preview
+                <div class="px-2">
+                    <div class="grid grid-cols-5 space-x-4">
+                        <div class="col-span-3 space-y-5">
+                            <ul
+                                role="list"
+                                class="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6 xl:grid-cols-3"
+                            >
+                                <li
+                                    class="relative col-span-1 flex rounded-md shadow-sm"
+                                >
+                                    <div
+                                        class="flex-shrink-0 flex items-center justify-center w-16 bg-red-400 text-white text-sm font-medium rounded-l-md"
+                                    >
+                                        DL
+                                    </div>
+                                    <div
+                                        class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200"
+                                        :class="{
+                                            'bg-slate-300':
+                                                payment?.fb_adsets?.status ===
+                                                    'PENDING_REVIEW' ||
+                                                payment?.fb_adsets?.status ===
+                                                    'ARCHIVED' ||
+                                                payment?.fb_adsets?.status ===
+                                                    'DISAPPROVED' ||
+                                                !payment.adset_id
+                                        }"
+                                    >
+                                        <div
+                                            class="flex-1 truncate px-4 py-2 text-sm"
+                                        >
+                                            <a
+                                                href="#"
+                                                class="font-medium text-gray-900 hover:text-gray-600"
+                                                >30</a
+                                            >
+                                            <p class="text-gray-500">
+                                                days left
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li
+                                    class="relative col-span-1 flex rounded-md shadow-sm"
+                                >
+                                    <div
+                                        class="flex-shrink-0 flex items-center justify-center w-16 bg-green-600 text-white text-sm font-medium rounded-l-md"
+                                    >
+                                        AV
+                                    </div>
+                                    <div
+                                        class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200"
+                                        :class="{
+                                            'bg-slate-300':
+                                                payment?.fb_adsets?.status ==
+                                                    'PENDING_REVIEW' ||
+                                                payment?.fb_adsets?.status ==
+                                                    'ARCHIVED' ||
+                                                payment?.fb_adsets?.status ==
+                                                    'DISAPPROVED' ||
+                                                !payment.adset_id
+                                        }"
+                                    >
+                                        <div
+                                            class="flex-1 truncate px-4 py-2 text-sm"
+                                        >
+                                            <a
+                                                href="#"
+                                                class="font-medium text-gray-900 hover:text-gray-600"
+                                                >{{
+                                                    payment?.fb_adsets
+                                                        ?.impression_count || 0
+                                                }}</a
+                                            >
+                                            <p class="text-gray-500">
+                                                Ad views
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li
+                                    class="relative col-span-1 flex rounded-md shadow-sm"
+                                >
+                                    <div
+                                        class="flex-shrink-0 flex items-center justify-center w-16 bg-yellow-400 text-white text-sm font-medium rounded-l-md"
+                                    >
+                                        AC
+                                    </div>
+                                    <div
+                                        class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white"
+                                    >
+                                        <div
+                                            class="flex-1 truncate px-4 py-2 text-sm"
+                                            :class="{
+                                                'bg-slate-300':
+                                                    payment?.fb_adsets
+                                                        ?.status ===
+                                                        'PENDING_REVIEW' ||
+                                                    payment?.fb_adsets
+                                                        ?.status ===
+                                                        'ARCHIVED' ||
+                                                    payment?.fb_adsets
+                                                        ?.status ===
+                                                        'DISAPPROVED' ||
+                                                    !payment.adset_id
+                                            }"
+                                        >
+                                            <a
+                                                href="#"
+                                                class="font-medium text-gray-900 hover:text-gray-600"
+                                                >{{
+                                                    payment?.fb_adsets
+                                                        ?.link_clicks_count || 0
+                                                }}</a
+                                            >
+                                            <p class="text-gray-500">
+                                                Ad clicks
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div
+                                v-if="payment?.adset_id"
+                                class="flex space-x-4"
+                            >
+                                <div
+                                    class="text-lg font-medium text-gray-900 py-2"
+                                >
+                                    Preview link to your ad
+                                </div>
+                                <Button @click="onPreviewClick">
+                                    Preview from Facebook
+                                </Button>
+                            </div>
+                        </div>
+                        <FacebookAd
+                            :images="
+                                myPet.pet_images?.map(petImage => petImage.url)
+                            "
+                        />
                     </div>
-                    <FacebookAd
-                        :images="
-                            myPet.pet_images?.map(petImage => petImage.url)
-                        "
-                    />
                 </div>
             </div>
         </div>
@@ -149,8 +249,6 @@ import { useRoute } from 'vue-router'
 
 const { confirmAd, fetchPaymentAd } = useSubscriptionRepository()
 const route = useRoute()
-
-console.log('routing change', route)
 
 const isPaymentAdLoading = ref(false)
 const isConfirmAdLoading = ref(false)
@@ -170,8 +268,9 @@ const onConfirmAdClick = async () => {
         isConfirmAdLoading.value = true
         await confirmAd(route.params?.id)
         await getPaymentAds()
+        useNuxtApp().$toast.success('Ad sent to facebook review')
     } catch (error) {
-        console.log(error)
+        useNuxtApp().$toast.error(error?.message || 'Failed to create an ad')
     } finally {
         isConfirmAdLoading.value = false
     }
@@ -180,12 +279,16 @@ const onConfirmAdClick = async () => {
 const getPaymentAds = async () => {
     try {
         isPaymentAdLoading.value = true
-        payment.value = await fetchPaymentAd(route.params.id)
+        payment.value = await fetchPaymentAd(route.params?.id)
     } catch (error) {
-        console.log(error)
+        useNuxtApp().$toast.error(error.message || 'Failed to create an ad')
     } finally {
         isPaymentAdLoading.value = true
     }
+}
+
+const onPreviewClick = async () => {
+    window.open(payment.value?.fb_adsets?.fb_ad_preview_url, '_blank')
 }
 
 getPaymentAds()

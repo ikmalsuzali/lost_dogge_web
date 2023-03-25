@@ -252,17 +252,13 @@ const fetchMyPetMatches = async () => {
             PetMatchPossibleType.POSSIBLE,
             PetMatchPossibleType.PENDING
         ])
-    } catch (error) {
-        console.log(error)
-    }
+    } catch (error) {}
 }
 
 const fetchChatList = async () => {
     try {
         chatLists.value = await getPetChatLists(selectedPetMatch.value?.id)
-    } catch (error) {
-        console.log(error)
-    }
+    } catch (error) {}
 }
 
 const onSelectedPet = async petMatch => {
@@ -283,9 +279,7 @@ const onMessageSubmit = async () => {
             isOwner
         )
         message.value = ''
-    } catch (error) {
-        console.log(error)
-    }
+    } catch (error) {}
 }
 
 fetchMyPetMatches()

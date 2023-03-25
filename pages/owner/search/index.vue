@@ -62,9 +62,7 @@ const onPetClick = pet => {
 const fetchMyPets = async (userId: string) => {
     try {
         myPets.value = await getMyPets(userId)
-    } catch (error) {
-        console.log(error)
-    }
+    } catch (error) {}
 }
 fetchMyPets(auth?.user?.id)
 </script>

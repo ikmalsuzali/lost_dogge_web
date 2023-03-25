@@ -711,9 +711,7 @@ const uploadImage = async (e: InputEvent) => {
         try {
             const data = await uploadPetImage(auth?.user?.id, image)
             unref(myPet).images.push(data?.publicURL)
-        } catch (error) {
-            console.log(error)
-        }
+        } catch (error) {}
     }
 }
 
@@ -800,9 +798,7 @@ const allMyPetErrorMessage = () => {
 const fetchMyPets = async (userId: string) => {
     try {
         myPets.value = await getMyPets(userId)
-    } catch (error) {
-        console.log(error)
-    }
+    } catch (error) {}
 }
 fetchMyPets(auth?.user?.id)
 
@@ -812,9 +808,7 @@ const onSaveMyPet = async () => {
         allMyPetErrorMessage()
         if (isErrorMessageEmpty(unref(errorMessages))) return
         const data = await createPet(unref(myPet))
-        console.log(data)
     } catch (error) {
-        console.log(error)
     } finally {
         isLoading.value = false
     }

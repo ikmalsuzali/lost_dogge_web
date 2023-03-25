@@ -958,7 +958,6 @@ const fetchPetDetails = async () => {
         try {
             isLoading.value = true
             const data = await getPetDetails(unref(myPet).id)
-            console.log(data)
             myPet.value = {
                 ...unref(myPet),
                 pet_images: data.pet_images,
@@ -1027,9 +1026,7 @@ const uploadImage = async (e: InputEvent) => {
         try {
             const data = await uploadPetImage(auth?.user?.id, image)
             unref(myPet).pet_images.push({ url: data?.publicURL })
-        } catch (error) {
-            console.log(error)
-        }
+        } catch (error) {}
     }
 }
 
@@ -1140,36 +1137,30 @@ const allMyPetErrorMessage = () => {
 const fetchMyPets = async (userId: string) => {
     try {
         myPets.value = await getMyPets(userId)
-    } catch (error) {
-        console.log(error)
-    }
+    } catch (error) {}
 }
 fetchMyPets(auth?.user?.id)
 
 const onSaveMyPet = async state => {
     try {
-        console.log(unref(myPet))
         let data = null
         isLoading.value = true
         allMyPetErrorMessage()
-        console.log(isErrorMessageEmpty(unref(errorMessages)))
 
         if (!isErrorMessageEmpty(unref(errorMessages))) return
 
-        console.log('test')
-
         if (unref(myPet).id) {
             data = await updatePet(unref(myPet).id, unref(myPet))
+            useNuxtApp().$toast.success('Pet successfully saved!')
         } else {
             data = await createPet(unref(myPet))
-            console.log(data)
+            useNuxtApp().$toast.success('Pet successfully updated!')
         }
 
         return router.push(
             `/dashboard/pet/${data.id || route.params.id}/details`
         )
     } catch (error) {
-        console.log(error)
     } finally {
         isLoading.value = false
     }

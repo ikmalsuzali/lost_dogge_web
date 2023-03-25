@@ -61,9 +61,7 @@
 import FacebookAd from '~/components/atom/FacebookAd.vue'
 import usePetRepository from '~/repositories/pets'
 import { useIntervalFn } from '@vueuse/core'
-import { toast } from 'vue3-toastify'
 import CustomToast from '~/components/atom/CustomToast.vue'
-import { AuthType, useDrawerStore } from '~~/stores/drawer'
 
 definePageMeta({
     layout: 'page'
@@ -121,7 +119,6 @@ const setRandomInterval = (intervalFunction, minDelay, maxDelay) => {
 
 const notifyPetDetails = ref()
 const randomToast = async () => {
-    console.log('random toast', randomToast)
     notifyPetDetails.value = await getRandomPets(1)
     const petStatus = unref(notifyPetDetails)[0]?.status || 0
 
@@ -149,7 +146,6 @@ const fetchRandomPets = async (count: number) => {
         isRandomPetLoading.value = true
         pets.value = await getRandomPets(count)
 
-        console.log('hi', pets.value)
         let i = 0
         let slideArr = []
         pets.value?.forEach(pet => {
@@ -164,7 +160,6 @@ const fetchRandomPets = async (count: number) => {
         })
         randomPetDetails.value = slideArr
     } catch (error) {
-        console.log(error)
     } finally {
         isRandomPetLoading.value = false
     }
@@ -184,10 +179,7 @@ const nextFbAdSlide = () => {
     }
 }
 
-const slideStart = payload => {
-    console.log('slide start')
-    console.log(payload)
-}
+const slideStart = payload => {}
 
 interval.value = setRandomInterval(() => randomToast(), 5000, 60000)
 facebookAdDetails.value = facebookDetailsInit()

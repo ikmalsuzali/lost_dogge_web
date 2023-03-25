@@ -33,7 +33,6 @@ const getSubscription = async () => {
         subscription.value = await fetchSubscription(route.params.id)
         count.value = unref(count) + 1
     } catch (error) {
-        console.log(error)
         clearInterval(intervalId.value)
         router.push({
             path: `/dashboard/pet/${unref(subscription).pet_id}/ad/create`,
@@ -46,7 +45,6 @@ const getSubscription = async () => {
 
 const subscriptionIntervalInit = () => {
     intervalId.value = window.setInterval(() => {
-        console.log('get subscription')
         getSubscription()
     }, 3000)
 }
@@ -54,7 +52,6 @@ const subscriptionIntervalInit = () => {
 watch(
     () => unref(subscription),
     value => {
-        console.log(value)
         if (unref(subscription)?.status !== 0) {
             clearInterval(intervalId.value)
         }
@@ -66,7 +63,6 @@ watch(
             })
 
         if (unref(subscription)?.status === 2) {
-            console.log('hi im redirection')
             router.push({
                 path: `/dashboard/pet/${unref(subscription).pet_id}/ad/create`,
                 query: {
@@ -82,7 +78,6 @@ watch(
     _ => {
         if (unref(count) === 3) {
             clearInterval(intervalId.value)
-            console.log('hi im redirection')
 
             router.push({
                 path: `/dashboard/pet/${unref(subscription).pet_id}/ad/create`,

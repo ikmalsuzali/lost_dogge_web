@@ -150,7 +150,6 @@ enum Gender {
 }
 
 const route = useRoute()
-console.log('route', route)
 const auth = useAuthStore()
 const config = useRuntimeConfig()
 const { getPetDetails, getAnimalTypes } = usePetRepository()
@@ -263,9 +262,7 @@ const fetchPetDetails = async () => {
 const fetchSubscription = async () => {
     try {
         subscriptions.value = await getAllSubscriptions()
-    } catch (error) {
-        console.log(error)
-    }
+    } catch (error) {}
 }
 
 const onSubscribeClick = async tierId => {
@@ -275,8 +272,11 @@ const onSubscribeClick = async tierId => {
         const subscription = unref(subscriptions)?.find(
             subscriptionItem => subscriptionItem.key === tierId
         )
-        console.log(subscription)
-        if (!subscription) return console.log('subscription failed')
+        if (!subscription) {
+            useNuxtApp().$toast.error('Subscription not found')
+            return
+        }
+
         const data = await subscribeStripePayment({
             pet_id: unref(myPet).id,
             price_id: subscription.stripe_price_id,
@@ -285,11 +285,11 @@ const onSubscribeClick = async tierId => {
             cancel_url: webHost
         })
 
-        window.location.href = data.stripe_url
+        useNuxtApp().$toast.success('Redirecting to payment page...')
 
-        console.log(data)
+        window.location.href = data.stripe_url
     } catch (error) {
-        console.log(error)
+        useNuxtApp().$toast.error(error?.message || 'Something went wrong')
     } finally {
         isSubscriptionLoading.value = false
     }

@@ -147,7 +147,6 @@ const selected = ref<SelectItem | undefined>(
 )
 
 const deleteSelection = () => {
-    console.log('delete selection')
     selected.value = undefined
     emit('update:modelValue', null)
 }

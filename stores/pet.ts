@@ -24,9 +24,7 @@ export const usePetStore = defineStore('pet', () => {
         try {
             pets.value = await getMyPets(auth.user?.id)
             localStorage.setItem(LocalStorage.PETS, JSON.stringify(pets.value))
-        } catch (error) {
-            console.log(error)
-        }
+        } catch (error) {}
     }
 
     const onRecentlyViewedPetsClick = (petId: string) => {
@@ -45,7 +43,6 @@ export const usePetStore = defineStore('pet', () => {
             })
 
             fetchPetsById()
-            console.log(recentlyViewedPetIds.value)
             localStorage.setItem(
                 LocalStorage.RECENTLY_CLICKED,
                 JSON.stringify(unref(recentlyViewedPetIds))

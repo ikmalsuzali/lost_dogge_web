@@ -80,16 +80,10 @@ const isPetViewDrawerOpen = ref(false)
 const fetchMyPetMatches = async () => {
     try {
         petMatches.value = await getMyPetMatches(petStore.myPetIds)
-    } catch (error) {
-        console.log(error)
-    }
+    } catch (error) {}
 }
 
 const onPetMatchViewClick = pet => {
-    console.log(
-        '🚀 ~ file: index.vue ~ line 78 ~ onPetMatchViewClick ~ selectedPet',
-        selectedPet
-    )
     selectedPet.value = pet
     isPetViewDrawerOpen.value = true
 }
@@ -102,11 +96,9 @@ const onPetMatchClick = async (
         const petMatch = petMatches.value?.find(
             petMatch => petMatch.found_pet_id?.id === selectedPetId
         )
-        console.log(petMatch)
         if (!petMatch.id) return
         await updatePetMatchType(petMatch.id, type)
     } catch (error) {
-        console.log(error)
     } finally {
         isPetViewDrawerOpen.value = false
     }

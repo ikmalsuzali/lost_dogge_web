@@ -9,13 +9,30 @@
                     <div
                         class="flex h-16 flex-col justify-center bg-white px-6"
                     >
-                        <div class="flex items-baseline space-x-3">
-                            <h2 class="text-lg font-medium text-gray-900">
-                                My Pets
-                            </h2>
-                            <p class="text-sm font-medium text-gray-500">
-                                {{ myPets.length }} pets
-                            </p>
+                        <div class="flex space-x-3">
+                            <div class="w-full">
+                                <h2 class="text-lg font-medium text-gray-900">
+                                    My Pets
+                                </h2>
+                                <p class="text-sm font-medium text-gray-500">
+                                    {{ myPets.length }} pets
+                                </p>
+                            </div>
+
+                            <div class="mt-3">
+                                <button
+                                    type="button"
+                                    class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-1 py-1 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
+                                    @click="
+                                        router.push('/dashboard/pet/create')
+                                    "
+                                >
+                                    <PlusIcon
+                                        class="h-5 w-5 text-gray-400"
+                                        aria-hidden="true"
+                                    />
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div
@@ -223,7 +240,7 @@
                                 </div>
 
                                 <!-- Pet create -->
-                                <div
+                                <!-- <div
                                     v-if="
                                         route.name === 'dashboard-pet___en' ||
                                         route.name ===
@@ -243,13 +260,12 @@
                                             "
                                         >
                                             <PlusIcon
-                                                class="mr-2.5 h-5 w-5 text-gray-400"
+                                                class="h-5 w-5 text-gray-400"
                                                 aria-hidden="true"
                                             />
-                                            <span>Lost/Found a pet?</span>
                                         </button>
                                     </span>
-                                </div>
+                                </div> -->
 
                                 <div
                                     v-if="
@@ -536,7 +552,6 @@ const filteredBreeds = computed(() => {
 
 const getUserPayment = async (petId: string) => {
     payment.value = await fetchFirstSuccessfulPayment(petId)
-    console.log('fetch payment', payment.value)
 }
 
 watch(

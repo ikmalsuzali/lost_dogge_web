@@ -188,7 +188,6 @@ const emit = defineEmits(['slide-start'])
 
 const adHeaderElement = ref()
 const myCarousel = ref()
-console.log(adHeaderElement)
 
 const showTruncate = computed(() => {
     if (

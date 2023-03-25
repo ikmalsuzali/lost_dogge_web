@@ -8,7 +8,6 @@ useHead({
 })
 
 const route = useRoute()
-console.log(route)
 const isFullWidth = computed(
     () => route.name === 'index' || route?.meta.fullWidth
 )
