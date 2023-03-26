@@ -105,8 +105,8 @@ const usePetRepository = () => {
                 facebook: payload.facebook,
                 twitter: payload.twitter,
                 address: payload.address,
-                longitude: payload.longitude,
-                latitude: payload.latitude
+                ...(payload.longitude && { longitude: payload.longitude }),
+                ...(payload.latitude && { latitude: payload.latitude })
             }
         ])
 
@@ -168,8 +168,8 @@ const usePetRepository = () => {
                 facebook: payload.facebook,
                 twitter: payload.twitter,
                 address: payload.address,
-                longitude: payload.longitude,
-                latitude: payload.latitude
+                ...(payload.longitude && { longitude: payload.longitude }),
+                ...(payload.latitude && { latitude: payload.latitude })
             })
             .eq('id', petId)
 

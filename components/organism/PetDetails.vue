@@ -1150,11 +1150,11 @@ const onSaveMyPet = async state => {
         if (!isErrorMessageEmpty(unref(errorMessages))) return
 
         if (unref(myPet).id) {
-            data = await updatePet(unref(myPet).id, unref(myPet))
-            useNuxtApp().$toast.success('Pet successfully saved!')
+            data = await updatePet(unref(myPet)?.id, unref(myPet))
+            useNuxtApp().$toast.success('Pet successfully updated!')
         } else {
             data = await createPet(unref(myPet))
-            useNuxtApp().$toast.success('Pet successfully updated!')
+            useNuxtApp().$toast.success('Pet successfully saved!')
         }
 
         return router.push(

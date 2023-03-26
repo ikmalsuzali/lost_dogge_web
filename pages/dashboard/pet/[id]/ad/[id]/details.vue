@@ -270,7 +270,10 @@ const onConfirmAdClick = async () => {
         await getPaymentAds()
         useNuxtApp().$toast.success('Ad sent to facebook review')
     } catch (error) {
-        useNuxtApp().$toast.error(error?.message || 'Failed to create an ad')
+        console.log(error)
+        useNuxtApp().$toast.error(
+            error?.response?.data.message || 'Failed to create an ad'
+        )
     } finally {
         isConfirmAdLoading.value = false
     }
