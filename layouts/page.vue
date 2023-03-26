@@ -770,6 +770,7 @@ const onSignupClick = async () => {
         const data = await signUp(unref(authSignup))
         authStore.setUser(data!.data![0])
         drawer.toggleSignupLoginDrawer()
+        router.push('/dashboard/pet')
     } catch (error) {
     } finally {
         isSigninLoading.value = false
