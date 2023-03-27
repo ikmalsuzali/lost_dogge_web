@@ -45,12 +45,6 @@
                             </div>
                         </div>
                         <div class="flex h-7 items-center space-x-2">
-                            <Button
-                                v-if="!payment?.adset_id"
-                                :loading="isConfirmAdLoading"
-                                @click="onConfirmAdClick"
-                                >Confirm Ad</Button
-                            >
                             <button
                                 v-if="
                                     payment?.adset_id &&
@@ -66,7 +60,7 @@
                                     payment?.adset_id &&
                                     payment?.fb_adsets?.status === 'DISAPPROVED'
                                 "
-                                class="py-2 px-4 shadow-md no-underline rounded-full bg-red text-white font-sans font-semibold text-sm border-red btn-primary hover:text-white hover:bg-red-light focus:outline-none active:shadow-none mr-2"
+                                class="py-2 px-4 shadow-md no-underline rounded-full bg-red-700 text-white font-sans font-semibold text-sm border-red hover:text-white hover:bg-red-light focus:outline-none active:shadow-none mr-2"
                             >
                                 Facebook Rejected
                             </button>
@@ -88,6 +82,24 @@
                             >
                                 Archived
                             </button>
+                            <button
+                                v-if="
+                                    payment?.adset_id &&
+                                    payment?.fb_adsets?.status === 'PAUSED'
+                                "
+                                class="py-2 px-4 shadow-md no-underline rounded-full bg-slate-300 text-gray-800 font-sans font-semibold text-sm border-slate hover:text-white hover:bg-slate-light focus:outline-none active:shadow-none mr-2"
+                            >
+                                PAUSED
+                            </button>
+                            <Button
+                                v-if="
+                                    !payment?.adset_id ||
+                                    payment?.fb_adsets?.status === 'DISAPPROVED'
+                                "
+                                :loading="isConfirmAdLoading"
+                                @click="onConfirmAdClick"
+                                >Confirm Ad</Button
+                            >
                         </div>
                     </div>
                 </div>
