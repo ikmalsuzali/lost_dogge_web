@@ -175,7 +175,7 @@
                                                     active ? 'bg-gray-100' : '',
                                                     'block px-4 py-2 text-sm text-gray-700'
                                                 ]"
-                                                @click="$router.push('/')"
+                                                @click="onBackToHomePage"
                                                 >Back to Home Page</a
                                             >
                                         </MenuItem>
@@ -436,6 +436,10 @@ const open = ref(false)
 
 const onSignOut = async () => {
     await auth.logout()
+}
+
+const onBackToHomePage = async () => {
+    window.location.href = '/'
 }
 </script>
 

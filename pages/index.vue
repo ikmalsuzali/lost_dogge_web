@@ -84,6 +84,7 @@ const mockFacebookAd = ref()
 const facebookAdDetails = ref()
 const randomPetDetails = ref([facebookDetailsInit()])
 const interval = ref()
+const route = useRoute()
 
 const randomPetImages = computed(() => {
     return unref(randomPetDetails).map(

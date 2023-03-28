@@ -27,36 +27,32 @@ export const usePetStore = defineStore('pet', () => {
         } catch (error) {}
     }
 
-    const onRecentlyViewedPetsClick = (petId: string) => {
-        try {
-            recentlyViewedPetIds.value.unshift(petId)
-            unref(recentlyViewedPetIds).length = 20
+    const onRecentlyViewedPetsClick = async (petId: string) => {
+        recentlyViewedPetIds.value.unshift(petId)
 
-            recentlyViewedPetIds.value = [
-                ...new Set(unref(recentlyViewedPetIds))
-            ]
+        recentlyViewedPetIds.value = [...new Set(unref(recentlyViewedPetIds))]
 
-            recentlyViewedPetIds.value = recentlyViewedPetIds.filter(function (
-                petId
-            ) {
+        recentlyViewedPetIds.value = unref(recentlyViewedPetIds).filter(
+            petId => {
                 return petId !== undefined || petId !== null
-            })
+            }
+        )
 
-            fetchPetsById()
-            localStorage.setItem(
-                LocalStorage.RECENTLY_CLICKED,
-                JSON.stringify(unref(recentlyViewedPetIds))
-            )
-        } catch (error) {}
+        await fetchPetsById()
+        localStorage.setItem(
+            LocalStorage.RECENTLY_CLICKED,
+            JSON.stringify(unref(recentlyViewedPetIds))
+        )
     }
 
     const myPetIds = computed(() => pets.value?.map(pet => pet.id) || [])
 
-    const fetchPetsById = () => {
+    const fetchPetsById = async () => {
         try {
             if (!unref(recentlyViewedPetIds).length) return
+            console.log(recentlyViewedPetIds.value)
 
-            recentlyViewedPetDetails.value = getPetsById(
+            recentlyViewedPetDetails.value = await getPetsById(
                 unref(recentlyViewedPetIds)
             )
         } catch (error) {}
@@ -69,6 +65,7 @@ export const usePetStore = defineStore('pet', () => {
         fetchMyPets,
         myPetIds,
         onRecentlyViewedPetsClick,
-        recentlyViewedPetIds
+        recentlyViewedPetIds,
+        recentlyViewedPetDetails
     }
 })

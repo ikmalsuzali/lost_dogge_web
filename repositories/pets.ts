@@ -41,7 +41,7 @@ const usePetRepository = () => {
     const getPetsById = async (ids: string[]) => {
         const { data, error } = await $supabase
             .from('pets')
-            .select('*')
+            .select('*, pet_images(*), animal_types(*)')
             .in('id', ids)
 
         if (error) throw error

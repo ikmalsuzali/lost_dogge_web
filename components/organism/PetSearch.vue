@@ -17,7 +17,7 @@
                 <button
                     type="button"
                     class="inline-flex flex-shrink-0 items-center justify-center rounded-md border border-transparent bg-[#5C1511] hover:bg-[#5C1511]/80 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2 w-34 !ml-auto mr-2"
-                    @click="isFilterDrawerOpen = true"
+                    @click="isRecentlyViewedDrawer = true"
                 >
                     <span class="mr-2">Recently Viewed</span>
 
@@ -74,6 +74,43 @@
             </div>
         </div>
     </div>
+    <Drawer
+        v-model:drawer-open="isRecentlyViewedDrawer"
+        drawerTitle="Recently Viewed"
+    >
+        <div
+            class="space-y-6 py-6 sm:space-y-0 sm:divide-y sm:divide-gray-200 sm:py-0"
+        >
+            <div class="p-10 grid grid-cols-2 space-x-4 space-y-4">
+                <div v-for="pet in petStore.recentlyViewedPetDetails">
+                    <div
+                        class="col-span-1 mx-auto justify-center bg-white rounded-2xl shadow-none shadow-slate-300/60 cursor-pointer hover:shadow-xl"
+                        @click="onPetClick(pet)"
+                    >
+                        <img
+                            class="aspect-video w-full rounded-t-2xl object-cover object-center"
+                            :src="pet.pet_images[0].url"
+                        />
+                        <div class="p-4">
+                            <small class="text-blue-400 text-xs">
+                                {{ pet?.animal_types?.name }}
+                            </small>
+                            <h1
+                                class="text-2xl font-medium text-slate-600 pb-2"
+                            >
+                                {{ pet.name }}
+                            </h1>
+                            <p
+                                class="text-sm tracking-tight font-light text-slate-400 leading-6 line-clamp-3"
+                            >
+                                {{ pet.description }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Drawer>
     <Drawer v-model:drawer-open="isFilterDrawerOpen" drawerTitle="Filters">
         <div
             class="space-y-6 py-6 sm:space-y-0 sm:divide-y sm:divide-gray-200 sm:py-0"
@@ -126,24 +163,6 @@
                         v-model="filterDrawer.animalTypeId"
                         placeholder="Select a animal type"
                         :items="selectAnimalTypes"
-                    />
-                </div>
-            </div>
-            <div
-                class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
-            >
-                <div>
-                    <label
-                        for="project-name"
-                        class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                        >Breed</label
-                    >
-                </div>
-                <div class="sm:col-span-2">
-                    <Select
-                        v-model="filterDrawer.breed"
-                        placeholder="Select a breed"
-                        :items="filteredBreeds"
                     />
                 </div>
             </div>
@@ -295,6 +314,7 @@
                         </dd>
                         <div class="h-96 my-2">
                             <MapboxMap
+                                v-if="selectedPetLatLong"
                                 :accessToken="mapboxApi"
                                 :center="selectedPetLatLong"
                                 :flyToOptions="{
@@ -366,6 +386,7 @@ const { getAnimalTypes, getBreeds, getPets, getPetDetails } = usePetRepository()
 const mapboxApi = config.MAPBOX_KEY
 const pets = ref([])
 const isPetDetailsDrawerOpen = ref(false)
+const isRecentlyViewedDrawer = ref(false)
 const selectedPet = ref()
 const geocodingLocations = ref([])
 const isLoading = ref(false)
@@ -374,6 +395,7 @@ const animalTypes = ref([])
 const selectAnimalTypes = ref([])
 const breeds = ref([])
 const selectBreeds = ref([])
+const recentlyViewedPets = ref(petStore.recentlyViewedPetDetails || [])
 const radiusItems = ref([
     { text: '3 miles', value: 3 },
     { text: '10 miles', value: 10 },
