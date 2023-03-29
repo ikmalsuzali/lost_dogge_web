@@ -7,7 +7,7 @@ export default defineNuxtConfig({
                 {
                     name: 'description',
                     content:
-                        'Lost your pet? Create a facebook or instagram pet within 5 mins and reach around 3000+ people per day within the lost location of your pet'
+                        'Lost your pet? Create a facebook or instagram ad within 5 minute and reach around 3000+ people per day within the lost location of your pet'
                 },
                 {
                     name: 'facebook-domain-verification',
