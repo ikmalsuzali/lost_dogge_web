@@ -6,9 +6,9 @@ const useSubscriptionRepository = () => {
     const config = useRuntimeConfig()
 
     const getAllSubscriptions = async () => {
-        const { data, error } = await $supabase
-            .from('stripe_products')
-            .select('*')
+        const { data, error } = await axios.get(
+            `${config.API_HOST}/api/v1/stripe/products`
+        )
 
         if (error) throw error
         return data
