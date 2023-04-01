@@ -263,7 +263,7 @@
                                                             states?.VIEW
                                                         "
                                                         class="absolute top-0 right-0 bg-red-500 text-white p-2 rounded hover:bg-blue-800 m-2"
-                                                        @click="
+                                                        @click.prevent="
                                                             onDeleteImageClick(
                                                                 index
                                                             )

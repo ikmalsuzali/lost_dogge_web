@@ -106,6 +106,14 @@
 
                 <!-- Facebook ad -->
                 <div class="px-2">
+                    <div v-if="payment?.adset_id" class="flex space-x-4">
+                        <div class="text-lg font-medium text-gray-900 py-2">
+                            Preview link to your ad
+                        </div>
+                        <Button @click="onPreviewClick">
+                            Preview from Facebook
+                        </Button>
+                    </div>
                     <div class="grid grid-cols-5 space-x-4">
                         <div class="col-span-3 space-y-5">
                             <ul
@@ -227,21 +235,31 @@
                                     </div>
                                 </li>
                             </ul>
-                            <div
-                                v-if="payment?.adset_id"
-                                class="flex space-x-4"
-                            >
-                                <div
-                                    class="text-lg font-medium text-gray-900 py-2"
+                            <div class="w-full my-2">
+                                <MapboxMap
+                                    v-if="selectedPetLatLong"
+                                    :accessToken="mapboxApi"
+                                    :center="selectedPetLatLong"
+                                    :flyToOptions="{
+                                        maxDuration: 2000,
+                                        speed: 1.2
+                                    }"
+                                    auto-resize
+                                    :zoom="11"
                                 >
-                                    Preview link to your ad
-                                </div>
-                                <Button @click="onPreviewClick">
-                                    Preview from Facebook
-                                </Button>
+                                    <MapboxGeogeometryCircle
+                                        :center="selectedPetLatLong"
+                                        :radius="15"
+                                    />
+
+                                    <MapboxMarker
+                                        :lngLat="selectedPetLatLong"
+                                    />
+                                </MapboxMap>
                             </div>
                         </div>
                         <FacebookAd
+                            class="col-span-2"
                             :images="
                                 myPet.pet_images?.map(petImage => petImage.url)
                             "
@@ -258,13 +276,16 @@ import Button from '~/components/atom/Button.vue'
 import FacebookAd from '~/components/atom/FacebookAd.vue'
 import useSubscriptionRepository from '~/repositories/subscription'
 import { useRoute } from 'vue-router'
+import { MapboxMap, MapboxMarker, MapboxGeogeometryCircle } from 'vue-mapbox-ts'
 
 const { confirmAd, fetchPaymentAd } = useSubscriptionRepository()
-const route = useRoute()
 
+const config = useRuntimeConfig()
+const route = useRoute()
 const isPaymentAdLoading = ref(false)
 const isConfirmAdLoading = ref(false)
 const payment = ref()
+const mapboxApi = config.MAPBOX_KEY
 
 const props = withDefaults(
     defineProps<{
@@ -305,6 +326,10 @@ const getPaymentAds = async () => {
 const onPreviewClick = async () => {
     window.open(payment.value?.fb_adsets?.fb_ad_preview_url, '_blank')
 }
+
+const selectedPetLatLong = computed(() => {
+    return [props.myPet?.latitude, props.myPet?.longitude]
+})
 
 getPaymentAds()
 </script>
