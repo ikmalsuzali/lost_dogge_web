@@ -1,5 +1,6 @@
 import { useAuthStore } from '~~/stores/auth'
 const auth = useAuthStore()
+const config = useRuntimeConfig()
 
 export interface signInPayload {
     email: string
@@ -37,7 +38,10 @@ const useAuthRepository = () => {
             if (data) {
                 user = await getUser(data!.user!.id)
             }
-            return user
+            return {
+                user,
+                token: data.access_token
+            }
         } catch (error) {
             throw error
         }
@@ -63,7 +67,10 @@ const useAuthRepository = () => {
                 lastName: payload.lastName
             })
 
-            return userData
+            return {
+                user: userData.data![0],
+                token: data.session?.access_token
+            }
         } catch (error) {}
     }
 
@@ -74,7 +81,9 @@ const useAuthRepository = () => {
     }
 
     const forgetPassword = async (email: string) => {
-        return await $supabase.auth.api.resetPasswordForEmail(email)
+        return await $supabase.auth.api.resetPasswordForEmail(email, {
+            redirectTo: `${config.WEB_HOST}/recover`
+        })
     }
 
     const getUserByEmail = async (email: string) => {

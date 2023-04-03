@@ -317,19 +317,37 @@
                                 v-if="selectedPetLatLong"
                                 :accessToken="mapboxApi"
                                 :center="selectedPetLatLong"
-                                :flyToOptions="{
+                                :fly-to-options="{
                                     maxDuration: 2000,
                                     speed: 1.2
                                 }"
+                                :show-zoom="true"
+                                :scroll-zoom="false"
                                 auto-resize
-                                :zoom="11"
+                                :zoom="9"
                             >
                                 <MapboxGeogeometryCircle
                                     :center="selectedPetLatLong"
-                                    :radius="1"
+                                    :radius="15"
                                 />
-
-                                <MapboxMarker :lngLat="selectedPetLatLong" />
+                                <MapboxNavigationControl
+                                    position="bottom-right"
+                                    :show-zoom="true"
+                                />
+                                <MapboxMarker :lng-lat="selectedPetLatLong">
+                                    <template v-slot:icon>
+                                        <div
+                                            class="text-slate-200 text-center text-lg text-white"
+                                        >
+                                            I was <br />
+                                            last seen
+                                        </div>
+                                        <img
+                                            class="w-20"
+                                            src="~/assets/images/logo-lost-doggo.svg"
+                                        />
+                                    </template>
+                                </MapboxMarker>
                             </MapboxMap>
                         </div>
                     </div>
@@ -358,7 +376,12 @@
 <script lang="ts" setup>
 import VLazyImage from 'v-lazy-image'
 import Autocomplete from '@/components/atom/Autocomplete.vue'
-import { MapboxMap, MapboxMarker, MapboxGeogeometryCircle } from 'vue-mapbox-ts'
+import {
+    MapboxMap,
+    MapboxMarker,
+    MapboxGeogeometryCircle,
+    MapboxNavigationControl
+} from 'vue-mapbox-ts'
 import { watchEffect, ref, nextTick, onMounted } from 'vue'
 import { Carousel, Slide, Pagination } from 'vue3-carousel'
 import { CogIcon, StarIcon } from '@heroicons/vue/24/outline'
@@ -434,7 +457,7 @@ const filterDrawerInit = () => {
 const filterDrawer = ref(filterDrawerInit())
 
 const selectedPetLatLong = computed(() => {
-    return [selectedPet.value.latitude, selectedPet.value.longitude]
+    return [selectedPet.value.longitude, selectedPet.value.latitude]
 })
 
 const fetchTypes = async () => {
@@ -447,6 +470,7 @@ const fetchPets = async () => {
         pets.value = []
         pets.value = await getPets({
             status: PetStatus.LOST,
+            address: unref(filter).location.name || '',
             ...(unref(filter)?.location.longitude &&
                 unref(filter)?.location.latitude && {
                     longitude: unref(filter)?.location.longitude,

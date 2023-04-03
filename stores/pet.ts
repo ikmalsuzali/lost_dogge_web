@@ -3,6 +3,7 @@ import { RemovableRef, useStorage } from '@vueuse/core'
 import { LocalStorage } from './auth'
 import usePetRepository from '~/repositories/pets'
 import { useAuthStore } from './auth'
+import { definitions } from '~~/types/supabase'
 
 export interface Pet extends Record<string, any> {}
 
@@ -10,11 +11,13 @@ export type PetState = {
     pets: RemovableRef<Pet[]> | null
     recentlyViewedPetIds: RemovableRef<string[]> | null
     recentlyViewedPetDetails: RemovableRef<Pet[]> | null
+    myPet: RemovableRef<definitions['pets']> | Object
 }
 
 const pets = ref(useStorage(LocalStorage.PETS, []))
 const recentlyViewedPetIds = ref(useStorage(LocalStorage.RECENTLY_CLICKED, []))
 const recentlyViewedPetDetails = ref([])
+const myPet = ref(useStorage(LocalStorage.MY_PET, {}))
 
 export const usePetStore = defineStore('pet', () => {
     const { getMyPets, getPetsById } = usePetRepository()
@@ -25,6 +28,11 @@ export const usePetStore = defineStore('pet', () => {
             pets.value = await getMyPets(auth.user?.id)
             localStorage.setItem(LocalStorage.PETS, JSON.stringify(pets.value))
         } catch (error) {}
+    }
+
+    const setMyPet = (pet: Pet) => {
+        myPet.value = pet
+        localStorage.setItem(LocalStorage.MY_PET, JSON.stringify(pet))
     }
 
     const onRecentlyViewedPetsClick = async (petId: string) => {
@@ -50,7 +58,6 @@ export const usePetStore = defineStore('pet', () => {
     const fetchPetsById = async () => {
         try {
             if (!unref(recentlyViewedPetIds).length) return
-            console.log(recentlyViewedPetIds.value)
 
             recentlyViewedPetDetails.value = await getPetsById(
                 unref(recentlyViewedPetIds)
@@ -62,6 +69,7 @@ export const usePetStore = defineStore('pet', () => {
 
     return {
         pets,
+        myPet,
         fetchMyPets,
         myPetIds,
         onRecentlyViewedPetsClick,

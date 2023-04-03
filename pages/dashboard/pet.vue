@@ -15,7 +15,7 @@
                                     My Pets
                                 </h2>
                                 <p class="text-sm font-medium text-gray-500">
-                                    {{ myPets.length }} pets
+                                    {{ petStore?.pets.length }} pets
                                 </p>
                             </div>
 
@@ -44,12 +44,12 @@
                     class="min-h-0 flex-1 overflow-y-auto"
                 >
                     <ul
-                        v-if="myPets.length"
+                        v-if="petStore?.pets.length"
                         role="list"
                         class="divide-y divide-gray-200 border-b border-gray-200"
                     >
                         <li
-                            v-for="pet in myPets"
+                            v-for="pet in petStore?.pets"
                             :key="pet?.id"
                             class="flex flex-row bg-white py-5 px-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-600 hover:bg-gray-300"
                             :class="{
@@ -77,6 +77,12 @@
                                     {{ pet.name }}
                                 </div>
                                 <div
+                                    v-if="pet.status === 0"
+                                    class="text-gray-600 dark:text-gray-200 text-sm text-ellipsis line-clamp-2"
+                                >
+                                    <a>Registered</a>
+                                </div>
+                                <div
                                     v-if="pet.status === 1"
                                     class="text-gray-600 dark:text-gray-200 text-sm text-ellipsis line-clamp-2"
                                 >
@@ -87,6 +93,12 @@
                                     class="text-gray-600 dark:text-gray-200 text-sm text-ellipsis line-clamp-2"
                                 >
                                     <a>Found at </a>{{ pet.address }}
+                                </div>
+                                <div
+                                    v-if="pet.status === 3"
+                                    class="text-gray-600 dark:text-gray-200 text-sm text-ellipsis line-clamp-2"
+                                >
+                                    <a>Reunited</a>
                                 </div>
                                 <div
                                     v-else-if="pet.is_deleted == true"
@@ -107,7 +119,7 @@
                         </li>
                     </ul>
                     <div
-                        v-if="!myPets.length"
+                        v-if="!petStore?.pets.length"
                         class="bg-white py-5 px-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-600 hover:bg-gray-300 space-y-3"
                     >
                         <Vue3Lottie
@@ -321,12 +333,14 @@ import Button from '~/components/atom/Button.vue'
 import { definitions } from '~~/types/supabase'
 import useValidations from '~/composables/validations'
 import 'vue3-carousel/dist/carousel.css'
+import { usePetStore } from '~/stores/pet'
 
 definePageMeta({
     layout: 'dashboardv2',
     middleware: 'auth'
 })
 
+const petStore = usePetStore()
 const route = useRoute()
 const router = useRouter()
 const { fetchFirstSuccessfulPayment } = useSubscriptionRepository()
@@ -376,7 +390,6 @@ const {
 const { uploadPetImage, getAnimalTypes, getBreeds, createPet, getMyPets } =
     usePetRepository()
 
-const myPets = ref([{}])
 const animalTypes = ref<definitions['animal_types'][]>([])
 const selectAnimalTypes = ref<SelectItem[]>([])
 const breeds = ref<definitions['animal_breeds'][]>()
@@ -522,14 +535,10 @@ const allMyPetErrorMessage = () => {
     )
 }
 
-const fetchMyPets = async (userId: string) => {
-    try {
-        myPets.value = await getMyPets(userId)
-        petIdByRoute.value = unref(route).fullPath?.split('/')?.[3]
-        myPet.value = unref(myPets)?.find(pet => pet.id === petIdByRoute.value)
-    } catch (error) {}
+const fetchMyPets = async () => {
+    await petStore.fetchMyPets()
 }
-fetchMyPets(auth?.user?.id)
+fetchMyPets()
 
 const onSaveMyPet = async () => {
     try {
@@ -569,7 +578,9 @@ watch(
     () => unref(route).fullPath,
     value => {
         petIdByRoute.value = unref(route).fullPath?.split('/')?.[3]
-        myPet.value = unref(myPets)?.find(pet => pet.id === petIdByRoute.value)
+        myPet.value = unref(petStore?.pets)?.find(
+            pet => pet.id === petIdByRoute.value
+        )
     },
     { immediate: true }
 )

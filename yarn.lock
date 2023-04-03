@@ -1833,6 +1833,11 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.6.0.tgz#3c7c9c46e678feefe7a2e5bb609d3dbd665ffb3f"
   integrity sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==
 
+"@studiometa/vue-mapbox-gl@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@studiometa/vue-mapbox-gl/-/vue-mapbox-gl-2.0.4.tgz#aa54d76fd0d90a45081cb0814b40d162867790af"
+  integrity sha512-RlQLQ6u17puUiVx1yyetihDymZQmgurg/HLJRobbOD0WMCJ+IzsVvd/Caoqn8xMxBxsDupjLXrmGPk3RzV/51w==
+
 "@supabase/functions-js@^1.3.4":
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/@supabase/functions-js/-/functions-js-1.3.4.tgz#44f86f7cf949baa7f1bb414f3b8c0985a19df633"

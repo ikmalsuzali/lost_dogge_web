@@ -221,7 +221,7 @@
                                     :radius="1"
                                 />
 
-                                <MapboxMarker :lngLat="selectedPetLatLong" />
+                                <MapboxMarker :lng-lat="selectedPetLatLong" />
                             </MapboxMap>
                         </div>
                     </div>
@@ -308,6 +308,6 @@ const breedAndTypeName = pet => {
 }
 
 const selectedPetLatLong = computed(() => {
-    return [props.selectedPet.latitude, props.selectedPet.longitude]
+    return [props.selectedPet.longitude, props.selectedPet.latitude]
 })
 </script>

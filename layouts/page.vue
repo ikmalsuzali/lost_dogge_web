@@ -738,7 +738,10 @@ const onForgetPasswordSubmitClick = async () => {
         await allForgetPasswordErrorMessageValidation()
         if (!isErrorMessageEmpty(unref(errorMessages))) return
         await forgetPassword(unref(authForgetPassword).email)
+        useNuxtApp().$toast.remove()
+        useNuxtApp().$toast.success('Please check your email')
     } catch (error) {
+        console.log(error)
     } finally {
         isForgetPasswordSubmitLoading.value = false
     }
@@ -768,7 +771,9 @@ const onSignupClick = async () => {
         if (!isErrorMessageEmpty(unref(errorMessages))) return
 
         const data = await signUp(unref(authSignup))
-        authStore.setUser(data!.data![0])
+        console.log(data)
+        authStore.setUser(data?.user)
+        authStore.setToken(data.token)
         drawer.toggleSignupLoginDrawer()
         router.push('/dashboard/pet')
     } catch (error) {
@@ -784,7 +789,8 @@ const onLoginClick = async () => {
         await allLoginErrorMessageValidation()
         if (!isErrorMessageEmpty(unref(errorMessages))) return
         let data = await signIn(unref(authLogin))
-        authStore.setUser(data)
+        authStore.setUser(data.user)
+        authStore.setToken(data.token)
         await petStore.fetchMyPets()
         drawer.toggleSignupLoginDrawer()
         router.push('/dashboard/pet')

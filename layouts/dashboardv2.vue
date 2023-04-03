@@ -5,10 +5,10 @@
             <div class="absolute inset-y-0 left-0 lg:static lg:flex-shrink-0">
                 <a
                     href="/dashboard/pet"
-                    class="flex h-16 w-16 items-center justify-center bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-600 lg:w-20"
+                    class="flex h-14 w-14 items-center justify-center focus:outline-none focus:ring-2 focus:ring-inset lg:w-20"
                 >
                     <img
-                        class="w-auto"
+                        class="w-14"
                         src="~/assets/images/lost-doggo-icon.jpg"
                         alt="Your Company"
                     />

@@ -5,10 +5,10 @@ export default defineNuxtRouteMiddleware(to => {
     const router = useRouter()
     const route = useRoute()
 
-    console.log('🚀 ~ file: auth.ts:7 ~ route:', route.query)
-    
+    console.log(route)
+    console.log(router)
 
-    if (!auth?.token) {
+    if (!route.query?.token) {
         return router.push({
             path: '/'
         })

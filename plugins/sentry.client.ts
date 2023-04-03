@@ -5,7 +5,6 @@ import { Integrations } from '@sentry/tracing'
 export default defineNuxtPlugin(nuxtApp => {
     const config = useRuntimeConfig()
     const { vueApp } = nuxtApp
-    console.log(`vueApp: `, vueApp)
     Sentry.init({
         app: [vueApp],
         dsn: config.SENTRY_DSN,

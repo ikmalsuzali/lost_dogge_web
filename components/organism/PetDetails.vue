@@ -1,6 +1,42 @@
 <template>
     <div>
         <div
+            v-if="myPet.status === 1 || myPet.status === 2"
+            class="bg-orange-100 border-t-4 border-orange-500 rounded-b text-orange-900 px-4 py-3 shadow-md"
+            role="alert"
+        >
+            <div class="flex">
+                <div class="flex grow">
+                    <div class="py-1">
+                        <svg
+                            class="fill-current h-6 w-6 text-orange-500 mr-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"
+                            />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-bold text-left">
+                            Reunited with the owner?
+                        </p>
+                        <p class="text-sm">
+                            Have you found your lost pet and connected a found
+                            pet with the owner?
+                        </p>
+                    </div>
+                </div>
+                <Button
+                    class="ml-auto"
+                    :loading="isReunitedLoading"
+                    @click="onReunitedClick"
+                    >Reunited</Button
+                >
+            </div>
+        </div>
+        <div
             v-if="myPet.status === 0"
             class="bg-orange-100 border-t-4 border-orange-500 rounded-b text-orange-900 px-4 py-3 shadow-md"
             role="alert"
@@ -775,6 +811,7 @@ import { useAuthStore } from '@/stores/auth'
 import usePetRepository from '@/repositories/pets'
 import useMapboxRepository from '@/repositories/mapbox'
 import Autocomplete from '@/components/atom/Autocomplete.vue'
+import { usePetStore } from '~/stores/pet'
 
 const route = useRoute()
 const router = useRouter()
@@ -782,7 +819,8 @@ const router = useRouter()
 enum PetStatus {
     Registered = 0,
     Lost = 1,
-    Found = 2
+    Found = 2,
+    Reunited = 3
 }
 
 enum Gender {
@@ -790,7 +828,7 @@ enum Gender {
     Female = 1
 }
 
-const selectPetStatus = [
+const selectPetStatus = ref([
     {
         text: 'Registered',
         value: PetStatus.Registered
@@ -803,7 +841,7 @@ const selectPetStatus = [
         text: 'Found',
         value: PetStatus.Found
     }
-]
+])
 
 definePageMeta({
     layout: 'dashboardv2',
@@ -832,6 +870,7 @@ const {
     deletePet
 } = usePetRepository()
 const { getGeocodingLocations } = useMapboxRepository()
+const petStore = usePetStore()
 
 const myPets = ref([{}])
 const animalTypes = ref<definitions['animal_types'][]>([])
@@ -845,6 +884,7 @@ const isRegisterPetDrawerOpen = ref(false)
 const isLoading = ref(false)
 const isDeleteToggled = ref(false)
 const isDeleteLoading = ref(false)
+const isReunitedLoading = ref(false)
 const myCarousel = ref()
 const mySlider = ref()
 
@@ -980,6 +1020,16 @@ const fetchPetDetails = async () => {
                 is_vaccinated: true,
                 is_deleted: data.is_deleted
             }
+
+            if (unref(myPet)?.status == 1 || unref(myPet)?.status == 2) {
+                selectPetStatus.value = [
+                    ...unref(selectPetStatus),
+                    {
+                        text: 'Reunited',
+                        value: PetStatus.Reunited
+                    }
+                ]
+            }
         } catch (error) {
         } finally {
             isLoading.value = false
@@ -1027,6 +1077,17 @@ const uploadImage = async (e: InputEvent) => {
             const data = await uploadPetImage(auth?.user?.id, image)
             unref(myPet).pet_images.push({ url: data?.publicURL })
         } catch (error) {}
+    }
+}
+
+const onReunitedClick = async () => {
+    try {
+        isReunitedLoading.value = true
+        myPet.value.status = PetStatus.Reunited
+        await onSaveMyPet(states.CREATE)
+    } catch (error) {
+    } finally {
+        isReunitedLoading.value = false
     }
 }
 
@@ -1156,6 +1217,8 @@ const onSaveMyPet = async state => {
             data = await createPet(unref(myPet))
             useNuxtApp().$toast.success('Pet successfully saved!')
         }
+
+        await petStore.fetchMyPets()
 
         return router.push(
             `/dashboard/pet/${data.id || route.params.id}/details`
