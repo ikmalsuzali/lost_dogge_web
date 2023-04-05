@@ -47,6 +47,21 @@ const useAuthRepository = () => {
         }
     }
 
+    const verifyOTPWithEmail = async (email: string, token: string) => {
+        const { user, session, error } = await $supabase.auth.verifyOTP({
+            email,
+            token: token,
+            type: 'recovery'
+        })
+
+        if (error) throw error
+
+        return {
+            user,
+            session
+        }
+    }
+
     const signOut = async () => {
         const responsePayload = await $supabase.auth.signOut()
         return responsePayload
@@ -81,9 +96,30 @@ const useAuthRepository = () => {
     }
 
     const forgetPassword = async (email: string) => {
-        return await $supabase.auth.api.resetPasswordForEmail(email, {
-            redirectTo: `${config.WEB_HOST}/recover`
+        return await $supabase.auth.api.resetPasswordForEmail(email)
+    }
+
+    const updateUserPassword = async (token: string, password: string) => {
+        const { error, data } = await $supabase.auth.api.updateUser(token, {
+            password
         })
+
+        if (error) throw error
+
+        return data
+    }
+
+    const signInWithEmail = async (email: string) => {
+        const { data, error } = await $supabase.auth.api.sendMagicLinkEmail(
+            email,
+            {
+                redirectTo: `${config.WEB_HOST}/recover`
+            }
+        )
+
+        if (error) throw error
+
+        return data
     }
 
     const getUserByEmail = async (email: string) => {
@@ -167,7 +203,10 @@ const useAuthRepository = () => {
         getUser,
         forgetPassword,
         getUserByEmail,
-        updateUserType
+        updateUserType,
+        verifyOTPWithEmail,
+        signInWithEmail,
+        updateUserPassword
     }
 }
 

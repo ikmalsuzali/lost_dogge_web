@@ -19,56 +19,39 @@
                 <input type="hidden" name="remember" value="true" />
                 <div class="-space-y-px rounded-md shadow-sm">
                     <div>
-                        <label for="email-address" class="sr-only"
-                            >Email address</label
-                        >
-                        <input
-                            id="email-address"
-                            name="email"
-                            type="email"
-                            autocomplete="email"
+                        <label for="password" class="sr-only">Password</label>
+                        <Input
+                            v-model="authResetPassword.password"
+                            label="Password"
                             required
-                            class="relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            placeholder="Email address"
+                            :type="InputType.PASSWORD"
+                            :error-message="errorMessages.password"
                         />
                     </div>
                     <div>
-                        <label for="password" class="sr-only">Password</label>
-                        <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            autocomplete="current-password"
+                        <label for="password" class="sr-only"
+                            >Confirm Password</label
+                        >
+                        <Input
+                            v-model="authResetPassword.confirmPassword"
+                            label="Confirm Password"
                             required
-                            class="relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            placeholder="Password"
+                            :type="InputType.PASSWORD"
+                            :error-message="errorMessages.confirmPassword"
                         />
                     </div>
                 </div>
 
                 <div>
-                    <button
-                        type="submit"
-                        class="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    <Button
+                        preset="primary"
+                        :loading="isUpdatingPasswordLoading"
+                        :block="true"
+                        :color="'primary'"
+                        @click="triggerUpdateUserPassword"
                     >
-                        <span
-                            class="absolute inset-y-0 left-0 flex items-center pl-3"
-                        >
-                            <svg
-                                class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                aria-hidden="true"
-                            >
-                                <path
-                                    fill-rule="evenodd"
-                                    d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z"
-                                    clip-rule="evenodd"
-                                />
-                            </svg>
-                        </span>
                         Reset password
-                    </button>
+                    </Button>
                 </div>
             </form>
         </div>
@@ -77,13 +60,100 @@
 
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
+import useAuthRepository from '@/repositories/auth'
+import Input from '~/components/atom/Input.vue'
+import { InputType } from '~~/types/InputType'
+import { useAuthStore } from '~/stores/auth'
 
 definePageMeta({
     middleware: 'recover'
 })
 
 const route = useRoute()
-const token = route.query.token
+const router = useRouter()
+const authStore = useAuthStore()
+const { verifyOTPWithEmail, updateUserPassword } = useAuthRepository()
+const { token, email } = route.query
+const isVerifiedFailed = ref(false)
+const isUpdatingPasswordLoading = ref(false)
+const errorMessages = ref([])
+const verifyResponseData = ref()
+const authResetPasswordInit = () => {
+    return {
+        password: '',
+        confirmPassword: ''
+    }
+}
+
+const authResetPassword = ref(authResetPasswordInit())
+
+const validateRequired = (inputValue: string, label: string = '') => {
+    return !inputValue ? `${label || 'Input'} is required` : ''
+}
+
+const validatePassword = (inputValue: string) => {
+    if (!inputValue) return validateRequired(inputValue, 'Password')
+    return inputValue.length < 6 ? 'Minimum characters is 6' : ''
+}
+
+const validateConfirmPassword = (password: string, confirmPassword: string) => {
+    if (!confirmPassword)
+        return validateRequired(confirmPassword, 'Confirm password')
+    return password !== confirmPassword
+        ? 'Password is not matching the confirmed password'
+        : ''
+}
+
+const allResetPasswordMessageValidation = async () => {
+    const { password, confirmPassword } = authResetPassword.value
+    const passwordMessage = validatePassword(unref(authResetPassword).password)
+    const confirmPasswordMessage = validateConfirmPassword(
+        unref(authResetPassword).password,
+        unref(authResetPassword).confirmPassword
+    )
+    errorMessages.value = {
+        password: passwordMessage,
+        confirmPassword: confirmPasswordMessage
+    }
+    return !passwordMessage && !confirmPasswordMessage
+}
+
+const triggerVerifyOTPWithEmail = async () => {
+    try {
+        isVerifiedFailed.value = false
+        verifyResponseData.value = await verifyOTPWithEmail(email, token)
+    } catch (error) {
+        useNuxtApp().$toast.error('Session expired')
+        isVerifiedFailed.value = true
+    }
+}
+
+const triggerUpdateUserPassword = async () => {
+    try {
+        console.log('trigger update user passwsord')
+        isUpdatingPasswordLoading.value = true
+        if (!(await allResetPasswordMessageValidation())) return
+        if (isVerifiedFailed.value) {
+            useNuxtApp().$toast.error('Session expired')
+            return
+        }
+        await updateUserPassword(
+            unref(verifyResponseData).session.access_token,
+            unref(authResetPassword).password
+        )
+        useNuxtApp().$toast.success('Password updated')
+        authStore.setToken(unref(verifyResponseData)?.session?.access_token)
+        router.push('/dashboard/pet')
+    } catch (error) {
+        console.log(error)
+        useNuxtApp.$toast.error('Failed to update password')
+    } finally {
+        isUpdatingPasswordLoading.value = false
+    }
+}
+
+triggerVerifyOTPWithEmail()
 
 //  http://localhost:3000/recover?token=794099873767c8ac146809e6cdd4fd7aef171651ba2146247319a681
 </script>

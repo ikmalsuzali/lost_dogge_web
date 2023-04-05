@@ -8,9 +8,9 @@ export default defineNuxtRouteMiddleware(to => {
     console.log(route)
     console.log(router)
 
-    if (!route.query?.token) {
-        return router.push({
-            path: '/'
-        })
-    }
+    // if (!route.query?.token) {
+    //     return router.push({
+    //         path: '/'
+    //     })
+    // }
 })

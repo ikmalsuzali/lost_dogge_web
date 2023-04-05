@@ -622,8 +622,14 @@ import {
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import useAuthRepository, { AuthProviderType } from '~/repositories/auth'
 
-const { signUp, getUserByEmail, signIn, signInProvider, forgetPassword } =
-    useAuthRepository()
+const {
+    signUp,
+    getUserByEmail,
+    signIn,
+    signInProvider,
+    forgetPassword,
+    signInWithEmail
+} = useAuthRepository()
 const drawer = useDrawerStore()
 const authStore = useAuthStore()
 const petStore = usePetStore()
@@ -771,7 +777,6 @@ const onSignupClick = async () => {
         if (!isErrorMessageEmpty(unref(errorMessages))) return
 
         const data = await signUp(unref(authSignup))
-        console.log(data)
         authStore.setUser(data?.user)
         authStore.setToken(data.token)
         drawer.toggleSignupLoginDrawer()
