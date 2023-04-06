@@ -64,16 +64,16 @@
         </div>
         <div class="flow-root bg-white pb-12 lg:pb-12">
             <div class="relative -mt-[22rem]">
-                <div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+                <div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-4">
                     <div
-                        class="mx-auto grid max-w-md grid-cols-1 gap-8 lg:max-w-4xl lg:grid-cols-2 lg:gap-8"
+                        class="mx-auto grid max-w-md grid-cols-1 gap-4 lg:max-w-4xl lg:grid-cols-3 lg:gap-4"
                     >
                         <div
                             v-for="tier in tiers"
                             :key="tier.name"
                             class="flex flex-col rounded-3xl bg-white shadow-xl ring-1 ring-black/10"
                         >
-                            <div class="p-8 sm:p-10 sm:pb-3">
+                            <div class="p-4 sm:p-8 sm:pb-3">
                                 <h3
                                     class="text-lg font-semibold leading-8 tracking-tight text-indigo-600"
                                     :id="tier.id"
@@ -89,14 +89,14 @@
                                         >/day</span
                                     >
                                     <span
-                                        class="w-1/4 flex text-lg font-semibold leading-8 tracking-normal text-gray-900 px-2"
+                                        class="flex text-lg font-semibold leading-8 tracking-normal text-gray-900 px-2"
                                         >≈ {{ tier.totalPrice }}</span
                                     >
                                 </div>
                             </div>
                             <div class="flex flex-1 flex-col p-2">
                                 <div
-                                    class="flex flex-1 flex-col justify-between rounded-2xl bg-gray-50 p-6 sm:p-8"
+                                    class="flex flex-1 flex-col justify-between rounded-2xl bg-gray-50 p-6 sm:p-4"
                                 >
                                     <ul role="list" class="space-y-3">
                                         <li
@@ -187,6 +187,17 @@ const myPet = ref(myPetInit())
 const animalTypes = ref([])
 const subscriptions = ref([])
 const tiers = [
+    {
+        id: 'daily-ads-7',
+        name: '7 days of running ads',
+        href: '#',
+        priceMonthly: 14,
+        totalPrice: '$98',
+        features: [
+            'Targeted to 10 mile radius of where you lost your pet',
+            'Reach 500 to 3000+ people per day (Facebook Estimates)'
+        ]
+    },
     {
         id: 'daily-ads-15',
         name: '15 days of running ads',

@@ -782,6 +782,7 @@ const onSignupClick = async () => {
         drawer.toggleSignupLoginDrawer()
         router.push('/dashboard/pet')
     } catch (error) {
+        useNuxtApp().$toast.error(error)
     } finally {
         isSigninLoading.value = false
     }
