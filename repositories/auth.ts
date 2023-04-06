@@ -1,4 +1,4 @@
-import { useAuthStore } from '~~/stores/auth'
+import { useAuthStore } from '~/stores/auth'
 const auth = useAuthStore()
 const config = useRuntimeConfig()
 

@@ -65,7 +65,8 @@ import CustomToast from '~/components/atom/CustomToast.vue'
 import { AuthType, useDrawerStore } from '~/stores/drawer'
 
 definePageMeta({
-    layout: 'page'
+    layout: 'page',
+    middleware: 'index'
 })
 
 const facebookDetailsInit = () => {
