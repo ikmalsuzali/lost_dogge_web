@@ -494,6 +494,7 @@ const fetchPets = async () => {
                     animal_type_id: unref(filter).animalTypeId
                 })
         })
+        console.log('pets', unref(pets))
     } catch (error) {
     } finally {
         isLoading.value = false
@@ -503,15 +504,39 @@ const fetchPets = async () => {
 const onPetClick = pet => {
     selectedPet.value = pet
     useHead({
-        title: `Help search for my ${unref(selectedPet)?.name} | Lost Doggo`,
+        title: `Help search for my ${animalType(selectedPet.value)} ${
+            unref(selectedPet)?.name
+        } | Lost Doggo`,
         meta: [
             {
                 name: 'description',
-                content: `Help search for my ${
-                    unref(selectedPet)?.name
-                } at last seen location ${
+                content: `Help search for my ${animalType(
+                    selectedPet.value
+                )}, ${unref(selectedPet)?.name} at last seen location ${
                     selectedPet?.address || ''
                 } | Lost Doggo`
+            },
+            {
+                property: 'og:title',
+                content: `Help search for my ${
+                    unref(selectedPet)?.name
+                } | Lost Doggo`
+            },
+            {
+                property: 'og:description',
+                content: `Help search for my ${animalType(
+                    selectedPet.value
+                )}, ${unref(selectedPet)?.name} at last seen location ${
+                    selectedPet?.address || ''
+                } | Lost Doggo`
+            },
+            {
+                property: 'og:image',
+                content: unref(selectedPet)?.pet_images?.[0]?.url
+            },
+            {
+                property: 'og:url',
+                content: `${config.WEB_HOST}/pets/${unref(selectedPet)?.pet_id}`
             }
         ]
     })
@@ -610,7 +635,7 @@ const initHead = () => {
         meta: [
             {
                 name: 'description',
-                content: `Search for ${
+                content: `Search for  ${
                     unref(routeStatus) ? 'missing and lost' : 'found'
                 } pets here | Lost Doggo`
             }
