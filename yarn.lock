@@ -2051,6 +2051,14 @@
     "@unhead/schema" "1.1.23"
     "@unhead/shared" "1.1.23"
 
+"@unhead/dom@^1.1.23":
+  version "1.1.25"
+  resolved "https://registry.yarnpkg.com/@unhead/dom/-/dom-1.1.25.tgz#08b4809e8dc3a4f7daf4f54db326dffcd96a3c8e"
+  integrity sha512-kJ5jhJFNQCyNENSw+mtmzgulA0kqUuXS3SRPl1umpofc8PH8tblSzXwqStxTj9r6E4wxJbEuygT/aHFJVioizw==
+  dependencies:
+    "@unhead/schema" "1.1.25"
+    "@unhead/shared" "1.1.25"
+
 "@unhead/schema@1.1.23":
   version "1.1.23"
   resolved "https://registry.yarnpkg.com/@unhead/schema/-/schema-1.1.23.tgz#804f4de801e4549868212a3b0a8cecfcb61bd8cd"
@@ -2059,12 +2067,27 @@
     hookable "^5.4.2"
     zhead "^2.0.4"
 
+"@unhead/schema@1.1.25", "@unhead/schema@^1.1.23":
+  version "1.1.25"
+  resolved "https://registry.yarnpkg.com/@unhead/schema/-/schema-1.1.25.tgz#0fd0acfa1b3a672f235e41f0d2c4ba823af0ede5"
+  integrity sha512-ygmaxWgGTAq9CcB6zGY4+0HlGdQt/oMq+CM18tTnvOBY0Og/uPGt7roW8eH717GpTPibKRTpagSYzZYdL0tWeg==
+  dependencies:
+    hookable "^5.5.1"
+    zhead "^2.0.4"
+
 "@unhead/shared@1.1.23":
   version "1.1.23"
   resolved "https://registry.yarnpkg.com/@unhead/shared/-/shared-1.1.23.tgz#59e78a48fed6ff3322d0aa94b9ab73627f0e95ba"
   integrity sha512-6uFEn/DRainxc3IE+RTMV6AK4Xi8osg7qAUAVMz3KpF0EoHzGbBjVBuSrkf7CnrE9Eg+/QYGLdwTvONJHCcYOA==
   dependencies:
     "@unhead/schema" "1.1.23"
+
+"@unhead/shared@1.1.25":
+  version "1.1.25"
+  resolved "https://registry.yarnpkg.com/@unhead/shared/-/shared-1.1.25.tgz#acbdb5fc9b226563d120742958cee2e0da05cf45"
+  integrity sha512-KptKbk4py1MFYHYwDJ/0kPOs+95dYMrWIT1fCV9lGcVAwu20wIHh+WX18s+iEWhc66xkGRxgC/xsl4wJJFPE+w==
+  dependencies:
+    "@unhead/schema" "1.1.25"
 
 "@unhead/ssr@^1.1.23":
   version "1.1.23"
@@ -2358,6 +2381,16 @@
     "@vueuse/metadata" "9.10.0"
     "@vueuse/shared" "9.10.0"
     vue-demi "*"
+
+"@vueuse/head@^1.1.23":
+  version "1.1.23"
+  resolved "https://registry.yarnpkg.com/@vueuse/head/-/head-1.1.23.tgz#a94a4457aed0768d4e9a595097b9d1716a67962b"
+  integrity sha512-bJiiQXrICvCI740jR2CLK+FhXyvMx2dIfyeF3FdOsYJn6OtexdBI2wchyuKNYmiAQ8cibAHxmDUytAFqIdIRJg==
+  dependencies:
+    "@unhead/dom" "^1.1.23"
+    "@unhead/schema" "^1.1.23"
+    "@unhead/ssr" "^1.1.23"
+    "@unhead/vue" "^1.1.23"
 
 "@vueuse/integrations@^9.13.0":
   version "9.13.0"

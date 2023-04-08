@@ -47,7 +47,8 @@ import 'vue3-carousel/dist/carousel.css'
 
 definePageMeta({
     layout: 'dashboard',
-    middleware: 'auth'
+    middleware: 'auth',
+    mode: 'in-out'
 })
 
 const { getMyPets } = usePetRepository()

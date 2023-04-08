@@ -436,6 +436,7 @@ const genderItems = ref([
     { text: 'Male', value: 0 },
     { text: 'Female', value: 1 }
 ])
+const routeStatus = ref(route?.query?.type == 'lost' ? 1 : 2)
 
 const filter = ref({
     location: {
@@ -476,7 +477,7 @@ const fetchPets = async () => {
         isLoading.value = true
         pets.value = []
         pets.value = await getPets({
-            status: PetStatus.LOST,
+            status: unref(routeStatus),
             address: unref(filter).location.name || '',
             ...(unref(filter)?.location.longitude &&
                 unref(filter)?.location.latitude && {
@@ -501,6 +502,19 @@ const fetchPets = async () => {
 
 const onPetClick = pet => {
     selectedPet.value = pet
+    useHead({
+        title: `Help search for my ${unref(selectedPet)?.name} | Lost Doggo`,
+        meta: [
+            {
+                name: 'description',
+                content: `Help search for my ${
+                    unref(selectedPet)?.name
+                } at last seen location ${
+                    selectedPet?.address || ''
+                } | Lost Doggo`
+            }
+        ]
+    })
     isPetDetailsDrawerOpen.value = true
 }
 
@@ -588,16 +602,34 @@ const onEmailNowClick = email => {
     window.location = `mailto:${email}`
 }
 
+const initHead = () => {
+    useHead({
+        title: `Search for ${
+            unref(routeStatus) == 1 ? 'lost' : 'found'
+        } pets here| Lost Doggo`,
+        meta: [
+            {
+                name: 'description',
+                content: `Search for ${
+                    unref(routeStatus) ? 'missing and lost' : 'found'
+                } pets here | Lost Doggo`
+            }
+        ]
+    })
+}
+
 // watch(isFilterDrawerOpen, val => {
 //     if (!val) filterDrawer.value = filterDrawerInit()
 // })
 
 watchEffect(() => onSearchedLocation())
 
+initHead()
 fetchAnimalTypes()
 fetchBreeds()
 fetchTypes()
 fetchPets()
+
 onMounted(() => {
     openPetDrawer()
 })
@@ -610,5 +642,14 @@ watch(
         }
     },
     { immediate: true }
+)
+
+watch(
+    () => unref(isPetDetailsDrawerOpen),
+    value => {
+        if (!value) {
+            initHead()
+        }
+    }
 )
 </script>
