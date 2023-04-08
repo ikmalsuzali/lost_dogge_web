@@ -236,13 +236,11 @@
                                         <h3
                                             class="text-xl font-bold text-gray-900 sm:text-2xl"
                                         >
-                                            {{
-                                                selectedPet?.animal_types?.name
-                                            }}
+                                            {{ selectedPet?.name }}
                                         </h3>
                                     </div>
                                     <p class="text-sm text-gray-500">
-                                        {{ selectedPet?.name }}
+                                        {{ selectedPet?.animal_types?.name }}
                                     </p>
                                 </div>
                                 <div class="pt-2">
@@ -328,7 +326,7 @@
                             >
                                 <MapboxGeogeometryCircle
                                     :center="selectedPetLatLong"
-                                    :radius="15"
+                                    :radius="10"
                                 />
                                 <MapboxNavigationControl
                                     position="bottom-right"

@@ -407,6 +407,7 @@ const myPetInit = () => {
         status: PetStatus.Registered,
         description: '',
         animal_type_id: '',
+        animal_types: {},
         breed_id: '',
         breed: {},
         name: '',

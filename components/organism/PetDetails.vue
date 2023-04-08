@@ -226,6 +226,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="space-y-4">
+                            <div
+                                class="text-lg font-medium text-gray-900 text-center"
+                            >
+                                Extend your reach, share your post anywhere
+                                through these networks
+                            </div>
+                            <ShareNetwork
+                                v-if="routeState() == states?.VIEW"
+                                :my-pet="myPet"
+                            />
+                        </div>
 
                         <div
                             class="space-y-6 py-6 sm:space-y-0 sm:divide-y sm:divide-gray-200 sm:py-0"
@@ -447,7 +459,7 @@
                                 </div>
                             </div>
                             <div
-                                v-if="myPet?.status !== 0"
+                                v-if="myPet?.status == 1 || myPet?.status == 2"
                                 class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5"
                             >
                                 <div>
@@ -672,6 +684,7 @@
                         </div>
                     </div>
                     <div
+                        v-if="routeState() !== states?.VIEW"
                         class="bg-slate-100 rounded border-t-4 border-orange-500 rounded-b text-orange-900 px-4 py-3 shadow-md"
                         role="alert"
                     >
@@ -812,6 +825,7 @@ import usePetRepository from '@/repositories/pets'
 import useMapboxRepository from '@/repositories/mapbox'
 import Autocomplete from '@/components/atom/Autocomplete.vue'
 import { usePetStore } from '~/stores/pet'
+import ShareNetwork from '@/components/atom/ShareNetwork.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -977,7 +991,8 @@ const myPetInit = () => {
         contact_number: '',
         gender: Gender.Male,
         is_vaccinated: 1,
-        is_deleted: false
+        is_deleted: false,
+        animal_types: {}
     }
 }
 
@@ -1004,6 +1019,7 @@ const fetchPetDetails = async () => {
                 status: data.status,
                 description: data?.description,
                 animal_type_id: data.animal_type_id,
+                animal_types: data.animal_types,
                 breed: {},
                 name: data.name,
                 weight: data.weight,

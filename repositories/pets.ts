@@ -13,7 +13,9 @@ const usePetRepository = () => {
     ) => {
         const { data, error } = await $supabase
             .from('pets')
-            .select('*, pet_images(*), breed:breed_id(*)')
+            .select(
+                '*, pet_images(*), breed:breed_id(*), animal_types:animal_type_id(*)'
+            )
             .eq('user_id', userId)
             .range(offset, limit)
             .order('is_deleted', { ascending: true })
@@ -61,7 +63,9 @@ const usePetRepository = () => {
     const getPetDetails = async (petId: string) => {
         const { data, error } = await $supabase
             .from('pets')
-            .select('*, pet_images(*), breed:breed_id(*)')
+            .select(
+                '*, pet_images(*), breed:breed_id(*), animal_types:animal_type_id(*)'
+            )
             .eq('id', petId)
             .limit(1)
             .single()

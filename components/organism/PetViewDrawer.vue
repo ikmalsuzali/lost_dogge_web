@@ -184,7 +184,7 @@
             </div>
             <div class="px-4 pt-5 pb-5 sm:px-0 sm:pt-0">
                 <dl class="space-y-8 px-4 sm:space-y-6 sm:px-6">
-                    <div>
+                    <div v-if="props.selectedPet.description">
                         <dt
                             class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0"
                         >
@@ -218,7 +218,7 @@
                             >
                                 <MapboxGeogeometryCircle
                                     :center="selectedPetLatLong"
-                                    :radius="1"
+                                    :radius="10"
                                 />
 
                                 <MapboxMarker :lng-lat="selectedPetLatLong" />

@@ -165,26 +165,7 @@
 
                 <!-- Facebook ad -->
                 <div class="px-2 space-y-2">
-                    <div class="flex space-x-4">
-                        <div class="text-lg font-medium text-gray-900 py-2">
-                            How others see it
-                        </div>
-                        <Button @click="onOtherViewClick(myPet)"
-                            >View Now</Button
-                        >
-                    </div>
-                    <div
-                        v-if="payment?.fb_ad_preview_url"
-                        class="flex space-x-4"
-                    >
-                        <div class="text-lg font-medium text-gray-900 py-2">
-                            Preview link to your ad
-                        </div>
-                        <Button @click="onPreviewClick">
-                            Preview from Facebook
-                        </Button>
-                    </div>
-                    <div class="grid grid-cols-5 space-x-4">
+                    <div class="grid grid-cols-5 space-x-4 space-y-4">
                         <ul
                             role="list"
                             class="col-span-5 mt-3 grid grid-cols- gap-4 sm:grid-cols-3 sm:gap-6 xl:grid-cols-3"
@@ -295,15 +276,44 @@
                                 </div>
                             </li>
                         </ul>
+                        <div class="col-span-5 w-full space-y-2">
+                            <div
+                                class="text-lg font-medium text-gray-900 text-center"
+                            >
+                                Extend your reach, share your post anywhere
+                                through these networks
+                            </div>
+
+                            <div
+                                class="flex flex-auto space-x-4 justify-center"
+                            >
+                                <ShareNetwork :my-pet="myPet" />
+                            </div>
+                        </div>
                         <div class="py-2 col-span-5 flex flex-wrap space-x-4">
+                            <div class="flex-none space-y-2">
+                                <div class="text-lg font-medium text-gray-900">
+                                    Ad Preview
+                                </div>
+                                <FacebookAd
+                                    class="flex-none"
+                                    :images="
+                                        myPet.pet_images?.map(
+                                            petImage => petImage.url
+                                        )
+                                    "
+                                />
+                            </div>
                             <div class="grow">
                                 <div class="text-lg font-medium text-gray-900">
                                     Ad Location
                                 </div>
                                 <MapboxMap
                                     v-if="myPet?.longitude && myPet?.latitude"
+                                    class="pt-2"
                                     :accessToken="mapboxApi"
                                     :center="selectedPetLatLong"
+                                    height="510px"
                                     :fly-to-options="{
                                         maxDuration: 2000,
                                         speed: 1.2
@@ -315,7 +325,7 @@
                                 >
                                     <MapboxGeogeometryCircle
                                         :center="selectedPetLatLong"
-                                        :radius="15"
+                                        :radius="10"
                                     />
                                     <MapboxNavigationControl
                                         position="bottom-right"
@@ -337,21 +347,26 @@
                                     </MapboxMarker>
                                 </MapboxMap>
                             </div>
-                            <div class="flex-none space-y-2">
-                                <div class="text-lg font-medium text-gray-900">
-                                    Ad Preview
-                                </div>
-                                <FacebookAd
-                                    class="flex-none"
-                                    :images="
-                                        myPet.pet_images?.map(
-                                            petImage => petImage.url
-                                        )
-                                    "
-                                />
-                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="flex space-x-4 mx-4">
+                    <div
+                        class="text-lg font-medium text-gray-900 py-2 flex-grow"
+                    >
+                        How others see your facebook ad when clicking on it
+                    </div>
+                    <Button @click="onOtherViewClick(myPet)">View Now</Button>
+                </div>
+                <div v-if="payment?.fb_ad_preview_url" class="flex space-x-4">
+                    <div
+                        class="text-lg font-medium text-gray-900 py-2 flex-grow"
+                    >
+                        How others see your facebook ad
+                    </div>
+                    <Button @click="onPreviewClick">
+                        Preview from Facebook
+                    </Button>
                 </div>
             </div>
         </div>
@@ -361,6 +376,7 @@
 <script lang="ts" setup>
 import Button from '~/components/atom/Button.vue'
 import FacebookAd from '~/components/atom/FacebookAd.vue'
+import ShareNetwork from '~/components/atom/ShareNetwork.vue'
 import useSubscriptionRepository from '~/repositories/subscription'
 import { useRoute } from 'vue-router'
 import {
@@ -369,6 +385,11 @@ import {
     MapboxGeogeometryCircle,
     MapboxNavigationControl
 } from 'vue-mapbox-ts'
+import facebookIcon from '@/assets/images/facebook.svg'
+import twitterIcon from '@/assets/images/twitter.svg'
+import redditIcon from '@/assets/images/reddit.svg'
+import whatsappIcon from '@/assets/images/whatsapp.svg'
+import emailIcon from '@/assets/images/email.svg'
 
 const { confirmAd, fetchPaymentAd } = useSubscriptionRepository()
 
@@ -378,6 +399,14 @@ const isPaymentAdLoading = ref(false)
 const isConfirmAdLoading = ref(false)
 const payment = ref()
 const mapboxApi = config.MAPBOX_KEY
+
+const shareNetworks = ref([
+    { network: 'facebook', src: facebookIcon },
+    { network: 'twitter', src: twitterIcon },
+    { network: 'reddit', src: redditIcon },
+    { network: 'whatsapp', src: whatsappIcon },
+    { network: 'email', src: emailIcon }
+])
 
 const props = withDefaults(
     defineProps<{
@@ -402,6 +431,21 @@ const onConfirmAdClick = async () => {
         isConfirmAdLoading.value = false
     }
 }
+
+const petRedirectUrl = computed(() => {
+    return `${config.WEB_HOST}/pets?type=${
+        props.myPet?.status == 2 ? 'found' : 'lost'
+    }&pet_id=${props.myPet?.id}`
+})
+
+const hashtagsList = computed(() => {
+    return [
+        'lostdoggo',
+        'lostpet',
+        `lost-${props.myPet?.animal_types?.name.toLowerCase()}`,
+        `${props.myPet?.address?.trim().replaceAll(',', '-')}`
+    ]
+})
 
 const onOtherViewClick = pet => {
     window.open(
