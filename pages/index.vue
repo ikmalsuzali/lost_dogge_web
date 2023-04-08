@@ -1,16 +1,18 @@
 <template>
     <main>
         <div
-            class="mx-auto max-w-7xl px-6 py-24 lg:flex lg:items-center lg:gap-x-10 lg:px-8"
+            class="mx-auto max-w-7xl px-6 sm:py-10 py-24 lg:flex lg:items-center lg:gap-x-10 lg:px-8"
         >
             <div class="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
                 <h1
-                    class="max-w-2xl text-4xl font-black tracking-tight text-gray-900 sm:text-6xl"
+                    class="max-w-2xl text-4xl font-black tracking-tight text-gray-900 sm:text-6xl sm:text-center lg:text-left"
                 >
                     <span class="text-[#F96A64]">Lost your pet?</span>
                     <br /><span class="text-[#5C1511]">Bring it home!</span>
                 </h1>
-                <p class="mt-4 text-lg max-w-lg leading-8 text-gray-600">
+                <p
+                    class="mt-4 text-lg max-w-lg leading-8 text-gray-600 sm:max-md:m-auto lg:text-left sm:text-center"
+                >
                     We love our pets and we want to reunite you with yours,
                     safely. Create an ad for your lost pet in less than 5
                     minutes, and get your ad viewed by thousands of people
@@ -19,7 +21,7 @@
                 <div class="mt-4 flex items-center gap-x-6">
                     <a
                         href="#"
-                        class="rounded-md bg-[#5C1511] px-6 py-3 text-lg font-extrabold text-white shadow-sm hover:[#5C1511]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5C1511]"
+                        class="rounded-md bg-[#5C1511] px-6 py-3 text-lg font-extrabold text-white shadow-sm hover:[#5C1511]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5C1511] sm:max-md:m-auto"
                         @click="openDrawer"
                         >Create an Facebook / Instagram Ad Now</a
                     >
@@ -31,9 +33,10 @@
                 </div>
             </div>
             <div
-                class="mt-16 sm:mt-24 lg:mt-0 lg:flex-shrink-0 lg:flex-grow relative"
+                class="mt-16 sm:mt-10 lg:mt-0 lg:flex-shrink-0 lg:flex-grow relative"
             >
                 <FacebookAd
+                    class="m-auto"
                     ref="mockFacebookAd"
                     :adHeader="facebookAdDetails.adHeader"
                     :images="randomPetImages"
