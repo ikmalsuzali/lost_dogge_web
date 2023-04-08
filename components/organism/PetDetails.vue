@@ -226,7 +226,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="space-y-4">
+                        <div
+                            v-if="routeState() == states?.VIEW"
+                            class="space-y-4"
+                        >
                             <div
                                 class="text-lg font-medium text-gray-900 text-center"
                             >

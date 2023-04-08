@@ -57,7 +57,7 @@ const hashtagsList = computed(() => {
         'lost-pet',
         `lost-${props.myPet?.animal_types?.name.toLowerCase()}`,
         `${props.myPet?.address?.trim().replaceAll(',', '-')}`
-    ]
+    ]?.toString()
 })
 
 const showShareNetwork = () => {
