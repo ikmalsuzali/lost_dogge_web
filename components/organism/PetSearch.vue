@@ -494,7 +494,6 @@ const fetchPets = async () => {
                     animal_type_id: unref(filter).animalTypeId
                 })
         })
-        console.log('pets', unref(pets))
     } catch (error) {
     } finally {
         isLoading.value = false
