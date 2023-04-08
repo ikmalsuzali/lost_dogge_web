@@ -5,9 +5,24 @@ export default defineNuxtConfig({
             titleTemplate: 'Lost Doggo',
             meta: [
                 {
+                    name: 'title',
+                    content:
+                        'Our mission is to help you find your beloved pet as fast as possible'
+                },
+                {
+                    property: 'og:title',
+                    content:
+                        'Our mission is to help you find your beloved pet as fast as possible'
+                },
+                {
                     name: 'description',
                     content:
-                        'Lost your pet? Create a facebook or instagram ad within 5 minute and reach around 3000+ people per day within the lost location of your pet'
+                        'Lost your pet? Create a facebook or instagram ad within 5 minute and reach around 3000+ people per day within the lost or found location of your beloved pet'
+                },
+                {
+                    property: 'og:description',
+                    content:
+                        'Lost your pet? Create a facebook or instagram ad within 5 minute and reach around 3000+ people per day within the lost or found location of your beloved pet'
                 },
                 {
                     name: 'facebook-domain-verification',
