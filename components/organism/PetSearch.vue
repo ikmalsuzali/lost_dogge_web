@@ -289,7 +289,7 @@
             </div>
             <div class="px-4 pt-5 pb-5 sm:px-0 sm:pt-0">
                 <dl class="space-y-8 px-4 sm:space-y-6 sm:px-6">
-                    <div>
+                    <div v-if="selectedPet.description">
                         <dt
                             class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0"
                         >
@@ -349,6 +349,14 @@
                             </MapboxMap>
                         </div>
                     </div>
+                    <div
+                        class="text-md font-medium text-gray-900 sm:text-lg pt-4"
+                    >
+                        If you haven't seen me but still want to help, please
+                        share through these platforms
+                    </div>
+                    <ShareNetwork :my-pet="selectedPet" />
+
                     <!-- <div class="grid grid-cols-2">
                         <div>
                             <dt
@@ -392,6 +400,7 @@ import Drawer from '@/components/atom/Drawer.vue'
 import Button from '@/components/atom/Button.vue'
 import Select from '@/components/UI/Select/Select.vue'
 import { usePetStore } from '@/stores/pet'
+import ShareNetwork from '@/components/atom/ShareNetwork.vue'
 
 const PetStatus = {
     LOST: 0,
