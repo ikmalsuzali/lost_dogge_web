@@ -100,7 +100,7 @@
                                                         </div>
 
                                                         <div class="mt-8">
-                                                            <div>
+                                                            <!-- <div>
                                                                 <div>
                                                                     <p
                                                                         class="text-sm font-medium text-gray-700"
@@ -166,7 +166,7 @@
                                                                         >
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
 
                                                             <div class="mt-6">
                                                                 <form
@@ -296,7 +296,7 @@
                                                         </div>
 
                                                         <div class="mt-8">
-                                                            <div>
+                                                            <!-- <div>
                                                                 <div>
                                                                     <p
                                                                         class="text-sm font-medium text-gray-700"
@@ -361,7 +361,7 @@
                                                                         >
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
 
                                                             <div class="mt-6">
                                                                 <form

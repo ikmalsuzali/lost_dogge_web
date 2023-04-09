@@ -6,8 +6,7 @@ export default defineNuxtConfig({
             meta: [
                 {
                     name: 'title',
-                    content:
-                        'Our mission is to help you find your beloved pet as fast as possible'
+                    content: 'Lost Doggo - Lost & Found Pets'
                 },
                 {
                     property: 'og:title',
