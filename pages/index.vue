@@ -22,7 +22,7 @@
                     <a
                         href="#"
                         class="rounded-md bg-[#5C1511] px-6 py-3 text-lg font-extrabold text-white shadow-sm hover:[#5C1511]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5C1511] sm:max-md:m-auto"
-                        @click="openDrawer"
+                        @click="onCreateAdNowClick"
                         >Create an Facebook / Instagram Ad Now</a
                     >
                     <!-- <a
@@ -66,6 +66,8 @@ import usePetRepository from '~/repositories/pets'
 import { useIntervalFn } from '@vueuse/core'
 import CustomToast from '~/components/atom/CustomToast.vue'
 import { AuthType, useDrawerStore } from '~/stores/drawer'
+import { useAuthStore } from '~/stores/auth'
+import { useRouter, useRoute } from 'vue-router'
 
 definePageMeta({
     layout: 'page',
@@ -89,6 +91,8 @@ const facebookAdDetails = ref()
 const randomPetDetails = ref([facebookDetailsInit()])
 const interval = ref()
 const route = useRoute()
+const router = useRouter()
+const auth = useAuthStore()
 
 const randomPetImages = computed(() => {
     return unref(randomPetDetails).map(
@@ -189,6 +193,14 @@ const nextFbAdSlide = () => {
             unref(randomPetDetails)[
                 unref(mockFacebookAd)?.myCarousel?.data.currentSlide.value
             ]?.adHeader
+    }
+}
+
+const onCreateAdNowClick = () => {
+    if (auth.token) {
+        window.location.href = '/dashboard/pet'
+    } else {
+        openDrawer()
     }
 }
 
