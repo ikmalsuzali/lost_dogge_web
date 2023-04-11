@@ -197,12 +197,14 @@
                                         <a
                                             href="#"
                                             class="font-medium text-gray-900 hover:text-gray-600"
-                                            >30</a
+                                            >{{ daysLeft }}</a
                                         >
+
                                         <p class="text-gray-500">days left</p>
                                     </div>
                                 </div>
                             </li>
+
                             <li
                                 class="relative col-span-1 flex rounded-md shadow-sm"
                             >
@@ -416,6 +418,12 @@ const props = withDefaults(
         myPet: ''
     }
 )
+
+const daysLeft = computed(() => {
+    let endDate = new Date(unref(payment)?.end_date)
+    let daysLeft = Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24))
+    return daysLeft
+})
 
 const onConfirmAdClick = async () => {
     try {
