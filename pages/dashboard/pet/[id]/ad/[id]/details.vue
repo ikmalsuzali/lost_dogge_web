@@ -421,8 +421,12 @@ const props = withDefaults(
 
 const daysLeft = computed(() => {
     let endDate = new Date(unref(payment)?.end_date)
-    let daysLeft = Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24))
-    return daysLeft
+    if (unref(payment)?.end_date) {
+        let daysLeft = Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24))
+        return daysLeft
+    } else {
+        return 30
+    }
 })
 
 const onConfirmAdClick = async () => {
