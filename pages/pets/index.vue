@@ -1,7 +1,5 @@
 <template>
-    <div
-        class="mx-auto max-w-7xl px-6 py-24 lg:items-center lg:gap-x-10 lg:px-8"
-    >
+    <div class="mx-auto max-w-7xl py-24 lg:items-center lg:gap-x-10 lg:px-8">
         <div class="relative mx-10 mb-10 rounded-xl">
             <div
                 class="h-56 sm:h-72 md:absolute md:left-0 md:h-full md:w-1/2 rounded-xl z-10"
@@ -24,9 +22,8 @@
                     <p class="mt-3 text-lg text-white">
                         We strive to help you find your lost pet. Our mission to
                         help reunite you with your beloved pet. With the help of
-                        our AI (artificial intelligence algorithm) and the help
-                        of the community we scan through matching possibilities
-                        of your pet
+                        our AI and the help of the community we scan through
+                        matching possibilities of your pet
                     </p>
                 </div>
             </div>
@@ -37,6 +34,7 @@
 
 <script lang="ts" setup>
 import PetSearch from '~/components/organism/PetSearch.vue'
+import Button from '~/components/atom/Button.vue'
 
 definePageMeta({
     layout: 'page'

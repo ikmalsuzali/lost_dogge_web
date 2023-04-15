@@ -1,34 +1,37 @@
 <template>
     <div class="mx-10">
-        <div class="flex space-x-4">
-            <div class="w-full">
-                <Autocomplete
-                    v-model="filter.location.name"
-                    placeholder="Search last seen location of your pet"
-                    :throttle-time="1000"
-                    :items="geocodingLocations"
-                    item-key="id"
-                    item-value="place_name"
-                    :block="true"
-                    @returned-object="updateLocationFilter"
-                />
+        <div class="flex flex-wrap">
+            <div class="grow">
+                <div class="lg:w-9/12 w-full">
+                    <Autocomplete
+                        v-model="filter.location.name"
+                        placeholder="Search last seen location of your pet"
+                        :throttle-time="1000"
+                        :items="geocodingLocations"
+                        item-key="id"
+                        item-value="place_name"
+                        :block="true"
+                        @returned-object="updateLocationFilter"
+                    />
+                </div>
             </div>
-            <div class="flex-none mt-1">
+
+            <div class="space-y-4 md:space-y-0 mt-4 md:mt-0">
                 <button
                     type="button"
-                    class="inline-flex flex-shrink-0 items-center justify-center rounded-md border border-transparent bg-[#5C1511] hover:bg-[#5C1511]/80 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2 w-34 !ml-auto mr-2"
+                    class="mx-0 md:mx-2 inline-flex flex-shrink-0 items-center justify-center rounded-md border border-transparent bg-[#5C1511] hover:bg-[#5C1511]/80 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2 w-full md:w-auto"
                     @click="isRecentlyViewedDrawer = true"
                 >
-                    <span class="mr-2">Recently Viewed</span>
+                    <span class="mr-2 visible md:hidden">Recently Viewed</span>
 
                     <StarIcon class="h-6 w-6" aria-hidden="true" />
                 </button>
                 <button
                     type="button"
-                    class="inline-flex flex-shrink-0 items-center justify-center rounded-md border border-transparent bg-[#5C1511] hover:bg-[#5C1511]/80 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2 w-34 !ml-auto"
+                    class="inline-flex flex-shrink-0 items-center justify-center rounded-md border border-transparent bg-[#5C1511] hover:bg-[#5C1511]/80 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-[#5C1511] focus:ring-offset-2 w-full md:w-auto"
                     @click="isFilterDrawerOpen = true"
                 >
-                    <span class="mr-2">Filters</span>
+                    <span class="mr-2 visible md:hidden">Filters</span>
 
                     <CogIcon class="h-6 w-6" aria-hidden="true" />
                 </button>
@@ -224,7 +227,9 @@
                     </Slide>
 
                     <template #addons>
-                        <Pagination />
+                        <Pagination
+                            v-if="selectedPet?.pet_images?.length > 1"
+                        />
                     </template>
                 </Carousel>
                 <div>

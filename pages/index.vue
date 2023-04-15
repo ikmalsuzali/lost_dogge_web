@@ -5,13 +5,13 @@
         >
             <div class="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
                 <h1
-                    class="max-w-2xl text-4xl font-black tracking-tight text-gray-900 sm:text-6xl sm:text-center lg:text-left"
+                    class="max-w-2xl text-4xl font-black tracking-tight text-gray-900 sm:text-6xl text-center lg:text-left"
                 >
                     <span class="text-[#F96A64]">Lost your pet?</span>
                     <br /><span class="text-[#5C1511]">Bring it home!</span>
                 </h1>
                 <p
-                    class="mt-4 text-lg max-w-lg leading-8 text-gray-600 sm:max-md:m-auto lg:text-left sm:text-center"
+                    class="mt-4 text-lg max-w-lg leading-8 text-gray-600 sm:max-md:m-auto lg:text-left text-center"
                 >
                     We love our pets and we want to reunite you with yours,
                     safely. Create an ad for your lost pet in less than 5
@@ -206,7 +206,7 @@ const onCreateAdNowClick = () => {
 
 const slideStart = payload => {}
 
-interval.value = setRandomInterval(() => randomToast(), 5000, 60000)
+interval.value = setRandomInterval(() => randomToast(), 30000, 90000)
 facebookAdDetails.value = facebookDetailsInit()
 
 // onMounted(() => {

@@ -1,13 +1,45 @@
-i<template>
-    <nav class="">
+i
+<template>
+    <nav :class="{ 'z-50': drawer.isHomeDrawerOpen }">
         <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
             <div class="flex h-20 justify-between">
                 <div class="flex px-2 lg:px-0">
+                    <div
+                        class="visible md:hidden top-0 flex h-16 shrink-0 items-center gap-x-4 border-bpx-4 sm:gap-x-6 sm:px-6 lg:px-8 pt-2 lg:pt-0"
+                    >
+                        <button
+                            type="button"
+                            class="-m-2.5 p-2.5 text-gray-700 lg:hidden"
+                            @click="drawer.toggleHomeDrawer"
+                        >
+                            <span class="sr-only">Open sidebar</span>
+                            <svg
+                                class="h-6 w-6"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                                />
+                            </svg>
+                        </button>
+
+                        <!-- Separator -->
+                        <div
+                            class="h-6 w-px bg-gray-900/10 lg:hidden"
+                            aria-hidden="true"
+                        ></div>
+                    </div>
                     <div class="flex flex-shrink-0 items-center">
                         <img
-                            class="block h-16 w-auto"
+                            class="block h-10 md:h-16 w-auto"
                             src="~/assets/images/logo-lost-doggo.svg"
-                            alt="Your Company"
+                            alt="Lost Doggo | Lost pets & Found pets"
                         />
                     </div>
                     <div class="hidden lg:ml-6 lg:flex lg:space-x-8">
@@ -96,11 +128,13 @@ i<template>
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '~~/stores/auth'
+import { useAuthStore } from '~/stores/auth'
+import { useDrawerStore } from '~/stores/drawer'
 
 const auth = useAuthStore()
 const router = useRouter()
 const currentRouteName = computed(() => router.currentRoute.value.fullPath)
+const drawer = useDrawerStore()
 
 const emit = defineEmits(['sign-up', 'sign-in'])
 

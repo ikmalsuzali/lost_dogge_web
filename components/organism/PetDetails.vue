@@ -294,7 +294,8 @@
                                     <div v-if="myPet?.pet_images?.length">
                                         <Carousel
                                             ref="myCarousel"
-                                            :items-to-show="4"
+                                            :items-to-show="2"
+                                            slide-width="400"
                                         >
                                             <Slide
                                                 v-for="(
@@ -305,7 +306,7 @@
                                             >
                                                 <div class="relative">
                                                     <VLazyImage
-                                                        class="aspect-square object-cover object-center w-40 rounded-md border border-blue-800"
+                                                        class="aspect-square object-cover object-center rounded-md border border-blue-800"
                                                         :src="image?.url"
                                                     />
                                                     <button
@@ -328,7 +329,12 @@
                                                 </div>
                                             </Slide>
                                             <template #addons>
-                                                <Pagination />
+                                                <Pagination
+                                                    v-if="
+                                                        myPet?.pet_images
+                                                            .length > 1
+                                                    "
+                                                />
                                             </template>
                                         </Carousel>
                                     </div>
@@ -1262,8 +1268,8 @@ const onSearchedLocation = async () => {
 
 onMounted(() => {
     setTimeout(() => {
-        unref(myCarousel).restartCarousel()
-        unref(myCarousel).updateSlideWidth()
+        unref(myCarousel)?.restartCarousel()
+        unref(myCarousel)?.updateSlideWidth()
     }, 500)
 })
 

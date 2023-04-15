@@ -1,7 +1,7 @@
 <template>
     <main class="min-w-0 flex-1 border-t border-gray-200 sm:flex">
         <!-- Message list-->
-        <aside class="overflow-hidden xl:order-first xl:block xl:flex-shrink-0">
+        <!-- <aside class="overflow-hidden xl:order-first xl:block xl:flex-shrink-0">
             <div
                 class="relative flex h-full w-96 flex-col border-r border-gray-200 bg-gray-100"
             >
@@ -138,60 +138,20 @@
                     </div>
                 </nav>
             </div>
-        </aside>
+        </aside> -->
 
         <section
             aria-labelledby="message-heading"
             class="flex h-full min-w-0 flex-1 flex-col xl:order-last"
         >
             <!-- Top section -->
-            <div class="flex-shrink-0 border-b border-gray-200 bg-white">
+            <div class="flex-shrink-0 bg-white">
                 <!-- Toolbar-->
                 <div class="flex h-16 flex-col justify-center">
                     <div class="px-4 sm:px-6 lg:px-8">
                         <div
                             class="container flex flex-wrap items-center justify-between mx-auto"
                         >
-                            <!-- <span
-                                v-if="
-                                    route.name ===
-                                        'dashboard-pet-id-details___en' ||
-                                    route.name ===
-                                        'dashboard-pet-id-ad-id-details___en'
-                                "
-                                class="inline-flex sm:shadow-sm"
-                            >
-                                <button
-                                    type="button"
-                                    class="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-orange-400 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                    :class="{
-                                        'bg-orange-300':
-                                            route.name ===
-                                            'dashboard-pet-id-details___en'
-                                    }"
-                                    @click="
-                                        router.push(
-                                            `/dashboard/pet/${route.params.id}/details`
-                                        )
-                                    "
-                                >
-                                    <BookOpenIcon
-                                        class="mr-2.5 h-5 w-5 text-gray-400"
-                                        aria-hidden="true"
-                                    />
-                                    <span>Details</span>
-                                </button>
-                                <button
-                                    type="button"
-                                    class="relative -ml-px hidden items-center rounded-r-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
-                                >
-                                    <MagnifyingGlassIcon
-                                        class="mr-2.5 h-5 w-5 text-gray-400"
-                                        aria-hidden="true"
-                                    />
-                                    <span>Matches</span>
-                                </button>
-                            </span> -->
                             <div></div>
 
                             <!-- Left buttons -->
@@ -219,7 +179,6 @@
                                         </button>
                                     </span>
                                 </div>
-                                <!-- dashboard-pet-id-update___en -->
                                 <div
                                     v-if="
                                         route.name ===
@@ -251,34 +210,6 @@
                                     </span>
                                 </div>
 
-                                <!-- Pet create -->
-                                <!-- <div
-                                    v-if="
-                                        route.name === 'dashboard-pet___en' ||
-                                        route.name ===
-                                            'dashboard-pet-id-details___en' ||
-                                        route.name ===
-                                            'dashboard-pet-id-ad-id-details___en'
-                                    "
-                                >
-                                    <span class="hidden space-x-3 lg:flex">
-                                        <button
-                                            type="button"
-                                            class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
-                                            @click="
-                                                router.push(
-                                                    '/dashboard/pet/create'
-                                                )
-                                            "
-                                        >
-                                            <PlusIcon
-                                                class="h-5 w-5 text-gray-400"
-                                                aria-hidden="true"
-                                            />
-                                        </button>
-                                    </span>
-                                </div> -->
-
                                 <div
                                     v-if="
                                         route.name ===
@@ -305,7 +236,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Message header -->
             </div>
 
             <div class="min-h-0 flex-1 overflow-y-auto">
@@ -336,7 +266,7 @@ import 'vue3-carousel/dist/carousel.css'
 import { usePetStore } from '~/stores/pet'
 
 definePageMeta({
-    layout: 'dashboardv2',
+    layout: 'dashboardv3',
     middleware: 'auth'
 })
 
@@ -373,11 +303,6 @@ const selectPetStatus = [
         value: PetStatus.Found
     }
 ]
-
-definePageMeta({
-    layout: 'dashboardv2',
-    middleware: 'auth'
-})
 
 const auth = useAuthStore()
 const {
@@ -532,7 +457,7 @@ const allMyPetErrorMessage = () => {
     errorMessages.value.name = validateRequired(unref(myPet).name, 'Name')
     errorMessages.value.twitter = validateTwitterHandle(unref(myPet).twitter)
     errorMessages.value.instagram = validateInstagramUsername(
-        unref(myPet).instaxgram
+        unref(myPet).instagram
     )
 }
 

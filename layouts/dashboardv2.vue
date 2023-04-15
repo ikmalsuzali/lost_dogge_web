@@ -139,11 +139,6 @@
                             >
                                 <span class="sr-only">Open user menu</span>
                                 <UserCircleIcon class="h-8 w-8" />
-                                <!-- <img
-                                    class="h-8 w-8 rounded-full"
-                                    :src="user.imageUrl"
-                                    alt=""
-                                /> -->
                             </MenuButton>
 
                             <transition

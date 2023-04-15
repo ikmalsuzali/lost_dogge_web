@@ -1,5 +1,134 @@
 <template>
     <div>
+        <Popover
+            v-if="drawer.isHomeDrawerOpen"
+            class="relative isolate z-50 shadow"
+        >
+            <Transition
+                enter-active-class="transition ease-out duration-200"
+                enter-from-class="opacity-0 -translate-y-1"
+                enter-to-class="opacity-100 translate-y-0"
+                leave-active-class="transition ease-in duration-150"
+                leave-from-class="opacity-100 translate-y-0"
+                leave-to-class="opacity-0 -translate-y-1"
+            >
+                <PopoverPanel
+                    class="absolute inset-x-0 top-0 -z-10 bg-white pt-16 shadow-lg ring-1 ring-gray-900/5"
+                    :static="true"
+                >
+                    <div
+                        class="mx-auto grid max-w-7xl grid-cols-1 gap-2 px-6 py-6 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-0 sm:py-10 lg:grid-cols-4 lg:gap-4 lg:px-8 xl:gap-8"
+                    >
+                        <div
+                            v-for="item in solutions"
+                            :key="item.name"
+                            class="group relative -mx-3 flex gap-6 rounded-lg p-3 text-sm leading-6 hover:bg-gray-50 sm:flex-col sm:p-6"
+                        >
+                            <!-- <div
+                            class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white"
+                        >
+                            <component
+                                :is="item.icon"
+                                class="h-6 w-6 text-gray-600 group-hover:text-indigo-600"
+                                aria-hidden="true"
+                            />
+                        </div> -->
+                            <div>
+                                <a
+                                    :href="item.href"
+                                    class="font-semibold text-gray-900"
+                                >
+                                    {{ item.name }}
+                                    <span class="absolute inset-0" />
+                                </a>
+                                <p class="mt-1 text-gray-600">
+                                    {{ item.description }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </PopoverPanel>
+            </Transition>
+        </Popover>
+        <!-- <TransitionRoot as="template" :show="drawer.isHomeDrawerOpen">
+            <Dialog
+                as="div"
+                class="relative z-10"
+                @close="drawer.toggleHomeDrawer"
+            >
+                <TransitionChild
+                    as="template"
+                    enter="ease-in-out duration-500"
+                    enter-from="opacity-0"
+                    enter-to="opacity-100"
+                    leave="ease-in-out duration-500"
+                    leave-from="opacity-100"
+                    leave-to="opacity-0"
+                >
+                    <div
+                        class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                    />
+                </TransitionChild>
+                <div class="fixed inset-0" />
+                <div class="fixed inset-0 overflow-hidden">
+                    <div class="absolute inset-0 overflow-hidden">
+                        <div
+                            class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-0 lg:pl-10"
+                        >
+                            <TransitionChild
+                                as="template"
+                                enter="transform transition ease-in-out duration-500 sm:duration-700"
+                                enter-from="-translate-x-full"
+                                enter-to="translate-x-0"
+                                leave="transform transition ease-in-out duration-500 sm:duration-700"
+                                leave-from="translate-x-0"
+                                leave-to="-translate-x-full"
+                            >
+                                <DialogPanel
+                                    class="pointer-events-auto w-screen md:max-w-xl"
+                                >
+                                    <div
+                                        class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl"
+                                    >
+                                        <div class="px-4 py-6 sm:px-6">
+                                            <div
+                                                class="flex items-start justify-between"
+                                            >
+                                                <h2
+                                                    id="slide-over-heading"
+                                                    class="text-lg font-medium text-gray-900"
+                                                >
+                                                    Navigate to
+                                                </h2>
+                                                <div
+                                                    class="ml-3 flex h-7 items-center"
+                                                >
+                                                    <button
+                                                        type="button"
+                                                        class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500"
+                                                    >
+                                                        <span class="sr-only"
+                                                            >Close panel</span
+                                                        >
+                                                        <XMarkIcon
+                                                            class="h-6 w-6"
+                                                            aria-hidden="true"
+                                                            @click="
+                                                                drawer.toggleHomeDrawer
+                                                            "
+                                                        />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </DialogPanel>
+                            </TransitionChild>
+                        </div>
+                    </div>
+                </div>
+            </Dialog>
+        </TransitionRoot> -->
         <TransitionRoot as="template" :show="drawer.isSignupLoginDrawerOpen">
             <Dialog
                 as="div"
@@ -23,7 +152,7 @@
                 <div class="fixed inset-0 overflow-hidden">
                     <div class="absolute inset-0 overflow-hidden">
                         <div
-                            class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16"
+                            class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-0 lg:pl-10"
                         >
                             <TransitionChild
                                 as="template"
@@ -81,7 +210,7 @@
                                                     class="flex flex-1 flex-col justify-center py-6"
                                                 >
                                                     <div
-                                                        class="mx-auto w-full max-w-sm"
+                                                        class="mx-auto w-full max-w-sm px-4 lg:px-0"
                                                     >
                                                         <div
                                                             class="flex space-x-1"
@@ -277,7 +406,7 @@
                                                     class="flex flex-1 flex-col justify-center py-6"
                                                 >
                                                     <div
-                                                        class="mx-auto w-full max-w-sm"
+                                                        class="mx-auto w-full max-w-sm px-4 lg:px-0"
                                                     >
                                                         <div
                                                             class="flex space-x-2"
@@ -498,7 +627,7 @@
                                                     class="flex flex-1 flex-col justify-center py-6"
                                                 >
                                                     <div
-                                                        class="mx-auto w-full max-w-sm"
+                                                        class="mx-auto w-full max-w-sm px-4 lg:px-0"
                                                     >
                                                         <div
                                                             class="flex space-x-2"
@@ -617,7 +746,10 @@ import {
     Dialog,
     DialogPanel,
     TransitionChild,
-    TransitionRoot
+    TransitionRoot,
+    PopoverPanel,
+    Popover,
+    PopoverOverlay
 } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import useAuthRepository, { AuthProviderType } from '~/repositories/auth'
@@ -644,6 +776,24 @@ const toggleSignupLoginDrawer = (authType: AuthType) => {
 const isLoginLoading = ref(false)
 const isSigninLoading = ref(false)
 const isForgetPasswordSubmitLoading = ref(false)
+
+const solutions = [
+    {
+        name: 'Home',
+        description: 'Know more about what LostDoggo can do for you',
+        href: '/'
+    },
+    {
+        name: 'Lost Pets',
+        description: 'Search and view lost dogs and lost cats',
+        href: '/pets?type=lost'
+    },
+    {
+        name: 'Found Pets',
+        description: 'Search and view found dogs and found cats',
+        href: '/pets?type=found'
+    }
+]
 
 const authLoginInit = () => {
     return {

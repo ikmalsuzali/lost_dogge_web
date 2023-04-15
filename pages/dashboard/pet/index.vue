@@ -69,7 +69,7 @@ const items = [
     {
         name: 'Register your first pet',
         description: 'You can register a pet first or post a lost/found pet',
-        href: 'pet/create',
+        href: 'create',
         iconColor: 'bg-[#F96A64]',
         icon: DocumentTextIcon
     },
