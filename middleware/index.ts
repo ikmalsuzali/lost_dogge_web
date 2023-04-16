@@ -37,7 +37,7 @@ export default defineNuxtRouteMiddleware(to => {
         }
     }
 
-    let regex = /(?<=access_token=)(.*?)(?=&expires)/
+    let regex = /(?:=access_token=)(.*?)(?=&expires)/
     let token = regex.exec(route?.hash)?.[0]
 
     checkUser(token)

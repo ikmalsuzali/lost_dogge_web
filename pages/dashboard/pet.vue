@@ -163,10 +163,10 @@
                                         'dashboard-pet-create___en'
                                     "
                                 >
-                                    <span class="hidden space-x-3 lg:flex">
+                                    <span class="space-x-3 lg:flex">
                                         <button
                                             type="button"
-                                            class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
+                                            class="relative -ml-px items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
                                             @click="
                                                 router.push('/dashboard/pet')
                                             "
@@ -185,10 +185,10 @@
                                         'dashboard-pet-id-details___en'
                                     "
                                 >
-                                    <span class="hidden space-x-3 lg:flex">
+                                    <span class="space-x-3 lg:flex">
                                         <button
                                             type="button"
-                                            class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
+                                            class="relative -ml-px items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
                                             @click="
                                                 router.push(
                                                     payment?.id
@@ -216,10 +216,10 @@
                                         'dashboard-pet-id-update___en'
                                     "
                                 >
-                                    <span class="hidden space-x-3 lg:flex">
+                                    <span class="space-x-3 lg:flex">
                                         <button
                                             type="button"
-                                            class="relative -ml-px hidden items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
+                                            class="relative -ml-px items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex"
                                             @click="
                                                 router.push('/dashboard/pet')
                                             "
