@@ -34,7 +34,6 @@
 
 <script lang="ts" setup>
 import PetSearch from '~/components/organism/PetSearch.vue'
-import Button from '~/components/atom/Button.vue'
 
 definePageMeta({
     layout: 'page'

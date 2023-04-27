@@ -30,9 +30,10 @@ export const usePetStore = defineStore('pet', () => {
         } catch (error) {}
     }
 
-    const setMyPet = (pet: Pet) => {
-        myPet.value = pet
-        localStorage.setItem(LocalStorage.MY_PET, JSON.stringify(pet))
+    const setMyPet = (_pet: Pet) => {
+        myPet.value = pets.value?.find(pet => pet.id === _pet.id)
+        if (!unref(myPet)?.id) return
+        localStorage.setItem(LocalStorage.MY_PET, JSON.stringify(myPet.value))
     }
 
     const onRecentlyViewedPetsClick = async (petId: string) => {
@@ -71,6 +72,7 @@ export const usePetStore = defineStore('pet', () => {
         pets,
         myPet,
         fetchMyPets,
+        setMyPet,
         myPetIds,
         onRecentlyViewedPetsClick,
         recentlyViewedPetIds,

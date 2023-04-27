@@ -150,6 +150,24 @@ const usePetRepository = () => {
         return publicUrlData
     }
 
+    const uploadTmpImage = async (file: File) => {
+        const petPath = `public/tmp/${new Date().getTime()}`
+        const { data: uploadData, error: uploadError } = await $supabase.storage
+            .from('pets')
+            .upload(petPath, file, {
+                cacheControl: '3600'
+            })
+
+        if (uploadError) throw uploadError
+
+        const { data: publicUrlData, error: publicUrlError } =
+            await $supabase.storage.from('pets').getPublicUrl(petPath)
+
+        if (publicUrlError) throw publicUrlError
+
+        return publicUrlData
+    }
+
     const updatePet = async (petId: string, payload: Pet) => {
         const { data, error } = await $supabase
             .from('pets')
@@ -325,7 +343,8 @@ const usePetRepository = () => {
         createNewMessage,
         onNewMessage,
         getRandomPets,
-        getPetsById
+        getPetsById,
+        uploadTmpImage
     }
 }
 

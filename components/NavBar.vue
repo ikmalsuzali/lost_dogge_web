@@ -1,6 +1,6 @@
 i
 <template>
-    <nav :class="{ 'z-50': drawer.isHomeDrawerOpen }">
+    <nav :class="{ 'z-100': drawer.isHomeDrawerOpen }">
         <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
             <div class="flex h-20 justify-between">
                 <div class="flex px-2 lg:px-0">
@@ -145,7 +145,8 @@ const onLogoutClick = () => {
 const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Lost', href: '/pets?type=lost' },
-    { name: 'Found', href: '/pets?type=found' }
+    { name: 'Found', href: '/pets?type=found' },
+    { name: 'Generate Poster', href: '/poster' }
     // { name: 'Pricing', href: '/pricing' }
 ]
 </script>

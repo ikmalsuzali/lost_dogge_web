@@ -33,6 +33,18 @@ module.exports = {
                 success,
                 error
             },
+            width: {
+                a4: '210mm'
+            },
+            height: {
+                a4: '297mm'
+            },
+            scale: {
+                25: '.25',
+                35: '.35',
+                30: '.30',
+                40: '.40'
+            },
             textColor: {
                 skin: {
                     base: 'var(--color-text-base)',

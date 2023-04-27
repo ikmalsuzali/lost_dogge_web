@@ -191,6 +191,30 @@
                                             class="relative -ml-px items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
                                             @click="
                                                 router.push(
+                                                    `/dashboard/pet/${route.params.id}/poster`
+                                                )
+                                            "
+                                        >
+                                            <PlusIcon
+                                                class="mr-2.5 h-5 w-5 text-gray-400"
+                                                aria-hidden="true"
+                                            />
+                                            <span>{{ 'Generate Poster' }}</span>
+                                        </button>
+                                    </span>
+                                </div>
+                                <div
+                                    v-if="
+                                        route.name ===
+                                        'dashboard-pet-id-details___en'
+                                    "
+                                >
+                                    <span class="space-x-3 lg:flex">
+                                        <button
+                                            type="button"
+                                            class="relative -ml-px items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 sm:inline-flex animation-pulse"
+                                            @click="
+                                                router.push(
                                                     payment?.id
                                                         ? `/dashboard/pet/${route.params.id}/ad/${payment.id}/details`
                                                         : `/dashboard/pet/${route.params.id}/ad/create`

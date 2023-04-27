@@ -100,14 +100,7 @@
                                                 'bg-gray-200':
                                                     petIdByRoute === pet?.id
                                             }"
-                                            @click="
-                                                () => {
-                                                    drawerStore.toggleAuthDrawer()
-                                                    router.push(
-                                                        `/dashboard/pet/${pet.id}/details`
-                                                    )
-                                                }
-                                            "
+                                            @click="selectedPet(pet)"
                                         >
                                             <div
                                                 class="flex flex-col w-10 h-10 justify-center items-center mr-4"
@@ -847,6 +840,13 @@ const onSignOut = async () => {
 
 const onBackToHomePage = async () => {
     window.location.href = '/'
+}
+
+const selectedPet = async myPet => {
+    console.log(myPet)
+    drawerStore.toggleAuthDrawer()
+    petStore.setMyPet(myPet)
+    router.push(`/dashboard/pet/${myPet.id}/details`)
 }
 
 fetchMyPets()
