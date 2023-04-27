@@ -1,17 +1,19 @@
 <template>
     <div class="mx-auto max-w-7xl py-24 lg:items-center lg:gap-x-10 lg:px-8">
         <div class="">
-            <h2 class="text-4xl font-bold tracking-tight text-gray-900">
+            <h2
+                class="text-4xl font-bold tracking-tight text-gray-900 px-4 md:px-0"
+            >
                 Generate Poster
             </h2>
-            <p class="mt-2 text-lg leading-8 text-gray-600">
+            <p class="mt-2 text-lg leading-8 text-gray-600 px-4 md:px-0">
                 We help companies and individuals build out their brand
                 guidelines.
             </p>
             <div class="mt-16 flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
                 <div class="lg:flex-auto bg-white p-8 rounded-xl">
                     <div
-                        class="grid grid-cols-1 gap-x-8 gap-y-2 sm:grid-cols-2"
+                        class="grid grid-cols-2 gap-x-8 gap-y-2 md:grid-cols-2"
                     >
                         <div class="col-span-2">
                             <label
@@ -161,7 +163,7 @@
                                 />
                             </div>
                         </div>
-                        <div class="sm:col-span-2">
+                        <div class="col-span-2">
                             <label
                                 for="message"
                                 class="block text-sm font-semibold leading-6 text-gray-900"
@@ -188,7 +190,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="lg:mt-6 md:w-4/12 lg:flex-none">
+                <div class="lg:mt-6 md:w-4/12 lg:flex-none flex self-center">
                     <div class="relative z-[-1]">
                         <BasePoster
                             ref="mainBasePoster"
@@ -202,14 +204,18 @@
             </div>
         </div>
         <div class="mt-10">
-            <h2 class="text-4xl font-bold tracking-tight text-gray-900">
-                Login to view, download, and share posters
-            </h2>
-            <p class="my-2 text-lg leading-8 text-gray-600">
-                We help companies and individuals build out their brand
-                guidelines.
-            </p>
-            <div class="flex space-x-8">
+            <div class="px-4">
+                <h2 class="text-4xl font-bold tracking-tight text-gray-900">
+                    Login to view, download, and share posters
+                </h2>
+                <p class="my-2 text-lg leading-8 text-gray-600">
+                    We help companies and individuals build out their brand
+                    guidelines.
+                </p>
+            </div>
+            <div
+                class="flex flex-wrap space-x-8 self-center justify-center md:justify-start"
+            >
                 <div
                     class="my-2"
                     v-for="(poster, index) in posters"
